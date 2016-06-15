@@ -4,6 +4,9 @@ preloader.prototype = {
 
   },    
   preload:function(){
+//gamepad
+    this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
+
     this.load.image('enemy_spike', 'assets/enemy_spike.png');
     this.load.spritesheet('player','assets/player.png', 90, 105);
     this.load.spritesheet('small_fish', 'assets/small_fish.png', 20, 20);
@@ -31,7 +34,7 @@ preloader.prototype = {
 
   },
   create:function(){
-    this.game.time.advancedTiming = true;
+//    this.game.time.advancedTiming = true;
     this.game.state.start('Kusoge');
   }
 };
