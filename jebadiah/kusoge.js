@@ -357,9 +357,6 @@ kusoge.prototype = {
 
 //clock
     new Clock(this.game, this.state);
-
-var pad = this.game.plugins.add(Phaser.VirtualJoystick);
-//var stick = pad.addStick(x, y, distance, 'arcade');
   },
 
   update:function(){
