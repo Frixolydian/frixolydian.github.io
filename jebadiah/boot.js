@@ -15,18 +15,20 @@ var TURRET_2_UPGRADE = 0;
 boot = function(game){};
 boot.prototype = {
   init:function() {
-//  if(this.game.device.desktop) {
-  if (true) {
+  this.game.time.advancedTiming = true;
+  this.game.forceSingleUpdate = true;
+
+
+  if(this.game.device.desktop) {
     MOBILE = false;
     console.log(MOBILE);
   }
   else{
     MOBILE = true;
-    this.game.forceSingleUpdate = true;
     console.log(MOBILE);
 
   }
-//this.game.time.desiredFps = 45;
+
 
 /* ADD AUTO SCALING!!! */
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;

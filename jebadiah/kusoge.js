@@ -158,7 +158,7 @@ Player.prototype.pointWeapon = function(pointingLeft, joystickAngle) {
       this.loadTexture('jebadiah_right');
     }
     this.getChildAt(0).scale.set(-1, 1);
-    if (MOBILE) {    
+    if (!MOBILE) {    
       this.getChildAt(0).angle = this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY));
     }
     else {
@@ -170,7 +170,7 @@ Player.prototype.pointWeapon = function(pointingLeft, joystickAngle) {
       this.loadTexture('jebadiah_left');
     }
     this.getChildAt(0).scale.set(1);
-    if (MOBILE) {
+    if (!MOBILE) {
       this.getChildAt(0).angle = this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY)) + 180;
     }
     else {
@@ -184,7 +184,7 @@ Player.prototype.update = function() {
     return;
   }
 //weapon angle and flip player
-  if (MOBILE) {
+  if (!MOBILE) {
     this.pointWeapon(this.x < this.game.input.activePointer.worldX);
   }
   else if (this.state.states.Kusoge.joystick.properties.distance !==0) {
@@ -196,8 +196,15 @@ Player.prototype.update = function() {
   }, null, this);
 //collision
   this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
-    if ((this.up_button.isDown || this.space_button.isDown || (gamepad_jump.input.pointerOver() && gamepad_jump.pressed && !MOBILE)) && this.body.touching.down) {
-      this.body.velocity.y = -300;
+    if (MOBILE) {
+      if ((this.up_button.isDown || this.space_button.isDown || (gamepad_jump.input.pointerOver() && gamepad_jump.pressed && MOBILE)) && this.body.touching.down) {
+        this.body.velocity.y = -300;
+      }      
+    }
+    else {
+      if ((this.up_button.isDown || this.space_button.isDown) && this.body.touching.down) {
+        this.body.velocity.y = -300;
+      }      
     }
     if (this.down_button.isDown && b.oneway){
       this.y += 6;
@@ -224,7 +231,7 @@ Player.prototype.update = function() {
   if (this.left_button.isDown) {
     this.runLeft();
   }
-  if (!MOBILE) {
+  if (MOBILE) {
     if (!this.left_button.isDown && !this.right_button.isDown && this.body.touching.down && !gamepad_right.input.pointerOver() && !gamepad_left.input.pointerOver()) {
       this.getChildAt(1).animations.play('stand');
     }
@@ -239,7 +246,7 @@ Player.prototype.update = function() {
     this.reload();
   }
 //shooting
-  if (MOBILE && this.game.input.activePointer.isDown && this.can_shoot && this.reloading === false){
+  if (!MOBILE && this.game.input.activePointer.isDown && this.can_shoot && this.reloading === false){
     if (this.bullets[this.current_weapon] === 0) {
       this.reload();
     }
@@ -314,8 +321,6 @@ kusoge.prototype = {
     player_group = this.add.group();
     terrain_group = this.add.group();
 
-    gamepad = new Gamepad(this.game, this.state);
-
     playa = new Player(this.game, this.state, 0, 570, 'player');
     player_group.add(playa);
     this.camera.follow(this.oa);
@@ -369,51 +374,54 @@ kusoge.prototype = {
 //clock
     new Clock(this.game, this.state);
 
-  // Add the VirtualGamepad plugin to the game
-  this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-  // Add a joystick to the game (only one is allowed right now)
-  this.joystick = this.gamepad.addJoystick(900, 600, 1.2, 'gamepad');
-  // Add a button to the game (only one is allowed right now)
-  this.button = this.gamepad.addButton(400, 420, 1.0);
-
-  this.gamepad = new Gamepad (this, this.game);
+  if (MOBILE) {
+    // Add the VirtualGamepad plugin to the game
+    this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+    // Add a joystick to the game (only one is allowed right now)
+    this.joystick = this.gamepad.addJoystick(900, 600, 1.2, 'gamepad');
+    // Add a button to the game (only one is allowed right now)
+    this.button = this.gamepad.addButton(400, 420, 1.0);
+    gamepad = new Gamepad(this.game, this.state);
+    }
+  
+  this.game.time.desiredFps = 45;
 
   },
 
   update:function(){
-    if (!MOBILE){
+    if (MOBILE){
       this.camera.x = playa.x -this.game.width * 0.5;
     }
     else{
       this.camera.x = (playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
     }
 //shooting
-//console.log(this.joystick.properties.angle);
-    if (this.joystick.properties.distance > 50 && playa.can_shoot && playa.reloading === false) {
-      if (playa.bullets[playa.current_weapon] === 0) {
-        mp5_reload.play();
-        playa.reloading = true;
-        this.game.time.events.add(1200, function(){
-          playa.bullets[playa.current_weapon] = playa.bullets_max[playa.current_weapon];        
-          playa.reloading = false;
+    if (MOBILE){
+      if (this.joystick.properties.distance > 50 && playa.can_shoot && playa.reloading === false) {
+        if (playa.bullets[playa.current_weapon] === 0) {
+          mp5_reload.play();
+          playa.reloading = true;
+          this.game.time.events.add(1200, function(){
+            playa.bullets[playa.current_weapon] = playa.bullets_max[playa.current_weapon];        
+            playa.reloading = false;
+            playa.hud_bullets.text = 'Bullets: ' + playa.bullets[playa.current_weapon] + '/' + playa.bullets_max[playa.current_weapon];
+          }, this);
+        }
+        else {
+          new Bullet (this.game, this.state, playa.x, playa.y, 'bullet', playa.x + Math.cos(this.game.math.degToRad(this.joystick.properties.angle)), playa.y + Math.sin(this.game.math.degToRad(this.joystick.properties.angle)), 1000, 15, false);
+          new Howl({
+            urls: ['assets/audio/mp5_shot.ogg'],
+            volume: 0.1
+         }).play();
+          playa.can_shoot = false;
+          this.game.time.events.add(75, function(){
+            playa.can_shoot = true;
+          }, this);
+          playa.bullets[playa.current_weapon] -= 1;
           playa.hud_bullets.text = 'Bullets: ' + playa.bullets[playa.current_weapon] + '/' + playa.bullets_max[playa.current_weapon];
-        }, this);
+        }
       }
-      else {
-        new Bullet (this.game, this.state, playa.x, playa.y, 'bullet', playa.x + Math.cos(this.game.math.degToRad(this.joystick.properties.angle)), playa.y + Math.sin(this.game.math.degToRad(this.joystick.properties.angle)), 1000, 15, false);
-        new Howl({
-          urls: ['assets/audio/mp5_shot.ogg'],
-          volume: 0.1
-       }).play();
-        playa.can_shoot = false;
-        this.game.time.events.add(75, function(){
-          playa.can_shoot = true;
-        }, this);
-        playa.bullets[playa.current_weapon] -= 1;
-        playa.hud_bullets.text = 'Bullets: ' + playa.bullets[playa.current_weapon] + '/' + playa.bullets_max[playa.current_weapon];
-      }
-    }
-
+    } 
   },
 
   render:function(){
