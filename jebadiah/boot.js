@@ -17,7 +17,6 @@ boot.prototype = {
   init:function() {
 //  this.game.time.advancedTiming = true;
 //  this.game.forceSingleUpdate = true;
-
   if(this.game.device.desktop) {
     MOBILE = false;
     console.log(MOBILE);

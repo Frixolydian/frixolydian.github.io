@@ -190,7 +190,7 @@ kusoge.prototype = {
     // Add a button to the game (only one is allowed right now)
     this.button = this.gamepad.addButton(400, 420, 1.0);
     gamepad = new Gamepad(this.game, this.state);
-    this.game.time.desiredFps = 30;
+//    this.game.time.desiredFps = 30;
     }
   },
 
