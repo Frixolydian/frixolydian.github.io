@@ -13,11 +13,12 @@
   <script src="preloader.js"></script>
   <script src="kusoge.js"></script>
   <script src="purchase_screen.js"></script>
+  <script src="player_class.js"></script>
   <script src="class.js"></script>
   <script src="enemies_class.js"></script>
   <script>
   (function() {
-    var game = new Phaser.Game(1080, 720, Phaser.CANVAS,'',this);
+    var game = new Phaser.Game(720, 480, Phaser.CANVAS,'',this);
     game.state.add('Boot', boot);
     game.state.add('Preloader', preloader);
     game.state.add('Kusoge', kusoge);

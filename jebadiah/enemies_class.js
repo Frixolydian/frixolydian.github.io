@@ -271,7 +271,7 @@ Enemy_1.prototype.shoot = function() {
       volume: 0.05,
       pos3d: [(this.x - this.game.camera.x - this.game.width / 2) / 200, 0, -0.5],
     }).play();
-    new Bullet (this.game, this.state, this.x, this.y, 'bullet', playa.x, playa.y, 300, 10, true);
+    new Bullet (this.game, this.state, this.x, this.y, 'bullet', playa.x, playa.y, 300, 10, true, 0);
   }, this);
   this.game.time.events.add(1500, function() {
     this.shooting = false;
@@ -390,7 +390,7 @@ Enemy_2.prototype.shoot = function() {
       volume: 0.05,
       pos3d: [(this.x - this.game.camera.x - this.game.width / 2) / 200, 0, -0.5],
     }).play();
-    new Bullet (this.game, this.state, this.x, this.y, 'bullet', playa.x, playa.y, 400, 10, true);
+    new Bullet (this.game, this.state, this.x, this.y, 'bullet', playa.x, playa.y, 400, 10, true, 0);
   }, this);
   this.game.time.events.add(1500, function() {
     this.shooting = false;
