@@ -3,8 +3,8 @@ Player = function (game, state, x, y, sprite) {
   game.add.existing(this);
   this.state = state;
   this.can_shoot = true;
-  MP5 = {sprite: 'mp5', max_bullets: 50, shots: 1, bullet_speed: 1200, shooting_speed: 75, reload_time: 1200, deviation: 3, damage: 15};
-  shotgun = {sprite: 'mp5', max_bullets: 8, shots: 5, bullet_speed: 1200, shooting_speed: 600, reload_time: 1200, deviation: 2, damage: 12};
+  MP5 = {sprite: 'mp5', max_bullets: 50, shots: 1, bullet_speed: 1200, shooting_speed: 75, reload_time: 1200, deviation: 3, damage: 30};
+  shotgun = {sprite: 'mp5', max_bullets: 8, shots: 5, bullet_speed: 1200, shooting_speed: 600, reload_time: 1200, deviation: 2, damage: 20};
 
   this.current_weapon = MP5;
   this.bullets = this.current_weapon.max_bullets;

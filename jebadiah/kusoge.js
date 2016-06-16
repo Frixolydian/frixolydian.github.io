@@ -144,7 +144,7 @@ kusoge.prototype = {
       }
     }, this);
 
-    floor = new Terrain(this, this.state, -2880, 666, 5760, 20, false);
+    floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false);
     new Terrain(this, this.state, -200, 497, 400, 20, false); //floorstructure1
     new Terrain(this, this.state, -244, 636, 488, 5, false);
     new Terrain(this, this.state, 221, 593, 24, 50, false);  //floorstructure2

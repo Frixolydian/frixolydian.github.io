@@ -15,9 +15,8 @@ var TURRET_2_UPGRADE = 0;
 boot = function(game){};
 boot.prototype = {
   init:function() {
-  this.game.time.advancedTiming = true;
-  this.game.forceSingleUpdate = true;
-
+//  this.game.time.advancedTiming = true;
+//  this.game.forceSingleUpdate = true;
 
   if(this.game.device.desktop) {
     MOBILE = false;
@@ -28,8 +27,6 @@ boot.prototype = {
     console.log(MOBILE);
 
   }
-
-
 /* ADD AUTO SCALING!!! */
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.pageAlignHorizontally = true;
