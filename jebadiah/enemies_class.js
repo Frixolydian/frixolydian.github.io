@@ -146,7 +146,7 @@ Enemy.prototype.update = function() {
   }
 //indicator
   if (this.x > this.game.camera.x + this.game.width){
-    this.indicator.x = this.game.camera.x + 1040;
+    this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
@@ -160,7 +160,7 @@ Enemy.prototype.update = function() {
   }
   this.indicator.y = this.y;
 //behavoiur
-  this.body.velocity.x = this.direction * 100;
+  this.body.velocity.x = this.direction * 70;
   this.game.physics.arcade.collide(this, terrain_group);
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
       new Howl({
@@ -171,7 +171,7 @@ Enemy.prototype.update = function() {
     b.pendingDestroy = true;
     a.receiveDamage(b.power);
   }, null, this);
-  if (this.x > -400 && this.x < 400){
+  if (this.x > -250 && this.x < 250){
     structure_health -= 10;
     updateHealthBar();
     this.kill();
@@ -411,7 +411,7 @@ Enemy_2.prototype.update = function() {
   }
   //indicator
   if (this.x > this.game.camera.x + this.game.width){
-    this.indicator.x = this.game.camera.x + 1040;
+    this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
@@ -506,7 +506,7 @@ Flying_enemy.prototype.update = function() {
   }
   //indicator
   if (this.x > this.game.camera.x + this.game.width){
-    this.indicator.x = this.game.camera.x + 1040;
+    this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }

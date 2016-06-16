@@ -99,7 +99,7 @@ kusoge = function(game){};
 kusoge.prototype = {
 
   create: function(){
-    //MOBILE = true;
+//    MOBILE = true;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = "#00CC66"; //set the background color
     this.game.world.setBounds(-1500, 0, 3000, 720);
@@ -185,11 +185,11 @@ kusoge.prototype = {
     // Add the VirtualGamepad plugin to the game
     this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
     // Add a joystick to the game (only one is allowed right now)
-    this.joystick = this.gamepad.addJoystick(900, 600, 1.2, 'gamepad');
+    this.joystick = this.gamepad.addJoystick(600, 400, 1.2, 'gamepad');
     // Add a button to the game (only one is allowed right now)
     this.button = this.gamepad.addButton(400, 420, 1.0);
     gamepad = new Gamepad(this.game, this.state);
-    this.game.time.desiredFps = 45;
+//    this.game.time.desiredFps = 45;
     }
   },
 
@@ -219,7 +219,7 @@ Gamepad = function (game, state) {
   Phaser.Sprite.call(this, game);
   game.add.existing(this);
   this.state = state;
-  gamepad_left = this.game.add.button(50, 590, 'gamepad', null, null, 3, 0, 3);
+  gamepad_left = this.game.add.button(30, 380, 'gamepad', null, null, 3, 0, 3);
   gamepad_left.onOverMouseOnly = false;
   gamepad_left.fixedToCamera = true;
   gamepad_left.inputEnabled = true;
@@ -237,7 +237,7 @@ Gamepad = function (game, state) {
     gamepad_left.pressed = false;
   }, this);
 
-  gamepad_right = this.game.add.button(180, 590, 'gamepad', null, null, 3, 0, 3);
+  gamepad_right = this.game.add.button(160, 380, 'gamepad', null, null, 3, 0, 3);
   gamepad_right.onOverMouseOnly = false;
   gamepad_right.fixedToCamera = true;
   gamepad_right.inputEnabled = true;
@@ -254,7 +254,7 @@ Gamepad = function (game, state) {
     gamepad_right.pressed = false;
   }, this);
 
-  gamepad_jump = this.game.add.button(115, 500, 'gamepad', null, null, 3, 0, 3);
+  gamepad_jump = this.game.add.button(95, 300, 'gamepad', null, null, 3, 0, 3);
   gamepad_jump.onOverMouseOnly = false;
   gamepad_jump.fixedToCamera = true;
   gamepad_jump.inputEnabled = true;
