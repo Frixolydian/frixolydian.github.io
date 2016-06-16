@@ -2,7 +2,7 @@ Clock = function (game, state) {
   this.state= state;
   Phaser.Sprite.call(this, game, 0, 0);
   game.add.existing(this);
-  this.clock_text = game.add.bitmapText(830, 22, 'font', '', 36);
+  this.clock_text = game.add.bitmapText(500, 22, 'font', '', 36);
   this.clock_text.fixedToCamera = true;
 
   game.time.events.loop(1000, function() {

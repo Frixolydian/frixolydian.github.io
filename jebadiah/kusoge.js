@@ -6,6 +6,7 @@ Bullet = function (game, state, x, y, sprite, directionx, directiony, speed, pow
   Phaser.Sprite.call(this, game, x , y , sprite);
   game.add.existing(this);
   this.state = state;
+  this.autoCull = true;
   bullet_group.add(this);
   this.power = power;
   this.enemy = enemy;
@@ -189,7 +190,7 @@ kusoge.prototype = {
     // Add a button to the game (only one is allowed right now)
     this.button = this.gamepad.addButton(400, 420, 1.0);
     gamepad = new Gamepad(this.game, this.state);
-//    this.game.time.desiredFps = 45;
+    this.game.time.desiredFps = 30;
     }
   },
 

@@ -28,11 +28,12 @@ boot.prototype = {
 
   }
 /* ADD AUTO SCALING!!! */
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+//    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
   },
   preload:function(){
+    this.load.image('preloader_bar', 'assets/preloader_bar.png');
   },
   create:function(){
     this.game.state.start('Preloader');

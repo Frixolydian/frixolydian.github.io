@@ -4,6 +4,9 @@ preloader.prototype = {
 
   },    
   preload:function(){
+    this.loadingbar = this.add.sprite(180, 200, 'preloader_bar');
+    this.load.setPreloadSprite(this.loadingbar,0);
+
 //gamepad
     this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
@@ -34,7 +37,6 @@ preloader.prototype = {
 
   },
   create:function(){
-//    this.game.time.advancedTiming = true;
     this.game.state.start('Kusoge');
   }
 };

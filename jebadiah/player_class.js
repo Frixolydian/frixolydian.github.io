@@ -23,7 +23,7 @@ Player = function (game, state, x, y, sprite) {
   this.up_button = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
   this.down_button = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
   this.space_button = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.reload_button = this.game.input.keyboard.addKey(Phaser.Keyboard.R);
+  this.reload_button = this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(this.reload, this);
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.anchor.set(0.5);
@@ -31,9 +31,9 @@ Player = function (game, state, x, y, sprite) {
   this.body.maxVelocity.x = 300;
   this.body.gravity.y = 400;
 //hud
-  this.hud_bullets = this.game.add.text(500, 50, 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets);
+  this.hud_bullets = this.game.add.bitmapText(500, 70, 'font', 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets);
   this.hud_bullets.fixedToCamera = true;
-  this.hud_money = this.game.add.text(200, 50, '$$$: ' + money);
+  this.hud_money = this.game.add.bitmapText(100, 70, 'font', '$$$: ' + money);
   this.hud_money.fixedToCamera = true;
 //death
   this.events.onKilled.add(function() {
@@ -47,13 +47,16 @@ Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.reload = function() {
-  this.reloading = true;
-  mp5_reload.play();
-  this.game.time.events.add(this.current_weapon.reload_time, function(){
-    this.bullets = this.current_weapon.max_bullets;
-    this.reloading = false;
-  this.hud_bullets.text = 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets;
-  }, this);
+//manual reloading
+  if (this.current_weapon.max_bullets !== this.bullets && this.reloading === false){
+    this.reloading = true;
+    mp5_reload.play();
+    this.game.time.events.add(this.current_weapon.reload_time, function(){
+      this.bullets = this.current_weapon.max_bullets;
+      this.reloading = false;
+    this.hud_bullets.text = 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets;
+    }, this);
+  }
 };
 
 Player.prototype.runLeft = function() {
@@ -139,12 +142,9 @@ Player.prototype.update = function() {
         this.body.velocity.y = -300;
       }
     }
-    if (this.down_button.isDown && b.oneway){
-      this.y += 6;
-    }
   }, null, this);
 //on air
-  if (!this.body.touching.down) {
+  if (!this.body.touching.down && this.getChildAt(1).frame !== 2) {
     this.getChildAt(1).frame = 2;
   }
 //die
@@ -173,10 +173,6 @@ Player.prototype.update = function() {
     if (!this.left_button.isDown && !this.right_button.isDown && this.body.touching.down) {
       this.getChildAt(1).animations.play('stand');
     }
-  }
-//manual reloading
-  if (this.reload_button.isDown && this.current_weapon.max_bullets !== this.bullets && this.reloading === false){
-    this.reload();
   }
   //shooting
   if (MOBILE){

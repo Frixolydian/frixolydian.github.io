@@ -88,6 +88,7 @@ Enemy = function (game, state, x, y, sprite) {
   Phaser.Sprite.call(this, game, x , y);
   game.add.existing(this);
   this.state = state;
+  this.autoCull = true;
   this.anchor.set(0.5);
 //skin
   this.addChild(this.game.make.sprite(0, 0, sprite));
@@ -166,7 +167,7 @@ Enemy.prototype.update = function() {
       new Howl({
         urls: ['assets/audio/metal_' + Math.ceil(Math.random() * 15) + '.wav'],
         volume: 0.05,
-        pos3d: [(this.x - this.game.camera.x - this.game.width / 2) / 200, 0, 0],
+        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
       }).play();
     b.pendingDestroy = true;
     a.receiveDamage(b.power);
@@ -193,6 +194,7 @@ Enemy_1 = function (game, state, x, y, sprite) {
   Phaser.Sprite.call(this, game, x , y , sprite);
   game.add.existing(this);
   this.state = state;
+  this.autoCull = true;
   this.anchor.set(0.5);
   this.scale.set(0.5);
   enemy_group.add(this);
@@ -269,7 +271,7 @@ Enemy_1.prototype.shoot = function() {
     new Howl({
       urls: ['assets/audio/mp5_shot.ogg'],
       volume: 0.05,
-      pos3d: [(this.x - this.game.camera.x - this.game.width / 2) / 200, 0, -0.5],
+      pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, -0.5],
     }).play();
     new Bullet (this.game, this.state, this.x, this.y, 'bullet', playa.x, playa.y, 300, 10, true, 0);
   }, this);
@@ -319,6 +321,7 @@ Enemy_2 = function (game, state, x, y, sprite) {
   game.add.existing(this);
   this.state = state;
   this.anchor.set(0.5);
+  this.autoCull = true;
   this.scale.set(0.5);
   enemy_group.add(this);
 //animations
@@ -388,7 +391,7 @@ Enemy_2.prototype.shoot = function() {
     new Howl({
       urls: ['assets/audio/mp5_shot.ogg'],
       volume: 0.05,
-      pos3d: [(this.x - this.game.camera.x - this.game.width / 2) / 200, 0, -0.5],
+      pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, -0.5],
     }).play();
     new Bullet (this.game, this.state, this.x, this.y, 'bullet', playa.x, playa.y, 400, 10, true, 0);
   }, this);
@@ -456,6 +459,7 @@ Flying_enemy = function (game, state, x, y, sprite) {
   Phaser.Sprite.call(this, game, x , y , sprite);
   game.add.existing(this);
   this.state = state;
+  this.autoCull = true;
   this.anchor.set(0.5);
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -541,8 +545,6 @@ Flying_enemy.prototype.receiveDamage = function(damage) {
   this.getChildAt(0).drawRoundedRect(-50, -50, 100 * (this.health - damage) / this.maxHealth, 8, 10);
   this.damage(damage);
 };
-
-
 
 Flying_enemy_bomb = function (game, state, x, y, sprite, parent) {
   Phaser.Sprite.call(this, game, x , y , sprite);
