@@ -12,12 +12,10 @@ preloader.prototype = {
 
     this.load.image('enemy_spike', 'assets/enemy_spike.png');
     this.load.spritesheet('player','assets/player.png', 90, 105);
-    this.load.spritesheet('small_fish', 'assets/small_fish.png', 20, 20);
     this.load.image('back_1', 'assets/back_1.png');
     this.load.image('back_2', 'assets/back_2.png');
     this.load.image('back_3', 'assets/back_3.png');
     this.load.image('back_4', 'assets/back_4.png');
-    this.load.image('structure', 'assets/structure.png');
     this.load.spritesheet('wagon_1', 'assets/wagon_1.png', 560, 200);
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('turret', 'assets/turret.png');

@@ -95,6 +95,7 @@ Enemy = function (game, state, x, y, sprite) {
   this.getChildAt(0).anchor.set(0.5);
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.setSize(40, 40, 0, 0);
   this.game.physics.enable(this.getChildAt(0), Phaser.Physics.ARCADE);
   this.body.drag.x = 1000;
   this.body.maxVelocity.x = 300;
