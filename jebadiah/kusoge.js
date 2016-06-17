@@ -100,7 +100,7 @@ kusoge = function(game){};
 kusoge.prototype = {
 
   create: function(){
-    MOBILE = true;
+//    MOBILE = true;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = "#00CC66"; //set the background color
     this.game.world.setBounds(-1500, 0, 3000, 720);
