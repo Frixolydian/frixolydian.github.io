@@ -40,9 +40,14 @@ boot.prototype = {
   },
   preload:function(){
     this.load.image('preloader_bar', 'assets/preloader_bar.png');
+    this.load.image('preloader_back', 'assets/preloader_back.png');
+    this.load.image('credits', 'assets/credits.png');
   },
   create:function(){
+    this.add.image(this.game.width * 0.5, this.game.height * 0.4, 'credits').anchor.set(0.5);
     this.game.stage.backgroundColor = "#FFFFFF";
-    this.game.state.start('Preloader');
+    this.time.events.add(1500, function(){
+      this.game.state.start('Preloader');
+    }, this);
   }
 };

@@ -4,8 +4,10 @@ preloader.prototype = {
 
   },    
   preload:function(){
-    this.loadingbar = this.add.sprite(180, 200, 'preloader_bar');
-    this.load.setPreloadSprite(this.loadingbar,0);
+    this.add.image(this.game.width * 0.5, this.game.height * 0.75, 'preloader_back').anchor.set(0.5); 
+    this.loadingbar = this.add.sprite(120, 300, 'preloader_bar');
+    this.add.image(this.game.width * 0.5, this.game.height * 0.4, 'credits').anchor.set(0.5); 
+    this.load.setPreloadSprite(this.loadingbar, 0);
 
 //gamepad
     this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
@@ -40,6 +42,6 @@ preloader.prototype = {
 
   },
   create:function(){
-    this.game.state.start('Purchase_screen');
+    this.game.state.start('Kusoge');
   }
 };

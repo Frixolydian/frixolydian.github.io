@@ -164,7 +164,15 @@ Enemy.prototype.update = function() {
   this.indicator.y = this.y;
 //behavoiur
   this.body.velocity.x = this.direction * 70;
-  this.game.physics.arcade.collide(this, terrain_group);
+//kamikaze
+  this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
+    if(b !== floor){
+      structure_health -= 10;
+      updateHealthBar();
+      this.kill();
+    }
+  }, null, this);
+//recive damage
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
       new Howl({
         urls: ['assets/audio/metal_' + Math.ceil(Math.random() * 15) + '.wav'],
@@ -174,11 +182,6 @@ Enemy.prototype.update = function() {
     b.pendingDestroy = true;
     a.receiveDamage(b.power);
   }, null, this);
-  if (this.x > -250 && this.x < 250){
-    structure_health -= 10;
-    updateHealthBar();
-    this.kill();
-  }
 };
 
 Enemy.prototype.receiveDamage = function(damage) {
@@ -262,7 +265,7 @@ Enemy_1.prototype.move = function() {
 };
 
 Enemy_1.prototype.shoot = function() {
-  if (!this.alive) {
+  if (!this.alive || !playa.alive) {
     return;
   }
   this.shooting = true;
@@ -420,6 +423,17 @@ Enemy_2.prototype.throwGrenade = function() {
 Enemy_2.prototype.update = function() {
   if (!this.alive){
     return;
+  }
+  //flip
+  if (this.x > playa.x) {
+    if (this.frame === 0) {
+      this.frame = 1;
+    }
+  }
+  else {
+    if (this.frame === 1) {
+      this.frame = 0;
+    }
   }
   //indicator
   if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
