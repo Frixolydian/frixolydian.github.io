@@ -124,7 +124,8 @@ Enemy = function (game, state, x, y, sprite) {
   this.health = 100;
 //add indicator
   this.indicator = this.game.add.graphics(0,0);
-  this.indicator.beginFill(0xCC0000);
+  this.indicator.lineStyle(1, 0x000000);
+  this.indicator.beginFill(0xFF0000);
   this.indicator.drawPolygon(-25, 0, 0, 15, 0, -15);
 //when dead
   this.events.onKilled.add(function(){
@@ -147,12 +148,12 @@ Enemy.prototype.update = function() {
     return;
   }
 //indicator
-  if (this.x > this.game.camera.x + this.game.width){
+  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x){
+  else if (this.x < this.game.camera.x && this.x > -1000){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;
@@ -184,9 +185,9 @@ Enemy.prototype.receiveDamage = function(damage) {
   if (!this.alive) {
     return;
   }
-  this.getChildAt(1).clear();
-  this.getChildAt(1).drawRoundedRect(-25, -50, 50 * (this.health - damage) / this.maxHealth, 8, 5);
   this.damage(damage);
+  this.getChildAt(1).clear();
+  this.getChildAt(1).drawRoundedRect(-25, -50, 50 * this.health / this.maxHealth, 8, 5);
 };
 
 
@@ -293,6 +294,13 @@ Enemy_1.prototype.update = function() {
   if (!this.alive){
     return;
   }
+//change direction
+  if (this.x > playa.x) {
+    this.frame = 1;
+  }
+  else {
+    this.frame = 0;
+  }
 //behaviour
   if (!this.shooting && !this.throwing) {  
     this.move();
@@ -323,7 +331,6 @@ Enemy_2 = function (game, state, x, y, sprite) {
   this.state = state;
   this.anchor.set(0.5);
   this.autoCull = true;
-  this.scale.set(0.5);
   enemy_group.add(this);
 //animations
   this.animations.add('right', [4, 3, 5, 3], 10, false);
@@ -338,27 +345,28 @@ Enemy_2 = function (game, state, x, y, sprite) {
 //healthbar
   this.addChild(this.game.make.graphics(0, 0));
   this.getChildAt(0).beginFill(0xff0000);
-  this.getChildAt(0).drawRoundedRect(-50, -100, 100, 16, 10);
+  this.getChildAt(0).drawRoundedRect(-25, -50, 50, 8, 5);
   this.addChild(this.game.make.graphics(0, 0));
   this.getChildAt(1).beginFill(0x000000, 0);
-  this.getChildAt(1).lineStyle(5, 0x000000, 1);
-  this.getChildAt(1).drawRoundedRect(-50, -100, 100, 16, 10);
-  this.maxHealth = 150;
-  this.health = 150;
+  this.getChildAt(1).lineStyle(2.5, 0x000000, 1);
+  this.getChildAt(1).drawRoundedRect(-25, -50, 50, 8, 5);
+  this.maxHealth = 100;
+  this.health = 100;
 //add indicator
   this.indicator = this.game.add.graphics(0,0);
-  this.indicator.beginFill(0xCC0000);
+  this.indicator.lineStyle(1, 0x000000);
+  this.indicator.beginFill(0xFF0000);
   this.indicator.drawPolygon(-25, 0, 0, 15, 0, -15);
 //spawn
   if (Math.random() > 0.5) {
     this.x = -1480;
-    this.target_position_x = -700 + Math.random() * 200;
-    this.target_position_y = 200 + Math.random() * 300;
+    this.target_position_x = -700 + Math.random() * 400;
+    this.target_position_y = 270 + Math.random() * 100;
   }
   else {
     this.x = 1480;
-    this.target_position_x = 430 + Math.random() * 200;
-    this.target_position_y = 200 + Math.random() * 300;
+    this.target_position_x = 430 + Math.random() * 400;
+    this.target_position_y = 270 + Math.random() * 100;
   }
    this.y = 100 + Math.random() * 500;
   this.shooting = false;
@@ -414,12 +422,12 @@ Enemy_2.prototype.update = function() {
     return;
   }
   //indicator
-  if (this.x > this.game.camera.x + this.game.width){
+  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x){
+  else if (this.x < this.game.camera.x && this.x > -1000){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;
@@ -451,7 +459,7 @@ Enemy_2.prototype.update = function() {
 Enemy_2.prototype.receiveDamage = function(damage) {
   this.damage(damage);
   this.getChildAt(0).clear();
-  this.getChildAt(0).drawRoundedRect(-50, -100, 100 * this.health / this.maxHealth, 16, 10);
+  this.getChildAt(0).drawRoundedRect(-25, -50, 50 * this.health / this.maxHealth, 8, 5);
 };
 
 
@@ -485,7 +493,8 @@ Flying_enemy = function (game, state, x, y, sprite) {
   this.health = 50;
 //add indicator
   this.indicator = this.game.add.graphics(0,0);
-  this.indicator.beginFill(0xCC0000);
+  this.indicator.lineStyle(1, 0x000000);
+  this.indicator.beginFill(0xFF0000);
   this.indicator.drawPolygon(-25, 0, 0, 15, 0, -15);
 //add bomb
   new Flying_enemy_bomb (this.game, this.state, 0, 0, 'bullet', this);
@@ -510,12 +519,12 @@ Flying_enemy.prototype.update = function() {
     return;
   }
   //indicator
-  if (this.x > this.game.camera.x + this.game.width){
+  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x){
+  else if (this.x < this.game.camera.x && this.x > -1000){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;

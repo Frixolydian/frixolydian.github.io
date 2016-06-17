@@ -1,27 +1,25 @@
 Player = function (game, state, x, y, sprite) {
-  Phaser.Sprite.call(this, game, x , y , 'jebadiah_left');
+  Phaser.Sprite.call(this, game, x , y , 'jebadiah');
   game.add.existing(this);
   this.state = state;
   this.can_shoot = true;
-  MP5 = {sprite: 'mp5', max_bullets: 50, shots: 1, bullet_speed: 1200, shooting_speed: 75, reload_time: 1200, deviation: 3, damage: 30};
-  shotgun = {sprite: 'mp5', max_bullets: 8, shots: 5, bullet_speed: 1200, shooting_speed: 600, reload_time: 1200, deviation: 2, damage: 20};
 
-  this.current_weapon = MP5;
+  this.current_weapon = current_weapon;
   this.bullets = this.current_weapon.max_bullets;
   this.reloading = false;
 //fire trajectory
-  this.addChild(this.game.make.sprite(0, 0, 'trajectory'));
-  this.getChildAt(0).pivot.set(2, 2);
+  this.addChild(this.game.make.sprite(4, -4, 'trajectory'));
+  this.getChildAt(0).anchor.y = 0.5;
+  this.getChildAt(0).pivot.x = -35;
   this.getChildAt(0).angle = 180;
-//gun
-  this.addChild(this.game.make.sprite(0, -3, 'mp5'));
-  this.getChildAt(1).pivot.set(32, 2);
 //legs
   this.addChild(this.game.make.sprite(-20, -34, 'legs_left'));
-  this.getChildAt(2).animations.add('run', [1, 2, 3, 4], 12, true);
-  this.getChildAt(2).animations.add('stand', [0], 10, false);
-  this.getChildAt(2).animations.play('run');
-
+  this.getChildAt(1).animations.add('run', [1, 2, 3, 4], 12, true);
+  this.getChildAt(1).animations.add('stand', [0], 10, false);
+  this.getChildAt(1).animations.play('run');
+//gun
+  this.addChild(this.game.make.sprite(4, -3, this.current_weapon.sprite));
+  this.getChildAt(2).pivot.set(34, 5);
 
 //buttons
   this.left_button = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -67,29 +65,29 @@ Player.prototype.reload = function() {
 
 Player.prototype.runLeft = function() {
   this.body.velocity.x -= 40;
-  if (this.getChildAt(2).key !== 'legs_left'){
-    this.getChildAt(2).loadTexture('legs_left');
+  if (this.getChildAt(1).key !== 'legs_left'){
+    this.getChildAt(1).loadTexture('legs_left');
   }
-  this.getChildAt(2).animations.play('run');
+  this.getChildAt(1).animations.play('run');
 };
 
 Player.prototype.runRight = function() {
   this.body.velocity.x += 40;
-  if (this.getChildAt(2).key !== 'legs_right'){
-    this.getChildAt(2).loadTexture('legs_right');
+  if (this.getChildAt(1).key !== 'legs_right'){
+    this.getChildAt(1).loadTexture('legs_right');
   }
-  this.getChildAt(2).animations.play('run');
+  this.getChildAt(1).animations.play('run');
 };
 
 Player.prototype.shoot = function() {
   if (MOBILE) {
     for (i = 1; i <= this.current_weapon.shots; i++) {
-      new Bullet (this.game, this.state, this.x, this.y, 'bullet', this.x + Math.cos(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.y + Math.sin(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), 1000, this.current_weapon.damage, false, this.current_weapon.deviation);
+      new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.x + Math.cos(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.y + Math.sin(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
     }
   }
   else {
     for (i = 1; i<= this.current_weapon.shots; i++) {
-      new Bullet (this.game, this.state, this.x, this.y, 'bullet', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, 1000, this.current_weapon.damage, false, this.current_weapon.deviation);
+      new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
     }
   }
   new Howl({
@@ -106,20 +104,24 @@ Player.prototype.shoot = function() {
 
 Player.prototype.pointWeapon = function(pointingLeft, joystickAngle) {
   if (pointingLeft){
-    if (this.key !== 'jebadiah_right'){
-      this.loadTexture('jebadiah_right');
+    if (this.frame !== 0){
+      this.frame = 0;
+      this.getChildAt(0).x = -4;
+      this.getChildAt(2).x = -4;
     }
-    this.getChildAt(1).scale.set(-1, 1);
-    this.getChildAt(1).angle = MOBILE ? joystickAngle : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY));
-    this.getChildAt(0).angle = this.getChildAt(1).angle;
+    this.getChildAt(2).scale.set(-1, 1);
+    this.getChildAt(2).angle = MOBILE ? joystickAngle : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY));
+    this.getChildAt(0).angle = this.getChildAt(2).angle;
   }
   else{
-    if (this.key !== 'jebadiah_left'){
-      this.loadTexture('jebadiah_left');
+    if (this.frame !== 1){
+      this.frame = 1;
+      this.getChildAt(0).x = 4;
+      this.getChildAt(2).x = 4;
     }
-    this.getChildAt(1).scale.set(1);
-    this.getChildAt(1).angle = MOBILE ? joystickAngle + 180 : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY)) + 180;
-    this.getChildAt(0).angle = this.getChildAt(1).angle + 180;
+    this.getChildAt(2).scale.set(1);
+    this.getChildAt(2).angle = MOBILE ? joystickAngle + 180 : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY)) + 180;
+    this.getChildAt(0).angle = this.getChildAt(2).angle + 180;
   }
 };
 
@@ -153,7 +155,7 @@ Player.prototype.update = function() {
   }, null, this);
 //on air
   if (!this.body.touching.down && this.getChildAt(2).frame !== 2) {
-    this.getChildAt(2).frame = 2;
+    this.getChildAt(1).frame = 2;
   }
 //die
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
@@ -174,12 +176,12 @@ Player.prototype.update = function() {
   }
   if (MOBILE) {
     if (!this.left_button.isDown && !this.right_button.isDown && this.body.touching.down && !gamepad_right.input.pointerOver() && !gamepad_left.input.pointerOver()) {
-      this.getChildAt(2).animations.play('stand');
+      this.getChildAt(1).animations.play('stand');
     }
   }
   else {
     if (!this.left_button.isDown && !this.right_button.isDown && this.body.touching.down) {
-      this.getChildAt(2).animations.play('stand');
+      this.getChildAt(1).animations.play('stand');
     }
   }
   //shooting

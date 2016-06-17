@@ -102,8 +102,8 @@ kusoge.prototype = {
   create: function(){
 //    MOBILE = true;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.stage.backgroundColor = "#00CC66"; //set the background color
-    this.game.world.setBounds(-1500, 0, 3000, 720);
+    this.game.stage.backgroundColor = "#DDDDDD"; //set the background color
+    this.game.world.setBounds(-1500, 120, 3000, 600);
 //background
     this.scrolling_background_4 = this.add.tileSprite(-1500, 0, this.world.width, 720, 'back_4');
     this.scrolling_background_4.autoScroll(-10, 0);
@@ -138,45 +138,69 @@ kusoge.prototype = {
         new Enemy(this.game, this.state, Math.random() *  500, 500, 'enemy_spike');
       }
       else if (Math.random() > 0.66){
-        new Flying_enemy(this.game, this.state, 0, 200 + Math.random() *  100, 'seagull');
+        new Flying_enemy(this.game, this.state, 0, 300 + Math.random() *  100, 'seagull');
       }
       else {
-        new Enemy_2(this.game, this.state, 0, 200 + Math.random() *  100, 'player');
+        new Enemy_2(this.game, this.state, 0, 200 + Math.random() *  100, 'enemy_2');
       }
     }, this);
 
     floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false);
+//wagon1
     new Terrain(this, this.state, -200, 497, 400, 20, false); //floorstructure1
     new Terrain(this, this.state, -244, 636, 488, 5, false);
     new Terrain(this, this.state, 221, 593, 24, 50, false);  //floorstructure2
     new Terrain(this, this.state, -244, 593, 24, 50, false);
-
     this.wagon_front = this.add.sprite (0, 580, 'wagon_1');
     this.wagon_front.anchor.set(0.5);
     this.wagon_front.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
     this.wagon_front.animations.play('anim');
+//wagon2
+    if (WAGON_1) {
+      new Terrain(this, this.state, -669, 497, 400, 20, false); //floorstructure1
+      new Terrain(this, this.state, -713, 636, 488, 5, false);
+      new Terrain(this, this.state, -248, 593, 24, 50, false);  //floorstructure2
+      new Terrain(this, this.state, -713, 593, 24, 50, false);
+      this.wagon_front1 = this.add.sprite (-469, 580, 'wagon_1');
+      this.wagon_front1.anchor.set(0.5);
+      this.wagon_front1.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
+      this.wagon_front1.animations.play('anim');
+    }
+//wagon3
+    if (WAGON_2) {
+      new Terrain(this, this.state, 269, 497, 400, 20, false); //floorstructure1
+      new Terrain(this, this.state, 225, 636, 488, 5, false);
+      new Terrain(this, this.state, 690, 593, 24, 50, false);  //floorstructure2
+      new Terrain(this, this.state, 225, 593, 24, 50, false);
+      this.wagon_front1 = this.add.sprite (469, 580, 'wagon_1');
+      this.wagon_front1.anchor.set(0.5);
+      this.wagon_front1.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
+      this.wagon_front1.animations.play('anim');
+    }
 //    this.wagon_front.alpha = 0.2;
 /*    this.wagon_back = this.add.image (408, 264, 'structure');
     this.structure_front2.scale.set(-0.6,0.6);
     this.structure_front2.alpha = 0.2;
 */
     if(TURRET_1){
-      new Turret(this.game, this.state, -490, 603, 'turret', TURRET_1_UPGRADE);
+      this.add.image(-645, 479, 'turret_stand').anchor.set(0.5);
+      new Turret(this.game, this.state, -645, 464, 'turret', TURRET_1_UPGRADE).angle = 180;
     }
     if(TURRET_2){
-      new Turret(this.game, this.state, 370, 603, 'turret', TURRET_2_UPGRADE);
+      this.add.image(645, 479, 'turret_stand').anchor.set(0.5);
+      new Turret(this.game, this.state, 645, 464, 'turret', TURRET_2_UPGRADE);
     }
 //    this.boss = new Boss(this.game, this.state, -1000, 600, 'player');
 
 //structure healthbar
     healthbar_fill = this.add.graphics(0, 0);
     healthbar_fill.beginFill(0xff0000);
-    healthbar_fill.drawRoundedRect(100, 20, 700, 16, 10);
+    healthbar_fill.drawRoundedRect(100, 20, 500, 16, 10);
     healthbar_fill.fixedToCamera = true;
     healthbar_outline = this.add.graphics(0, 0);
     healthbar_outline.beginFill(0x000000, 0);
     healthbar_outline.lineStyle(5, 0x000000, 1);
-    healthbar_outline.drawRoundedRect(100, 20, 700, 16, 10);
+    healthbar_outline.drawRoundedRect(100, 20, 500, 16, 10);
     healthbar_outline.fixedToCamera = true;
 
     this.joystick_camera_x = 0;
@@ -218,7 +242,7 @@ kusoge.prototype = {
 
 updateHealthBar = function (game, state) {
   healthbar_fill.clear();
-  healthbar_fill.drawRoundedRect(100, 20, 700 * structure_health * 0.01, 16, 10);
+  healthbar_fill.drawRoundedRect(100, 20, 500 * structure_health * 0.01, 16, 10);
 };
 
 Gamepad = function (game, state) {

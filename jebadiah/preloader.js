@@ -20,12 +20,16 @@ preloader.prototype = {
     this.load.spritesheet('wagon_1', 'assets/wagon_1.png', 560, 200);
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('turret', 'assets/turret.png');
+    this.load.image('turret_stand', 'assets/turret_stand.png');
     this.load.image('seagull', 'assets/seagull.png');
-    this.load.image('jebadiah_left', 'assets/jebadiah_left.png');
-    this.load.image('jebadiah_right', 'assets/jebadiah_right.png');
+    this.load.spritesheet('enemy_2', 'assets/enemy_2.png', 32, 63);
+    this.load.spritesheet('jebadiah', 'assets/jebadiah.png', 40, 68);
     this.load.spritesheet('legs_left', 'assets/legs_left.png', 40, 68);
     this.load.spritesheet('legs_right', 'assets/legs_right.png', 40, 68);
+    this.load.image('pistol', 'assets/pistol.png');
+    this.load.image('shotgun', 'assets/shotgun.png');
     this.load.image('mp5', 'assets/mp5.png');
+    this.load.spritesheet('explosion', 'assets/explosion.png', 64, 64);
 
     this.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');//font
 
@@ -36,6 +40,6 @@ preloader.prototype = {
 
   },
   create:function(){
-    this.game.state.start('Kusoge');
+    this.game.state.start('Purchase_screen');
   }
 };
