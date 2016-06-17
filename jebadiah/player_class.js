@@ -82,7 +82,7 @@ Player.prototype.runRight = function() {
 Player.prototype.shoot = function() {
   if (MOBILE) {
     for (i = 1; i <= this.current_weapon.shots; i++) {
-      new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.x + Math.cos(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.y + Math.sin(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
+      new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.getChildAt(0).world.x + Math.cos(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.getChildAt(0).world.y + Math.sin(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
     }
   }
   else {
