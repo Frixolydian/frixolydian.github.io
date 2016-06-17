@@ -10,6 +10,7 @@ preloader.prototype = {
 //gamepad
     this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
+    this.load.image('trajectory', 'assets/trajectory.png');
     this.load.image('enemy_spike', 'assets/enemy_spike.png');
     this.load.spritesheet('player','assets/player.png', 90, 105);
     this.load.image('back_1', 'assets/back_1.png');

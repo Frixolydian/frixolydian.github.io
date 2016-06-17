@@ -488,7 +488,7 @@ Flying_enemy = function (game, state, x, y, sprite) {
   this.indicator.beginFill(0xCC0000);
   this.indicator.drawPolygon(-25, 0, 0, 15, 0, -15);
 //add bomb
-  new Flying_enemy_bomb (this.game, this.state, 0, 0, 'small_fish', this);
+  new Flying_enemy_bomb (this.game, this.state, 0, 0, 'bullet', this);
 
 //when dead
   this.events.onKilled.add(function(){

@@ -100,7 +100,7 @@ kusoge = function(game){};
 kusoge.prototype = {
 
   create: function(){
-//    MOBILE = true;
+    MOBILE = true;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = "#00CC66"; //set the background color
     this.game.world.setBounds(-1500, 0, 3000, 720);
@@ -179,6 +179,8 @@ kusoge.prototype = {
     healthbar_outline.drawRoundedRect(100, 20, 700, 16, 10);
     healthbar_outline.fixedToCamera = true;
 
+    this.joystick_camera_x = 0;
+    this.joystick_camera_y = 0;
 //clock
     new Clock(this.game, this.state);
 
@@ -195,20 +197,23 @@ kusoge.prototype = {
   },
 
   update:function(){
-    this.camera.x = MOBILE ? this.camera.x = playa.x -this.game.width * 0.5:(playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
-    this.camera.y = MOBILE ? this.camera.y = playa.y -this.game.width * 0.5:(playa.y - this.game.height * 0.5) + (this.input.y - this.game.height * 0.5) * 0.66;
-  },
+    if (MOBILE && this.joystick.properties.distance !== 0) {
+      this.joystick_camera_x = this.joystick.properties.x * 2.5;
+      this.joystick_camera_y = this.joystick.properties.y * 2.5 + 150;
+    }
+    this.camera.x = MOBILE ? playa.x -this.game.width * 0.5 + this.joystick_camera_x : (playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
+    this.camera.y = MOBILE ? playa.y -this.game.width * 0.5 + this.joystick_camera_y : (playa.y - this.game.height * 0.5) + (this.input.y - this.game.height * 0.5) * 0.66;
+  }/*,
 
 
   render:function(){
-    terrain_group.forEach(function(item) {
+//    terrain_group.forEach(function(item) {
 //      this.game.debug.body(item);
-    }, this);
+//    }, this);
 //    this.game.debug.body(playa);
     this.game.debug.text("X: " + this.input.worldX, 32, 32);
     this.game.debug.text("Y: " + this.input.worldY, 32, 64);
-    this.game.debug.text("FPS: " + this.time.fps, 32, 96);
-  }
+  }*/
 };
 
 updateHealthBar = function (game, state) {

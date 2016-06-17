@@ -9,14 +9,20 @@ Player = function (game, state, x, y, sprite) {
   this.current_weapon = MP5;
   this.bullets = this.current_weapon.max_bullets;
   this.reloading = false;
+//fire trajectory
+  this.addChild(this.game.make.sprite(0, 0, 'trajectory'));
+  this.getChildAt(0).pivot.set(2, 2);
+  this.getChildAt(0).angle = 180;
 //gun
   this.addChild(this.game.make.sprite(0, -3, 'mp5'));
-  this.getChildAt(0).pivot.set(32, 2);
+  this.getChildAt(1).pivot.set(32, 2);
 //legs
   this.addChild(this.game.make.sprite(-20, -34, 'legs_left'));
-  this.getChildAt(1).animations.add('run', [1, 2, 3, 4], 12, true);
-  this.getChildAt(1).animations.add('stand', [0], 10, false);
-  this.getChildAt(1).animations.play('run');
+  this.getChildAt(2).animations.add('run', [1, 2, 3, 4], 12, true);
+  this.getChildAt(2).animations.add('stand', [0], 10, false);
+  this.getChildAt(2).animations.play('run');
+
+
 //buttons
   this.left_button = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.right_button = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -61,18 +67,18 @@ Player.prototype.reload = function() {
 
 Player.prototype.runLeft = function() {
   this.body.velocity.x -= 40;
-  if (this.getChildAt(1).key !== 'legs_left'){
-    this.getChildAt(1).loadTexture('legs_left');
+  if (this.getChildAt(2).key !== 'legs_left'){
+    this.getChildAt(2).loadTexture('legs_left');
   }
-  this.getChildAt(1).animations.play('run');
+  this.getChildAt(2).animations.play('run');
 };
 
 Player.prototype.runRight = function() {
   this.body.velocity.x += 40;
-  if (this.getChildAt(1).key !== 'legs_right'){
-    this.getChildAt(1).loadTexture('legs_right');
+  if (this.getChildAt(2).key !== 'legs_right'){
+    this.getChildAt(2).loadTexture('legs_right');
   }
-  this.getChildAt(1).animations.play('run');
+  this.getChildAt(2).animations.play('run');
 };
 
 Player.prototype.shoot = function() {
@@ -103,15 +109,17 @@ Player.prototype.pointWeapon = function(pointingLeft, joystickAngle) {
     if (this.key !== 'jebadiah_right'){
       this.loadTexture('jebadiah_right');
     }
-    this.getChildAt(0).scale.set(-1, 1);
-    this.getChildAt(0).angle = MOBILE ? joystickAngle : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY));
+    this.getChildAt(1).scale.set(-1, 1);
+    this.getChildAt(1).angle = MOBILE ? joystickAngle : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY));
+    this.getChildAt(0).angle = this.getChildAt(1).angle;
   }
   else{
     if (this.key !== 'jebadiah_left'){
       this.loadTexture('jebadiah_left');
     }
-    this.getChildAt(0).scale.set(1);
-    this.getChildAt(0).angle = MOBILE ? joystickAngle + 180 : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY)) + 180;
+    this.getChildAt(1).scale.set(1);
+    this.getChildAt(1).angle = MOBILE ? joystickAngle + 180 : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY)) + 180;
+    this.getChildAt(0).angle = this.getChildAt(1).angle + 180;
   }
 };
 
@@ -144,8 +152,8 @@ Player.prototype.update = function() {
     }
   }, null, this);
 //on air
-  if (!this.body.touching.down && this.getChildAt(1).frame !== 2) {
-    this.getChildAt(1).frame = 2;
+  if (!this.body.touching.down && this.getChildAt(2).frame !== 2) {
+    this.getChildAt(2).frame = 2;
   }
 //die
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
@@ -166,17 +174,17 @@ Player.prototype.update = function() {
   }
   if (MOBILE) {
     if (!this.left_button.isDown && !this.right_button.isDown && this.body.touching.down && !gamepad_right.input.pointerOver() && !gamepad_left.input.pointerOver()) {
-      this.getChildAt(1).animations.play('stand');
+      this.getChildAt(2).animations.play('stand');
     }
   }
   else {
     if (!this.left_button.isDown && !this.right_button.isDown && this.body.touching.down) {
-      this.getChildAt(1).animations.play('stand');
+      this.getChildAt(2).animations.play('stand');
     }
   }
   //shooting
   if (MOBILE){
-    if (this.state.states.Kusoge.joystick.properties.distance > 50 && this.can_shoot && this.reloading === false) {
+    if (this.state.states.Kusoge.joystick.properties.distance > 80 && this.can_shoot && this.reloading === false) {
       if (this.bullets === 0) {
         this.reload();
       }
