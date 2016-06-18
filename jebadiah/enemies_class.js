@@ -195,7 +195,6 @@ Enemy_1 = function (game, state, x, y, sprite) {
     this.x = 1480;
   }
   this.shooting = false;
-  this.throwing = false;
 //when dead
   this.events.onKilled.add(function(){
     for (i = 1; i <= 10; i++) {
@@ -285,9 +284,6 @@ Enemy_2 = function (game, state, x, y, sprite) {
   this.anchor.set(0.5);
   this.autoCull = true;
   enemy_group.add(this);
-//animations
-  this.animations.add('right', [4, 3, 5, 3], 10, false);
-  this.animations.add('left', [7, 8, 6, 8], 10, false);
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.body.drag.x = 500;
@@ -302,7 +298,6 @@ Enemy_2 = function (game, state, x, y, sprite) {
   this.health = 100;
 //add indicator
   this.indicator = this.game.add.image(0, 0, 'indicator');
-
 //spawn
   if (Math.random() > 0.5) {
     this.x = -1480;
@@ -355,6 +350,9 @@ Enemy_2.prototype.throwGrenade = function() {
 };
 
 Enemy_2.prototype.update = function() {
+  if (!this.alive) {
+    return;
+  }
   //flip
   if (this.x > playa.x) {
     if (this.frame === 0) {
@@ -382,7 +380,7 @@ Enemy_2.prototype.update = function() {
   }
   this.indicator.y = this.y;
 //behaviour
-  if (!this.shooting && !this.throwing && this.game.math.distance(this.x, this.y, playa.x, playa.y) < 500) {  
+  if (!this.shooting && this.game.math.distance(this.x, this.y, playa.x, playa.y) < 500) {  
     this.shoot();
   }
 //flying
