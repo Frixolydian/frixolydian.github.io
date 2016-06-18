@@ -22,7 +22,7 @@ var TURRET_2_UPGRADE = 0;
 boot = function(game){};
 boot.prototype = {
   init:function() {
-//  this.game.time.advancedTiming = true;
+  this.game.time.advancedTiming = true;
 //  this.game.forceSingleUpdate = true;
   if(this.game.device.desktop) {
     MOBILE = false;

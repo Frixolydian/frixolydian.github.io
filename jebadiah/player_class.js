@@ -32,8 +32,8 @@ Player = function (game, state, x, y, sprite) {
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.anchor.set(0.5);
   this.body.drag.x = 1000;
-  this.body.maxVelocity.x = 300;
-  this.body.gravity.y = 400;
+  this.body.maxVelocity.x = 350;
+  this.body.gravity.y = 700;
 //hud
   this.hud_bullets = this.game.add.bitmapText(500, 70, 'font', 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets);
   this.hud_bullets.fixedToCamera = true;
@@ -144,12 +144,12 @@ Player.prototype.update = function() {
   this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
     if (MOBILE) {
       if ((this.up_button.isDown || this.space_button.isDown || (gamepad_jump.input.pointerOver() && gamepad_jump.pressed && MOBILE)) && this.body.touching.down) {
-        this.body.velocity.y = -300;
+        this.body.velocity.y = -400;
       }
     }
     else {
       if ((this.up_button.isDown || this.space_button.isDown) && this.body.touching.down) {
-        this.body.velocity.y = -300;
+        this.body.velocity.y = -400;
       }
     }
   }, null, this);

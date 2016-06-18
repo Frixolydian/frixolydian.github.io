@@ -12,6 +12,9 @@ preloader.prototype = {
 //gamepad
     this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
+    this.load.image('indicator', 'assets/indicator.png');
+    this.load.image('healthbar', 'assets/healthbar.png');
+    this.load.image('healthbar_back', 'assets/healthbar_back.png');
     this.load.image('trajectory', 'assets/trajectory.png');
     this.load.image('enemy_spike', 'assets/enemy_spike.png');
     this.load.spritesheet('player','assets/player.png', 90, 105);
@@ -19,7 +22,7 @@ preloader.prototype = {
     this.load.image('back_2', 'assets/back_2.png');
     this.load.image('back_3', 'assets/back_3.png');
     this.load.image('back_4', 'assets/back_4.png');
-    this.load.spritesheet('wagon_1', 'assets/wagon_1.png', 560, 200);
+    this.load.spritesheet('wagon_1', 'assets/wagon_1.png', 408, 200);
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('turret', 'assets/turret.png');
     this.load.image('turret_stand', 'assets/turret_stand.png');

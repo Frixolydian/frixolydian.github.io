@@ -13,13 +13,10 @@ Boss = function (game, state, x, y, sprite) {
   this.body.maxVelocity.x = 300;
   this.body.gravity.y = 400;
 //healthbar
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(0).beginFill(0xff0000);
-  this.getChildAt(0).drawRoundedRect(-50, -100, 100, 16, 10);
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(1).beginFill(0x000000, 0);
-  this.getChildAt(1).lineStyle(5, 0x000000, 1);
-  this.getChildAt(1).drawRoundedRect(-50, -100, 100, 16, 10);
+  this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
+  this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
+  this.maxHealth = 100;
+  this.health = 100;
   this.maxHealth = 3000;
   this.health = 3000;
 //when dead
@@ -37,9 +34,6 @@ Boss.prototype = Object.create(Phaser.Sprite.prototype);
 Boss.prototype.constructor = Boss;
 
 Boss.prototype.switchAttacks = function() {
-  if (!this.alive) {
-    return;
-  }
   if (Math.random() > 0.4){
     this.game.time.events.repeat(1000, 4, this.move, this);
     this.game.time.events.add(7000, this.switchAttacks, this);
@@ -51,24 +45,15 @@ Boss.prototype.switchAttacks = function() {
 };
 
 Boss.prototype.move = function() {
-  if (!this.alive) {
-    return;
-  }
   this.body.velocity.x = 300;
   this.animations.play('right');
 };
 
 Boss.prototype.shootMissile = function() {
-  if (!this.alive) {
-    return;
-  }
   new HomingMissile(this.game, this.state, this.x, this.y, 'small_fish');
 };
 
 Boss.prototype.update = function() {
-  if (!this.alive){
-    return;
-  }
   this.game.physics.arcade.collide(this, terrain_group);
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
     b.pendingDestroy = true;
@@ -96,43 +81,34 @@ Enemy = function (game, state, x, y, sprite) {
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.body.setSize(40, 40, 0, 0);
-  this.game.physics.enable(this.getChildAt(0), Phaser.Physics.ARCADE);
-  this.body.drag.x = 1000;
-  this.body.maxVelocity.x = 300;
   this.body.gravity.y = 400;
   this.body.bounce.y = 1;
   if (Math.random() > 0.5) {
-    this.x = -1480;
+    this.body.velocity.x = 75;
+    this.x = -1040;
     this.direction = 1;
-    this.getChildAt(0).body.angularVelocity = 500;
-  }
+ }
   else {
-    this.x = 1480;
-    this.direction =- 2;
-    this.getChildAt(0).body.angularVelocity = -500;
+    this.x = 1040;
+    this.body.velocity.x = -75;
+    this.direction =- 1;
   }
   enemy_group.add(this);
 //healthbar
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(1).beginFill(0xff0000);
-  this.getChildAt(1).drawRoundedRect(-25, -50, 50, 8, 5);
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(2).beginFill(0x000000, 0);
-  this.getChildAt(2).lineStyle(2.5, 0x000000, 1);
-  this.getChildAt(2).drawRoundedRect(-25, -50, 50, 8, 5);
+  this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
+  this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
+  this.maxHealth = 100;
+  this.health = 100;
   this.maxHealth = 100;
   this.health = 100;
 //add indicator
-  this.indicator = this.game.add.graphics(0,0);
-  this.indicator.lineStyle(1, 0x000000);
-  this.indicator.beginFill(0xFF0000);
-  this.indicator.drawPolygon(-25, 0, 0, 15, 0, -15);
+  this.indicator = this.game.add.image(0, 0, 'indicator');
 //when dead
   this.events.onKilled.add(function(){
     new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
-    for (i = 1; i <= 10; i++) {
+//    for (i = 1; i <= 10; i++) {
 //      new Money(this.game, this.state, this.x, this.y, 'small_fish');
-    }
+//    }
     money += 50;
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
@@ -144,9 +120,8 @@ Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.update = function() {
-  if (!this.alive) {
-    return;
-  }
+//rotate
+  this.getChildAt(0).angle += this.direction * 5;
 //indicator
   if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
@@ -162,8 +137,6 @@ Enemy.prototype.update = function() {
     this.indicator.alpha = 0;
   }
   this.indicator.y = this.y;
-//behavoiur
-  this.body.velocity.x = this.direction * 70;
 //kamikaze
   this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
     if(b !== floor){
@@ -185,12 +158,8 @@ Enemy.prototype.update = function() {
 };
 
 Enemy.prototype.receiveDamage = function(damage) {
-  if (!this.alive) {
-    return;
-  }
   this.damage(damage);
-  this.getChildAt(1).clear();
-  this.getChildAt(1).drawRoundedRect(-25, -50, 50 * this.health / this.maxHealth, 8, 5);
+  this.getChildAt(1).scale.x = this.health / this.maxHealth * 0.5;
 };
 
 
@@ -212,13 +181,10 @@ Enemy_1 = function (game, state, x, y, sprite) {
   this.body.maxVelocity.x = 300;
   this.body.gravity.y = 400;
 //healthbar
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(0).beginFill(0xff0000);
-  this.getChildAt(0).drawRoundedRect(-50, -100, 100, 16, 10);
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(1).beginFill(0x000000, 0);
-  this.getChildAt(1).lineStyle(5, 0x000000, 1);
-  this.getChildAt(1).drawRoundedRect(-50, -100, 100, 16, 10);
+  this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
+  this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
+  this.maxHealth = 100;
+  this.health = 100;
   this.maxHealth = 150;
   this.health = 150;
 //spawn
@@ -248,9 +214,6 @@ Enemy_1.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy_1.prototype.constructor = Enemy_1;
 
 Enemy_1.prototype.move = function() {
-  if (!this.alive) {
-    return;
-  }
   if (this.x > -550 && this.x < 450) {
     this.body.velocity.x = 0;
   }
@@ -265,14 +228,8 @@ Enemy_1.prototype.move = function() {
 };
 
 Enemy_1.prototype.shoot = function() {
-  if (!this.alive || !playa.alive) {
-    return;
-  }
   this.shooting = true;
   this.game.time.events.repeat(150, 3, function() {
-    if (!this.alive) {
-      return;
-    }
     new Howl({
       urls: ['assets/audio/mp5_shot.ogg'],
       volume: 0.05,
@@ -287,16 +244,10 @@ Enemy_1.prototype.shoot = function() {
 };
 
 Enemy_1.prototype.throwGrenade = function() {
-  if (!this.alive) {
-    return;
-  }
   new HomingMissile(this.game, this.state, this.x, this.y, 'small_fish');
 };
 
 Enemy_1.prototype.update = function() {
-  if (!this.alive){
-    return;
-  }
 //change direction
   if (this.x > playa.x) {
     this.frame = 1;
@@ -322,8 +273,7 @@ Enemy_1.prototype.update = function() {
 
 Enemy_1.prototype.receiveDamage = function(damage) {
   this.damage(damage);
-  this.getChildAt(0).clear();
-  this.getChildAt(0).drawRoundedRect(-50, -100, 100 * this.health / this.maxHealth, 16, 10);
+  this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;
 };
 
 
@@ -346,20 +296,13 @@ Enemy_2 = function (game, state, x, y, sprite) {
   this.body.maxVelocity.y = 50;
   this.body.gravity.y = 50;
 //healthbar
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(0).beginFill(0xff0000);
-  this.getChildAt(0).drawRoundedRect(-25, -50, 50, 8, 5);
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(1).beginFill(0x000000, 0);
-  this.getChildAt(1).lineStyle(2.5, 0x000000, 1);
-  this.getChildAt(1).drawRoundedRect(-25, -50, 50, 8, 5);
+  this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
+  this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
   this.maxHealth = 100;
   this.health = 100;
 //add indicator
-  this.indicator = this.game.add.graphics(0,0);
-  this.indicator.lineStyle(1, 0x000000);
-  this.indicator.beginFill(0xFF0000);
-  this.indicator.drawPolygon(-25, 0, 0, 15, 0, -15);
+  this.indicator = this.game.add.image(0, 0, 'indicator');
+
 //spawn
   if (Math.random() > 0.5) {
     this.x = -1480;
@@ -392,14 +335,8 @@ Enemy_2.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy_2.prototype.constructor = Enemy_2;
 
 Enemy_2.prototype.shoot = function() {
-  if (!this.alive) {
-    return;
-  }
   this.shooting = true;
   this.game.time.events.repeat(150, 1, function() {
-    if (!this.alive) {
-      return;
-    }
     new Howl({
       urls: ['assets/audio/mp5_shot.ogg'],
       volume: 0.05,
@@ -414,16 +351,10 @@ Enemy_2.prototype.shoot = function() {
 };
 
 Enemy_2.prototype.throwGrenade = function() {
-  if (!this.alive) {
-    return;
-  }
   new HomingMissile(this.game, this.state, this.x, this.y, 'small_fish');
 };
 
 Enemy_2.prototype.update = function() {
-  if (!this.alive){
-    return;
-  }
   //flip
   if (this.x > playa.x) {
     if (this.frame === 0) {
@@ -472,8 +403,7 @@ Enemy_2.prototype.update = function() {
 
 Enemy_2.prototype.receiveDamage = function(damage) {
   this.damage(damage);
-  this.getChildAt(0).clear();
-  this.getChildAt(0).drawRoundedRect(-25, -50, 50 * this.health / this.maxHealth, 8, 5);
+  this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;
 };
 
 
@@ -496,20 +426,14 @@ Flying_enemy = function (game, state, x, y, sprite) {
   }
   enemy_group.add(this);
 //healthbar
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(0).beginFill(0xff0000);
-  this.getChildAt(0).drawRoundedRect(-50, -50, 100, 8, 10);
-  this.addChild(this.game.make.graphics(0, 0));
-  this.getChildAt(1).beginFill(0x000000, 0);
-  this.getChildAt(1).lineStyle(2.5, 0x000000, 1);
-  this.getChildAt(1).drawRoundedRect(-50, -50, 100, 8, 10);
+  this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
+  this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
+  this.maxHealth = 100;
+  this.health = 100;
   this.maxHealth = 50;
   this.health = 50;
 //add indicator
-  this.indicator = this.game.add.graphics(0,0);
-  this.indicator.lineStyle(1, 0x000000);
-  this.indicator.beginFill(0xFF0000);
-  this.indicator.drawPolygon(-25, 0, 0, 15, 0, -15);
+  this.indicator = this.game.add.image(0, 0, 'indicator');
 //add bomb
   new Flying_enemy_bomb (this.game, this.state, 0, 0, 'bullet', this);
 
@@ -529,9 +453,6 @@ Flying_enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Flying_enemy.prototype.constructor = Flying_enemy;
 
 Flying_enemy.prototype.update = function() {
-  if (!this.alive) {
-    return;
-  }
   //indicator
   if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
@@ -562,12 +483,8 @@ Flying_enemy.prototype.update = function() {
 };
 
 Flying_enemy.prototype.receiveDamage = function(damage) {
-  if (!this.alive) {
-    return;
-  }
-  this.getChildAt(0).clear();
-  this.getChildAt(0).drawRoundedRect(-50, -50, 100 * (this.health - damage) / this.maxHealth, 8, 10);
   this.damage(damage);
+  this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;
 };
 
 Flying_enemy_bomb = function (game, state, x, y, sprite, parent) {
@@ -597,9 +514,6 @@ Flying_enemy_bomb.prototype = Object.create(Phaser.Sprite.prototype);
 Flying_enemy_bomb.prototype.constructor = Flying_enemy_bomb;
 
 Flying_enemy_bomb.prototype.update = function() {
-  if (!this.alive) {
-    return;
-  }
   if (this.ship.alive && !this.activated) {
     this.x = this.ship.x;
     this.y = this.ship.y + 25;
@@ -633,8 +547,5 @@ Flying_enemy_bomb.prototype.update = function() {
 };
 
 Flying_enemy_bomb.prototype.receiveDamage = function(damage) {
-  if (!this.alive) {
-    return;
-  }
   this.damage(damage);
 };
