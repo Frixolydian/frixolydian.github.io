@@ -4,6 +4,7 @@ purchase_screen.prototype = {
     this.game.world.setBounds(0, 0, 720, 480);
 
     this.money_text = this.add.text(50, 50, 'Money: ' + money);
+
     this.recover_text = this.add.text(50, 100, 'Buy base repairment: $' + ((100 - structure_health) * 10));
     this.recover_text.inputEnabled = true;
     this.recover_text.events.onInputDown.add(function() {
@@ -39,7 +40,6 @@ purchase_screen.prototype = {
     }, this);
 //buy wagons
     this.buy_wagon_1 = this.add.text(50, 200, 'Buy left wagon: $200');
-    this.buy_wagon_1.inputEnabled = true;
     this.buy_wagon_1.events.onInputDown.add(function() {
       if (money >= 200 && !WAGON_1){
         WAGON_1 = true;
@@ -49,7 +49,6 @@ purchase_screen.prototype = {
     }, this);
 
     this.buy_wagon_2 = this.add.text(50, 250, 'Buy left wagon: $200');
-    this.buy_wagon_2.inputEnabled = true;
     this.buy_wagon_2.events.onInputDown.add(function() {
       if (money >= 200 && !WAGON_2){
         WAGON_2 = true;
@@ -100,6 +99,95 @@ purchase_screen.prototype = {
         this.money_text.text = 'Money: ' + money;
       }
     }, this);
-
+  },
+  update: function() {
+//recover_text
+    if (money >= (100 - structure_health) * 10 && structure_health < 100) {
+      this.recover_text.inputEnabled = true
+      this.recover_text.fill = "#000000";
+    }
+    else {
+      this.recover_text.inputEnabled = false;
+      this.recover_text.fill = "#FF0000";
+      this.recover_text.inputEnabled = false;
+    }
+//buy left wagon
+    if (WAGON_1) {
+      this.buy_wagon_1.fill = "#AAAAAA";
+    }
+    else if (money < 200) {
+      this.buy_wagon_1.fill = "#FF0000";
+      this.buy_wagon_1.inputEnabled = false;
+    }
+    else {
+      this.buy_wagon_1.inputEnabled = true;
+      this.buy_wagon_1.fill = "#000000";
+    }
+//buy right wagon
+    if (WAGON_2) {
+      this.buy_wagon_2.fill = "#AAAAAA";
+    }
+    else if (money < 200) {
+      this.buy_wagon_2.fill = "#FF0000";
+      this.buy_wagon_2.inputEnabled = false;
+    }
+    else {
+      this.buy_wagon_2.inputEnabled = true;
+      this.buy_wagon_2.fill = "#000000";
+    }
+//buy left turret
+    if (TURRET_1) {
+      this.buy_turret_1.fill = "#AAAAAA";
+    }
+    else if (money >= 200 && WAGON_1) {
+      this.buy_turret_1.inputEnabled = true;
+      this.buy_turret_1.fill = "#000000";
+    }
+    else {
+      this.buy_turret_1.fill = "#FF0000";
+      this.buy_turret_1.inputEnabled = false;
+    }
+//buy right turret
+    if (TURRET_2) {
+      this.buy_turret_2.fill = "#AAAAAA";
+    }
+    else if (money >= 200 && WAGON_2) {
+      this.buy_turret_2.inputEnabled = true;
+      this.buy_turret_2.fill = "#000000";
+    }
+    else {
+      this.buy_turret_2.fill = "#FF0000";
+      this.buy_turret_2.inputEnabled = false;
+    }
+// turret upgrade
+    if (TURRET_1_UPGRADE > 4) {
+      this.buy_turret_1_upgrade.fill = "#AAAAAA";
+      this.buy_turret_1_upgrade.inputEnabled = false;
+    }
+    else if (money >= 200 && TURRET_1) {
+      this.buy_turret_1_upgrade.inputEnabled = true;
+      this.buy_turret_1_upgrade.fill = "#000000";  
+    }
+    else {
+      this.buy_turret_1_upgrade.fill = "#FF0000";
+      this.buy_turret_1_upgrade.inputEnabled = false;
+    }
+// turret upgrade
+    if (TURRET_2_UPGRADE > 4) {
+      this.buy_turret_2_upgrade.fill = "#AAAAAA";
+      this.buy_turret_2_upgrade.inputEnabled = false;
+    }
+    else if (money >= 200 && TURRET_2) {
+      this.buy_turret_2_upgrade.inputEnabled = true;
+      this.buy_turret_2_upgrade.fill = "#000000";  
+    }
+    else {
+      this.buy_turret_2_upgrade.fill = "#FF0000";
+      this.buy_turret_2_upgrade.inputEnabled = false;
+    }
+    //weapons
+    this.pistol.fill = current_weapon === pistol? "#0000FF" : "#000000";
+    this.shotgun.fill = current_weapon === shotgun? "#0000FF" : "#000000"
+    this.mp5.fill = current_weapon === mp5? "#0000FF" : "#000000"
   }
 };

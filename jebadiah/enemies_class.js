@@ -123,12 +123,12 @@ Enemy.prototype.update = function() {
 //rotate
   this.getChildAt(0).angle += this.direction * 5;
 //indicator
-  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
+  if (this.x > this.game.camera.x + this.game.width){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x && this.x > -1000){
+  else if (this.x < this.game.camera.x){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;
@@ -365,12 +365,12 @@ Enemy_2.prototype.update = function() {
     }
   }
   //indicator
-  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
+  if (this.x > this.game.camera.x + this.game.width){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x && this.x > -1000){
+  else if (this.x < this.game.camera.x){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;
@@ -452,12 +452,12 @@ Flying_enemy.prototype.constructor = Flying_enemy;
 
 Flying_enemy.prototype.update = function() {
   //indicator
-  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
+  if (this.x > this.game.camera.x + this.game.width){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x && this.x > -1000){
+  else if (this.x < this.game.camera.x){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;

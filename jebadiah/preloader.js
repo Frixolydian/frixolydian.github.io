@@ -45,6 +45,6 @@ preloader.prototype = {
 
   },
   create:function(){
-    this.game.state.start('Kusoge');
+    this.game.state.start('Purchase_screen');
   }
 };

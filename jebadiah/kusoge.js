@@ -179,12 +179,12 @@ kusoge.prototype = {
     }
 
     if(TURRET_1){
-      this.add.image(-645, 479, 'turret_stand').anchor.set(0.5);
-      new Turret(this.game, this.state, -645, 464, 'turret', TURRET_1_UPGRADE).angle = 180;
+      this.add.image(-500, 479, 'turret_stand').anchor.set(0.5);
+      new Turret(this.game, this.state, -500, 464, 'turret', TURRET_1_UPGRADE).angle = 180;
     }
     if(TURRET_2){
-      this.add.image(645, 479, 'turret_stand').anchor.set(0.5);
-      new Turret(this.game, this.state, 645, 464, 'turret', TURRET_2_UPGRADE);
+      this.add.image(500, 479, 'turret_stand').anchor.set(0.5);
+      new Turret(this.game, this.state, 500, 464, 'turret', TURRET_2_UPGRADE);
     }
 //    this.boss = new Boss(this.game, this.state, -1000, 600, 'player');
 
@@ -204,14 +204,14 @@ kusoge.prototype = {
 //clock
     new Clock(this.game, this.state);
 //gamepad
-  if (MOBILE) {
-    // Add the VirtualGamepad plugin to the game
-    this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
-    // Add a joystick to the game (only one is allowed right now)
-    this.joystick = this.gamepad.addJoystick(600, 400, 1.2, 'gamepad');
-    // Add a button to the game (only one is allowed right now)
-    this.button = this.gamepad.addButton(400, 420, 1.0);
-    gamepad = new Gamepad(this.game, this.state);
+    if (MOBILE) {
+      // Add the VirtualGamepad plugin to the game
+      this.gamepad = this.game.plugins.add(Phaser.Plugin.VirtualGamepad);
+      // Add a joystick to the game (only one is allowed right now)
+      this.joystick = this.gamepad.addJoystick(600, 400, 1.2, 'gamepad');
+      // Add a button to the game (only one is allowed right now)
+      this.button = this.gamepad.addButton(400, 420, 1.0);
+      gamepad = new Gamepad(this.game, this.state);
     }
   },
 
