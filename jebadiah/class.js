@@ -26,8 +26,6 @@ Clock = function (game, state) {
   Clock.prototype = Object.create(Phaser.Sprite.prototype);
   Clock.prototype.constructor = Clock;
 
-
-
 Explosion = function (game, state, x, y, sprite, duration, power, enemy) {
   Phaser.Sprite.call(this, game, x , y , 'explosion');
   game.add.existing(this);
