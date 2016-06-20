@@ -78,6 +78,7 @@ Enemy = function (game, state, x, y, sprite) {
 //skin
   this.addChild(this.game.make.sprite(0, 0, sprite));
   this.getChildAt(0).anchor.set(0.5);
+  this.getChildAt(0).smoothed = false;
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.body.setSize(40, 40, 0, 0);

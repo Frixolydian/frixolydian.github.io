@@ -9,7 +9,7 @@ Array.prototype.randomElement = function () {
 SnakeBody = function (game, sprite, bodytofollow) {
   Phaser.Sprite.call(this, game, bodytofollow.world.x , bodytofollow.world.y , sprite);
   game.add.existing(this);
-
+  this.smoothed = false;
 
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
@@ -36,6 +36,7 @@ SnakeBody.prototype.update = function() {
 Seagull = function (game, spawnx, spawny, turn) {
   Phaser.Sprite.call(this, game, spawnx, spawny, 'small_fish');
   game.add.existing(this);
+  this.autoCull = true;
   this.animations.add('swim');
   this.animations.play('swim', 12 , true);
   this.animations.currentAnim.setFrame(Math.floor(Math.random()*8), true);
@@ -70,9 +71,6 @@ Seagull.prototype = Object.create(Phaser.Sprite.prototype);
 Seagull.prototype.constructor = Seagull;
 
 
-
-
-
 kusoge = function(game){};
 
 kusoge.prototype = {
@@ -84,7 +82,7 @@ kusoge.prototype = {
 //  ADD HUD
     this.evolution = 0;
     this.evolution_points = 0
-    this.for_next_evolution = 5;
+    this.for_next_evolution = 25;
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.stage.backgroundColor = "#00CC66"; //set the background color
@@ -99,6 +97,7 @@ kusoge.prototype = {
     this.snakegroup = this.add.group();
 
     this.snake = this.add.sprite(0, this.game.world.height / 2, 'snake_head');
+    this.snake.smoothed = false;
     this.snake.anchor.y = 0.5;
     this.snake.anchor.x = 0.15;
     this.game.physics.enable(this.snake, Phaser.Physics.ARCADE);
@@ -230,37 +229,16 @@ kusoge.prototype = {
       this.origDragPoint = null;
       this.snake.body.angularDrag = 150;
     }
-
-
-
-/*    if (this.input.activePointer.isDown) {
-      if (this.origDragPoint) {
-        if (this.momentum < 200) {
-          this.momentum += Math.min(Math.max((Math.abs((this.origDragPoint.y - this.input.activePointer.position.y) * this.snake.body.angularVelocity / 30)), 1)  / 12, 100);
-          if (this.origDragPoint.y > this.input.activePointer.position.y) {
-            this.snake.body.angularVelocity += Math.min(Math.max((this.origDragPoint.y - this.input.activePointer.position.y) * this.momentum / 5, 20),120);
-          }
-          else if (this.origDragPoint.y < this.input.activePointer.position.y) {
-            this.snake.body.angularVelocity += Math.max(Math.min((this.origDragPoint.y - this.input.activePointer.position.y) * this.momentum / 5, -20),-120);
-          }
-        }
-        else {
-          this.momentum = 200;
-        }
-      }
-      this.origDragPoint = this.input.activePointer.position.clone();
-    }
-    else {
-      this.origDragPoint = null;
-    } */
   },
 
   render:function(){
     this.snakegroup.forEach(function(item) {
       //this.game.debug.body(item);
     }, this);
+    this.game.debug.text("FPS: " + this.game.time.fps, 32, 32);
 //    this.game.debug.text("olas " + (this.for_next_evolution - this.evolution_points), 32, 32);
     this.game.debug.text("Momentum " + this.momentum, 32, 64);
+
 //    this.game.debug.text('anglebetween' + ang, 30, 120);
   }
 };
