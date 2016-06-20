@@ -17,10 +17,10 @@ SnakeBody = function (game, sprite, bodytofollow) {
   this.anchor.y = 0.5;
   this.anchor.x = 1;
 
-  this.addChild(this.game.make.sprite(-100, 0, null));
-  this.addChild(this.game.make.sprite(-40, 0, null));
-  this.scale.set(0.15);
-  this.body.setSize(150, 150, 0, -5);
+  this.addChild(this.game.make.sprite(-55, 0, null));
+  this.addChild(this.game.make.sprite(-23, 0, null));
+//  this.scale.set(0.15);
+//  this.body.setSize(150, 150, 0, 0);
 
 };
 
@@ -99,11 +99,9 @@ kusoge.prototype = {
     this.snakegroup = this.add.group();
 
     this.snake = this.add.sprite(0, this.game.world.height / 2, 'snake_head');
-    this.snake.scale.set(0.15);
-    this.snake.anchor.y = 0.6;
-    this.snake.anchor.x = 0.5;
+    this.snake.anchor.y = 0.5;
+    this.snake.anchor.x = 0.15;
     this.game.physics.enable(this.snake, Phaser.Physics.ARCADE);
-    this.snake.body.setSize(200, 200, 0, 0);
     this.snake.body.collideWorldBounds = true;
     this.snake.body.angularDrag = 250;
     this.snake.body.maxAngular = 250;
@@ -202,10 +200,10 @@ kusoge.prototype = {
 
     this.snakegroup.forEach(function(item) {
       if (item.angle < 90 && item.angle > -90){
-        item.scale.y = 0.15;
+//        item.scale.y = 0.15;
       }
       else{
-        item.scale.y = -0.15;
+//        item.scale.y = -0.15;
       }   
     }, this);
 
