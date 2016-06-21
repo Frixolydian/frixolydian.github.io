@@ -106,6 +106,7 @@ Enemy = function (game, state, x, y, sprite) {
   this.indicator = this.game.add.image(0, 0, 'indicator');
 //when dead
   this.events.onKilled.add(function(){
+    Shake (this.game, this.state, 15, 10, 1);
     new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
 //    for (i = 1; i <= 10; i++) {
 //      new Money(this.game, this.state, this.x, this.y, 'small_fish');
@@ -295,8 +296,9 @@ Enemy_2 = function (game, state, x, y, sprite) {
 //healthbar
   this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
   this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
-  this.maxHealth = 100;
-  this.health = 100;
+  this.maxHealth = 200;
+  this.health = 200;
+  this.dead = false;
 //add indicator
   this.indicator = this.game.add.image(0, 0, 'indicator');
 //spawn
@@ -315,12 +317,14 @@ Enemy_2 = function (game, state, x, y, sprite) {
   this.throwing = false;
 //when dead
   this.events.onKilled.add(function(){
-    for (i = 1; i <= 10; i++) {
+//    for (i = 1; i <= 10; i++) {
 //      new Money(this.game, this.state, this.x, this.y, 'small_fish');
-    }
+//    }
     money += 50;
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
+    Shake (this.game, this.state, 15, 20, 1);
+    new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
     this.pendingDestroy = true;
   }, this);
 //attack
@@ -331,6 +335,9 @@ Enemy_2.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy_2.prototype.constructor = Enemy_2;
 
 Enemy_2.prototype.shoot = function() {
+  if (this.dead) {
+    return;
+  }
   this.shooting = true;
   this.game.time.events.repeat(150, 1, function() {
     new Howl({
@@ -343,7 +350,6 @@ Enemy_2.prototype.shoot = function() {
   this.game.time.events.add(1500, function() {
     this.shooting = false;
   }, this);
-  
 };
 
 Enemy_2.prototype.throwGrenade = function() {
@@ -385,12 +391,15 @@ Enemy_2.prototype.update = function() {
     this.shoot();
   }
 //flying
-  if(this.y > this.target_position_y) {
-    this.body.velocity.y += 10 * (Math.sin(Math.atan2(this.target_position_y - this.y, this.target_position_x - this.x )));
+  if (!this.dead) {
+    if(this.y > this.target_position_y) {
+      this.body.velocity.y += 10 * (Math.sin(Math.atan2(this.target_position_y - this.y, this.target_position_x - this.x )));
+    }
+    this.body.velocity.x += 10 * (Math.cos(Math.atan2(this.target_position_y - this.target_position_y, this.target_position_x - this.x )));
   }
-  this.body.velocity.x += 10 * (Math.cos(Math.atan2(this.target_position_y - this.target_position_y, this.target_position_x - this.x )));
-
-  this.game.physics.arcade.collide(this, terrain_group);
+  this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
+    this.kill();
+  }, null, this);
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
     if (b.enemy === false) {
       b.pendingDestroy = true;
@@ -401,8 +410,22 @@ Enemy_2.prototype.update = function() {
 };
 
 Enemy_2.prototype.receiveDamage = function(damage) {
-  this.damage(damage);
-  this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;
+  if (this.health <= damage && !this.dead) {
+    this.dead = true;
+    this.health = 70;
+    this.body.angularAcceleration = -50;
+    this.body.gravity.y = 250;
+    this.body.maxVelocity.y = 1000;
+    this.body.gravity.x = -30;
+    this.body.drag.x = 0;
+    this.body.drag.y = 0;
+    this.getChildAt(0).kill();
+    this.getChildAt(1).kill();
+  }
+  else {
+    this.damage(damage);
+    this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;    
+  }
 };
 
 

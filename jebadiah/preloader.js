@@ -2,7 +2,7 @@ preloader = function(game){};
 preloader.prototype = {
   init:function() {
 
-  },    
+  },
   preload:function(){
     this.add.image(this.game.width * 0.5, this.game.height * 0.75, 'preloader_back').anchor.set(0.5); 
     this.loadingbar = this.add.sprite(120, 292, 'preloader_bar');
@@ -35,6 +35,7 @@ preloader.prototype = {
     this.load.image('shotgun', 'assets/shotgun.png');
     this.load.image('mp5', 'assets/mp5.png');
     this.load.spritesheet('explosion', 'assets/explosion.png', 64, 64);
+    this.load.spritesheet('explosion_smoke', 'assets/explosion_smoke.png', 16, 16);
 
     this.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');//font
 

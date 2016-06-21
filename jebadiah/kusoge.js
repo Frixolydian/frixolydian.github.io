@@ -220,8 +220,8 @@ kusoge.prototype = {
       this.joystick_camera_x = this.joystick.properties.x * 2.5;
       this.joystick_camera_y = this.joystick.properties.y * 2.5 + 150;
     }
-    this.camera.x = MOBILE ? playa.x -this.game.width * 0.5 + this.joystick_camera_x : (playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
-    this.camera.y = MOBILE ? playa.y -this.game.width * 0.5 + this.joystick_camera_y : (playa.y - this.game.height * 0.5) + (this.input.y - this.game.height * 0.5) * 0.66;
+    this.camera.x = MOBILE ? camera_offset_x + playa.x - this.game.width * 0.5 + this.joystick_camera_x : camera_offset_x + (playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
+    this.camera.y = MOBILE ? camera_offset_y + playa.y - this.game.width * 0.5 + this.joystick_camera_y : camera_offset_y + (playa.y - this.game.height * 0.5) + (this.input.y - this.game.height * 0.5) * 0.66;
   }//,
 
 

@@ -41,6 +41,7 @@ Player = function (game, state, x, y, sprite) {
   this.hud_money.fixedToCamera = true;
 //death
   this.events.onKilled.add(function() {
+      Shake (this.game, this.state, 15, 30, 1);
       this.game.time.events.add(3000, function(){
         this.reset(0, 570);
       }, this);
@@ -90,6 +91,7 @@ Player.prototype.shoot = function() {
       new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
     }
   }
+  Shake (this.game, this.state, 4, 3, 1);
   new Howl({
     urls: ['assets/audio/mp5_shot.ogg'],
     volume: 0.1
