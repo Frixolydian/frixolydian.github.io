@@ -136,7 +136,7 @@ kusoge.prototype = {
     player_group.add(playa);
 
     LEFT_ENEMY_TRAIN = false;
-    this.time.events.loop(10000, function() {
+/*    this.time.events.loop(10000, function() {
       if (!LEFT_ENEMY_TRAIN) {
         if (Math.random() < 0.5){
           new EnemyTrain(this.game, this.state, -1300, 580).body.velocity.x = 170;
@@ -147,7 +147,7 @@ kusoge.prototype = {
         LEFT_ENEMY_TRAIN = true;
       }
     }, this);
-
+*/
     this.time.events.loop(3000, function() {
       i = Math.random();
       if(i > 0.33){
