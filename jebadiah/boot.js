@@ -15,7 +15,7 @@ var MOBILE;
 var money = 0;
 var structure_health = 100;
 
-var TIMER = 30;
+var TIMER = 60;
 //upgrades
 var WAGON_1 = false;
 var WAGON_2 = false;
@@ -23,7 +23,6 @@ var TURRET_1 = false;
 var TURRET_1_UPGRADE = 0;
 var TURRET_2 = false;
 var TURRET_2_UPGRADE = 0;
-
 
 boot = function(game){};
 boot.prototype = {
@@ -51,6 +50,7 @@ boot.prototype = {
     this.load.image('credits', 'assets/credits.png');
   },
   create:function(){
+    this.game.world.setBounds(0, 0, this.game.width, this.game.height);
     this.add.image(this.game.width * 0.5, this.game.height * 0.4, 'credits').anchor.set(0.5);
     this.game.stage.backgroundColor = "#FFFFFF";
     this.time.events.add(1500, function(){

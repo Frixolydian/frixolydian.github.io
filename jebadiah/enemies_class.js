@@ -85,13 +85,13 @@ Enemy = function (game, state, x, y, sprite) {
   this.body.gravity.y = 400;
   this.body.bounce.y = 1;
   if (Math.random() > 0.5) {
-    this.body.velocity.x = 75;
+    this.body.velocity.x = 90;
     this.x = -1040;
     this.direction = 1;
  }
   else {
     this.x = 1040;
-    this.body.velocity.x = -75;
+    this.body.velocity.x = -90;
     this.direction =- 1;
   }
   enemy_group.add(this);
@@ -140,10 +140,11 @@ Enemy.prototype.update = function() {
   }
   this.indicator.y = this.y;
 //kamikaze
-  this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
-    if(b !== floor){
+  this.game.physics.arcade.collide(this, floor);
+  this.game.physics.arcade.overlap(this, terrain_group, function(a, b) {
+    if(b.playerTrain){
       structure_health -= 10;
-      updateHealthBar();
+      updateHealthBar(this.game, this.state);
       this.kill();
     }
   }, null, this);
@@ -160,124 +161,10 @@ Enemy.prototype.update = function() {
 };
 
 Enemy.prototype.receiveDamage = function(damage) {
+  tweenDamage(this.game, this.state, this);
   this.damage(damage);
   this.getChildAt(1).scale.x = this.health / this.maxHealth * 0.5;
 };
-
-
-
-Enemy_1 = function (game, state, x, y, sprite) {
-  Phaser.Sprite.call(this, game, x , y , sprite);
-  game.add.existing(this);
-  this.state = state;
-  this.autoCull = true;
-  this.anchor.set(0.5);
-  this.scale.set(0.5);
-  enemy_group.add(this);
-//animations
-  this.animations.add('right', [4, 3, 5, 3], 10, false);
-  this.animations.add('left', [7, 8, 6, 8], 10, false);
-//physics
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
-  this.body.drag.x = 700;
-  this.body.maxVelocity.x = 300;
-  this.body.gravity.y = 400;
-//healthbar
-  this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
-  this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
-  this.maxHealth = 100;
-  this.health = 100;
-  this.maxHealth = 150;
-  this.health = 150;
-//spawn
-  if (Math.random() > 0.5) {
-    this.x = -1480;
-  }
-  else {
-    this.x = 1480;
-  }
-  this.shooting = false;
-//when dead
-  this.events.onKilled.add(function(){
-    for (i = 1; i <= 10; i++) {
-//      new Money(this.game, this.state, this.x, this.y, 'small_fish');
-    }
-    money += 50;
-    playa.hud_money.text = '$$$: ' + money;
-    this.indicator.destroy();
-    pendingDestroy = true;
-  }, this);
-//attack
-//  this.throwGrenade();
-};
-
-Enemy_1.prototype = Object.create(Phaser.Sprite.prototype);
-Enemy_1.prototype.constructor = Enemy_1;
-
-Enemy_1.prototype.move = function() {
-  if (this.x > -550 && this.x < 450) {
-    this.body.velocity.x = 0;
-  }
-  else if (this.x < -550){
-    this.body.velocity.x = 100;    
-  this.animations.play('right');
-  }
-  else if (this.x > 450){
-    this.body.velocity.x = -100;
-  this.animations.play('left');
-  }
-};
-
-Enemy_1.prototype.shoot = function() {
-  this.shooting = true;
-  this.game.time.events.repeat(150, 3, function() {
-    new Howl({
-      urls: ['assets/audio/mp5_shot.ogg'],
-      volume: 0.05,
-      pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, -0.5],
-    }).play();
-    new Bullet (this.game, this.state, this.x, this.y, 'bullet', playa.x, playa.y, 300, 10, true, 0);
-  }, this);
-  this.game.time.events.add(1500, function() {
-    this.shooting = false;
-  }, this);
-  
-};
-
-Enemy_1.prototype.throwGrenade = function() {
-  new HomingMissile(this.game, this.state, this.x, this.y, 'small_fish');
-};
-
-Enemy_1.prototype.update = function() {
-//change direction
-  if (this.x > playa.x) {
-    this.frame = 1;
-  }
-  else {
-    this.frame = 0;
-  }
-//behaviour
-  if (!this.shooting && !this.throwing) {  
-    this.move();
-    if (this.game.math.distance(this.x, this.y, playa.x, playa.y) < 500) {
-      this.shoot();
-    }
-  }
-  this.game.physics.arcade.collide(this, terrain_group);
-  this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
-    if (b.enemy === false) {
-      b.pendingDestroy = true;
-      a.receiveDamage(b.power);
-    }
-  }, null, this);
-};
-
-Enemy_1.prototype.receiveDamage = function(damage) {
-  this.damage(damage);
-  this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;
-};
-
-
 
 Enemy_2 = function (game, state, x, y, sprite) {
   Phaser.Sprite.call(this, game, x , y , sprite);
@@ -410,6 +297,7 @@ Enemy_2.prototype.update = function() {
 };
 
 Enemy_2.prototype.receiveDamage = function(damage) {
+  tweenDamage(this.game, this.state, this);
   if (this.health <= damage && !this.dead) {
     this.dead = true;
     this.health = 70;
@@ -551,7 +439,7 @@ Flying_enemy_bomb.prototype.update = function() {
   this.game.physics.arcade.collide(this, terrain_group, function() {
     if(this.x > -450 && this.x < 350){
       structure_health -= 10;
-      updateHealthBar();
+      updateHealthBar(this.game, this.state);
     }
     this.kill();
   }, null, this);
@@ -571,3 +459,13 @@ Flying_enemy_bomb.prototype.update = function() {
 Flying_enemy_bomb.prototype.receiveDamage = function(damage) {
   this.damage(damage);
 };
+
+tweenDamage = function(game, state, object) {
+  if (!object.alive) {
+    return;
+  }
+  object.tint = 0xff9999;
+  game.time.events.add(50, function() {
+    object.tint = 0xffffff;
+  }, this);
+}

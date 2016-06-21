@@ -24,6 +24,9 @@ Bullet.prototype = Object.create(Phaser.Sprite.prototype);
 Bullet.prototype.constructor = Bullet;
 
 Bullet.prototype.update = function() {
+  if (this.enemy === false && this.x < this.game.camera.x - 150 || this.x > this.game.camera.x + this.game.width + 150) {
+    this.pendingDestroy = true;
+  }
   this.game.physics.arcade.overlap(this, terrain_group, function() {
     new Howl({
       urls: ['assets/audio/tarmac_' + Math.ceil(Math.random() * 4) + '.ogg'],
@@ -125,12 +128,25 @@ kusoge.prototype = {
 */
 
     bullet_group = this.add.group();  //create groups
-    enemy_group = this.add.group();
     player_group = this.add.group();
     terrain_group = this.add.group();
+    enemy_group = this.add.group();
 
     playa = new Player(this.game, this.state, 0, 570, 'player');
     player_group.add(playa);
+
+    LEFT_ENEMY_TRAIN = false;
+    this.time.events.loop(10000, function() {
+      if (!LEFT_ENEMY_TRAIN) {
+        if (Math.random() < 0.5){
+          new EnemyTrain(this.game, this.state, -1300, 580).body.velocity.x = 170;
+        }
+        else {
+          new EnemyTrain(this.game, this.state, 1300, 580).body.velocity.x = -170; 
+        }
+        LEFT_ENEMY_TRAIN = true;
+      }
+    }, this);
 
     this.time.events.loop(3000, function() {
       i = Math.random();
@@ -147,10 +163,10 @@ kusoge.prototype = {
 
     floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false);
 //wagon1
-    new Terrain(this, this.state, -160, 497, 320, 20, false); //floorstructure1
-    new Terrain(this, this.state, -204, 636, 408, 5, false);
-    new Terrain(this, this.state, 184, 593, 24, 50, false);  //floorstructure2
-    new Terrain(this, this.state, -208, 593, 24, 50, false);
+    terrain_1 = new Terrain(this, this.state, -160, 497, 320, 20, false).playerTrain = true; //floorstructure1
+    terrain_2 = new Terrain(this, this.state, -204, 636, 408, 5, false).playerTrain = true;
+    terrain_3 = new Terrain(this, this.state, 184, 593, 24, 50, false).playerTrain = true;  //floorstructure2
+    terrain_4 = new Terrain(this, this.state, -208, 593, 24, 50, false).playerTrain = true;
     this.wagon_front = this.add.sprite (0, 580, 'wagon_1');
     this.wagon_front.anchor.set(0.5);
     this.wagon_front.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
@@ -172,10 +188,10 @@ kusoge.prototype = {
       new Terrain(this, this.state, 185, 636, 408, 5, false);
       new Terrain(this, this.state, 573, 593, 24, 50, false);  //floorstructure2
       new Terrain(this, this.state, 181, 593, 24, 50, false);
-      this.wagon_front1 = this.add.sprite (389, 580, 'wagon_1');
-      this.wagon_front1.anchor.set(0.5);
-      this.wagon_front1.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
-      this.wagon_front1.animations.play('anim');
+      this.wagon_front2 = this.add.sprite (389, 580, 'wagon_1');
+      this.wagon_front2.anchor.set(0.5);
+      this.wagon_front2.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
+      this.wagon_front2.animations.play('anim');
     }
 
     if(TURRET_1){
@@ -186,8 +202,6 @@ kusoge.prototype = {
       this.add.image(500, 479, 'turret_stand').anchor.set(0.5);
       new Turret(this.game, this.state, 500, 464, 'turret', TURRET_2_UPGRADE);
     }
-//    this.boss = new Boss(this.game, this.state, -1000, 600, 'player');
-
 //structure healthbar
     healthbar_fill = this.add.image(100, 30, 'healthbar');
     healthbar_fill.right = 100;
@@ -198,6 +212,7 @@ kusoge.prototype = {
     healthbar_outline.smoothed = false;
     healthbar_outline.scale.set(3);
     healthbar_outline.fixedToCamera = true;
+    updateHealthBar(this.game, this.state);
 
     this.joystick_camera_x = 0;
     this.joystick_camera_y = 0;
@@ -222,22 +237,38 @@ kusoge.prototype = {
     }
     this.camera.x = MOBILE ? camera_offset_x + playa.x - this.game.width * 0.5 + this.joystick_camera_x : camera_offset_x + (playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
     this.camera.y = MOBILE ? camera_offset_y + playa.y - this.game.width * 0.5 + this.joystick_camera_y : camera_offset_y + (playa.y - this.game.height * 0.5) + (this.input.y - this.game.height * 0.5) * 0.66;
-  }//,
+  },
 
 
-//  render:function(){
-//   terrain_group.forEach(function(item) {
+  render:function(){
+   terrain_group.forEach(function(item) {
 //      this.game.debug.body(item);
-//    }, this);
+   }, this);
 //    this.game.debug.body(playa);
 //    this.game.debug.text("X: " + this.input.worldX, 32, 32);
 //    this.game.debug.text("Y: " + this.input.worldY, 32, 64);
 //    this.game.debug.text("FPS: " + this.game.time.fps, 32, 32);  
-//  }
+  }
 };
 
 updateHealthBar = function (game, state) {
+  this.state = state;
   healthbar_fill.scale.x = structure_health * 0.03;
+  if (structure_health <= 0) {
+    game.time.events.repeat(200, 20, function() {
+      Shake (game, state, 15, 10, 1);
+      new Explosion(game, state, Math.random() * 320 - 160, 580 + Math.random() * 170 - 85, 'bullet', 50, 30, false);
+    }, this);
+    game.time.events.add(4001, function() {
+      this.state.states.Kusoge.wagon_front.destroy();
+      playa.events.onKilled.add(function(){
+        game.time.events.add(1500, function() {
+          game.state.start('Boot');
+        }, this);
+      }, this);
+      playa.kill();
+    }, this);
+  }
 };
 
 Gamepad = function (game, state) {

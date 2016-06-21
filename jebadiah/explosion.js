@@ -41,6 +41,7 @@ Explosion_smoke.prototype.update = function() {
 };
 
 Shake = function (game, state, time, intensity, interval) {
+  this.state = state;
   game.time.events.repeat(interval, time, function() {
     camera_offset_x = Math.random() * intensity;
     camera_offset_y = Math.random() * intensity;
@@ -48,5 +49,5 @@ Shake = function (game, state, time, intensity, interval) {
   game.time.events.add(interval * time + 1, function() {
     camera_offset_x = 0;
     camera_offset_y = 0;
-  })
+  }, this);
 }

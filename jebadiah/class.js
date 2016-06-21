@@ -127,3 +127,70 @@ Turret.prototype.shoot = function() {
     }
   },this);
 };
+
+LEFT_ENEMY_TRAIN = false;
+console.log(LEFT_ENEMY_TRAIN);
+RIGHT_ENEMY_TRAIN = false;
+console.log(RIGHT_ENEMY_TRAIN);
+
+EnemyTrain = function (game, state, x, y) {
+  Phaser.Sprite.call(this, game, x , y , 'wagon_1');
+  game.add.existing(this);
+  this.state = state;
+  terrain_group.add(this);
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.setSize(320, 170, 43, 15);
+  this.body.drag.x = 20;
+  this.body.immovable = true;
+  this.playerTrain = false;
+  this.anchor.set(0.5);
+  this.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
+  this.animations.play('anim');
+//healthbar
+  this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
+  this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
+  this.maxHealth = 1000;
+  this.health = 1000;
+
+};
+
+EnemyTrain.prototype = Object.create(Phaser.Sprite.prototype);
+EnemyTrain.prototype.constructor = EnemyTrain;
+
+EnemyTrain.prototype.update = function() {
+  this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
+    if(!this.dead){
+        new Howl({
+          urls: ['assets/audio/metal_' + Math.ceil(Math.random() * 15) + '.wav'],
+          volume: 0.05,
+          pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
+        }).play();
+      b.destroy();
+      a.receiveDamage(b.power);
+    }
+  }, null, this);
+};
+
+EnemyTrain.prototype.receiveDamage = function(damage) {
+  tweenDamage(this.game, this.state, this);
+
+  if (this.health <= damage && !this.dead) {
+    this.dead = true;
+    this.health = 1;
+    this.getChildAt(0).kill();
+    this.getChildAt(1).kill();
+    this.game.time.events.repeat(200, 20, function() {
+      Shake (this.game, this.state, 15, 10, 1);
+      new Explosion(this.game, this.state, this.x + Math.random() * 320 - 160, this.y + Math.random() * 170 - 85, 'bullet', 50, 30, false);
+    }, this);
+    this.game.time.events.add(4001, function() {
+      LEFT_ENEMY_TRAIN = false;
+      this.pendingDestroy = true;
+    }, this);
+  }
+  else {
+    this.damage(damage);
+    this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;    
+  }
+
+};
