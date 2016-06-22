@@ -3,7 +3,7 @@ Array.prototype.randomElement = function () {
 }
 
 Player = function (game, state, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'oa');
+  Phaser.Sprite.call(this, game, x, y, 'player');
   game.add.existing(this);
   this.state = state;
   this.anchor.set(0.5);
@@ -34,6 +34,12 @@ Player.prototype.update = function() {
       case this.swipe.DIRECTION_UP:
         this.jump();
     break
+      case this.swipe.DIRECTION_UP_LEFT:
+        this.jumpLeft();
+    break      
+      case this.swipe.DIRECTION_UP_RIGHT:
+        this.jumpRight();
+    break      
     }
   }
 
@@ -56,6 +62,16 @@ Player.prototype.runRight = function() {
 
 Player.prototype.jump = function() {
   this.body.velocity.y -= 400;
+}
+
+Player.prototype.jumpLeft = function() {
+  this.body.velocity.y -= 400;
+  this.body.velocity.x -= 300;
+}
+
+Player.prototype.jumpRight = function() {
+  this.body.velocity.y -= 400;
+  this.body.velocity.x += 300;
 }
 
 kusoge = function(game){};
