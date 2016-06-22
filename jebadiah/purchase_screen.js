@@ -48,7 +48,7 @@ purchase_screen.prototype = {
     this.back_to_action = this.add.text(500, 50, 'Back to action!');
     this.back_to_action.inputEnabled = true;
     this.back_to_action.events.onInputDown.add(function() {
-      WAVE =+ 1;
+      WAVE = WAVE +1;
       this.game.state.start('Kusoge');
     }, this);
 //buy wagons

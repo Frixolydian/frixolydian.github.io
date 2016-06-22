@@ -130,8 +130,8 @@ kusoge.prototype = {
     player_group.add(playa);
 
     LEFT_ENEMY_TRAIN = false;
-/*    this.time.events.loop(10000, function() {
-      if (!LEFT_ENEMY_TRAIN) {
+    this.time.events.loop(10000, function() {
+      if (!LEFT_ENEMY_TRAIN && WAVE > 4) {
         if (Math.random() < 0.5){
           new EnemyTrain(this.game, this.state, -1300, 580).body.velocity.x = 170;
         }
@@ -141,7 +141,7 @@ kusoge.prototype = {
         LEFT_ENEMY_TRAIN = true;
       }
     }, this);
-*/
+
     this.time.events.loop(Math.max(5000 - WAVE * 100, 3000), function() {
       i = Math.random();
       if(i > 0.4){
@@ -238,8 +238,8 @@ kusoge.prototype = {
 //      this.game.debug.body(item);
 //    }, this);
     //this.game.debug.body(playa);
-//    this.game.debug.text("X: " + this.input.worldX, 32, 32);
-//    this.game.debug.text("Y: " + this.input.worldY, 32, 64);
+    this.game.debug.text("X: " + this.input.worldX, 32, 32);
+    this.game.debug.text("Y: " + this.input.worldY, 32, 64);
 //    this.game.debug.text("FPS: " + this.game.time.fps, 32, 32);  
   }
 };

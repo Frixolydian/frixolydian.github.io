@@ -99,8 +99,8 @@ Enemy = function (game, state, x, y, sprite) {
 //healthbar
   this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
   this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
-  this.maxHealth = 45 + WAVE * 5;
-  this.health = 45 + WAVE * 5;
+  this.maxHealth = 40 + WAVE * 10;
+  this.health = 40 + WAVE * 10;
 //add indicator
   this.indicator = this.game.add.image(0, 0, 'indicator');
 //when dead
@@ -110,7 +110,7 @@ Enemy = function (game, state, x, y, sprite) {
 //    for (i = 1; i <= 10; i++) {
 //      new Money(this.game, this.state, this.x, this.y, 'small_fish');
 //    }
-    money += 50;
+    money += 25;
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
     this.pendingDestroy = true;
@@ -124,12 +124,12 @@ Enemy.prototype.update = function() {
 //rotate
   this.getChildAt(0).angle += this.direction * 5;
 //indicator
-  if (this.x > this.game.camera.x + this.game.width){
+  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x){
+  else if (this.x < this.game.camera.x && this.x > -1000){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;
@@ -182,8 +182,8 @@ Enemy_2 = function (game, state, x, y, sprite) {
 //healthbar
   this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
   this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
-  this.maxHealth = 95 + WAVE * 5;
-  this.health = 95 + WAVE * 5;
+  this.maxHealth = 85 + WAVE * 15;
+  this.health = 85 + WAVE * 15;
   this.dead = false;
 //add indicator
   this.indicator = this.game.add.image(0, 0, 'indicator');
@@ -258,12 +258,12 @@ Enemy_2.prototype.update = function() {
     }
   }
   //indicator
-  if (this.x > this.game.camera.x + this.game.width){
+  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
     this.indicator.x = this.game.camera.x + this.game.width - 40;
     this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
     this.indicator.alpha = 1;
   }
-  else if (this.x < this.game.camera.x){
+  else if (this.x < this.game.camera.x && this.x > -1000){
     this.indicator.x = this.game.camera.x + 40;
     this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
     this.indicator.alpha = 1;
