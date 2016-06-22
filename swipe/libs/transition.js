@@ -182,8 +182,8 @@ function Swipe(game, model) {
 
   self.game = game;
   self.model = model !== undefined ? model : null;
-  self.dragLength = 30;
-  self.diagonalDelta = 15;
+  self.dragLength = 50;
+  self.diagonalDelta = 30;
   self.swiping = false;
   self.direction = null;
   self.tmpDirection = null;

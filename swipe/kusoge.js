@@ -22,7 +22,30 @@ Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
+  //collisions
+  this.game.physics.arcade.collide(this, terrain_group);
+
   var direction = this.swipe.check();
+
+  if (this.body.touching.down) {
+    this.body.drag.x = 300;
+  }
+  else {
+    this.body.drag.x = 100;
+  }
+  if (this.body.touching.left || this.body.touching.right) {
+    this.body.drag.y = 700;
+  }
+  else {
+    this.body.drag.y = 0;
+  }
+  if (this.body.touching.left) {
+    this.body.velocity.x = -2;
+  }
+  if (this.body.touching.right) {
+    this.body.velocity.x = 2;
+  }
+
   if (direction !== null) {
     switch (direction.direction) {
       case this.swipe.DIRECTION_LEFT: 
@@ -43,47 +66,83 @@ Player.prototype.update = function() {
     }
   }
 
-  if (this.body.touching.down) {
-    this.body.drag.x = 400;
-  }
-  else {
-    this.body.drag.x = 300;
-  }
 
 };
 
 Player.prototype.runLeft = function() {
-  this.body.velocity.x -= 300;
+  if (this.body.touching.down) {
+    this.body.velocity.x -= 300;
+  }
 }
 
 Player.prototype.runRight = function() {
-  this.body.velocity.x += 300;
+  if (this.body.touching.down) {
+    this.body.velocity.x += 300;
+  }
 }
 
 Player.prototype.jump = function() {
-  this.body.velocity.y -= 400;
+  if (this.body.touching.down) {
+    this.body.velocity.y -= 400;
+  }
+  if (this.body.touching.right) {
+    this.body.velocity.x = -300;
+    this.body.velocity.y = -400;
+  }
+  if (this.body.touching.left) {
+    this.body.velocity.x = 300;
+    this.body.velocity.y = -400;
+  }
 }
 
 Player.prototype.jumpLeft = function() {
-  this.body.velocity.y -= 400;
-  this.body.velocity.x -= 300;
+  if (this.body.touching.down) {
+    this.body.velocity.y -= 400;
+    this.body.velocity.x -= 300;
+  }
 }
 
 Player.prototype.jumpRight = function() {
-  this.body.velocity.y -= 400;
-  this.body.velocity.x += 300;
+  if (this.body.touching.down) {
+    this.body.velocity.y -= 400;
+    this.body.velocity.x += 300;
+  }
 }
+
+
+Terrain = function (game, state, a, b, c, d, oneway) {
+  Phaser.Sprite.call(this, game, a, b);
+  game.add.existing(this);
+  state = this.state;
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.setSize(c, d, 0, 0);
+  this.body.immovable = true;
+  this.oneway = oneway;
+  if (this.oneway) {
+    this.body.checkCollision.down = false;
+    this.body.checkCollision.left = false;
+    this.body.checkCollision.right = false;
+  }
+  terrain_group.add(this);
+};
+Terrain.prototype = Object.create(Phaser.Sprite.prototype);
+Terrain.prototype.constructor = Terrain;
+
 
 kusoge = function(game){};
 
 kusoge.prototype = {
 
   create:function(){
+    terrain_group = this.add.group();
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.stage.backgroundColor = "#00CC66"; //set the background color
-
+    this.game.stage.backgroundColor = "#0044AA"; //set the background color
 
     new Player(this.game, this.state, 200, 200);
+    new Terrain(this.game, this.state, 0, 0, 20, 720);
+    new Terrain(this.game, this.state, 0, 700, 480, 20)
+    new Terrain(this.game, this.state, 200, 0, 20, 720);
+
 //    this.game.world.setBounds(0, 0, );
 //    this.tilesprite = this.game.add.tileSprite(-2880, 0, 5760, 1280, 'background_1');
   },
@@ -93,6 +152,12 @@ kusoge.prototype = {
  },
 
   render:function(){
-
+    terrain_group.forEach(function(item) {
+      this.game.debug.body(item);
+    }, this);
+    //this.game.debug.body(playa);
+//    this.game.debug.text("X: " + this.input.worldX, 32, 32);
+//    this.game.debug.text("Y: " + this.input.worldY, 32, 64);
+    this.game.debug.text("FPS: " + this.game.time.fps, 32, 32); 
   }
 };
