@@ -31,6 +31,7 @@ Player = function (game, state, x, y, sprite) {
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.anchor.set(0.5);
+  this.body.setSize(22, 63, 9, 5)
   this.body.drag.x = 1000;
   this.body.maxVelocity.x = 350;
   this.body.gravity.y = 700;
@@ -91,9 +92,11 @@ Player.prototype.shoot = function() {
       new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
     }
   }
-  Shake (this.game, this.state, 4, 3, 1);
+  this.body.velocity.x -= Math.cos(Math.atan2(this.getChildAt(0).world.y - this.y, this.getChildAt(0).world.x - this.x )) * current_weapon.recoil * 70;
+  this.body.velocity.y -= Math.sin(Math.atan2(this.getChildAt(0).world.y - this.y, this.getChildAt(0).world.x - this.x )) * current_weapon.recoil * 3;
+  Shake (this.game, this.state, current_weapon.shake_time, current_weapon.shake_intensity, 1);
   new Howl({
-    urls: ['assets/audio/mp5_shot.ogg'],
+    urls: ['assets/audio/' + current_weapon.sprite + '_shot.ogg'],
     volume: 0.1
  }).play();
   this.can_shoot = false;
@@ -186,23 +189,16 @@ Player.prototype.update = function() {
       this.getChildAt(1).animations.play('stand');
     }
   }
+  if (this.bullets === 0 && this.can_shoot) {
+    this.reload();
+  }
   //shooting
   if (MOBILE){
-    if (this.state.states.Kusoge.joystick.properties.distance > 80 && this.can_shoot && this.reloading === false) {
-      if (this.bullets === 0) {
-        this.reload();
-      }
-      else {
-        this.shoot();
-      }
-    }
-  }
-  else if (this.game.input.activePointer.isDown && this.can_shoot && this.reloading === false) {
-    if (this.bullets === 0){
-      this.reload();
-    }
-    else {
+    if (this.state.states.Kusoge.joystick.properties.distance > 80 && this.can_shoot && this.reloading === false && this.bullets !== 0) {
       this.shoot();
     }
+  }
+  else if (this.game.input.activePointer.isDown && this.can_shoot && this.reloading === false && this.bullets !== 0) {
+    this.shoot();
   }
 };

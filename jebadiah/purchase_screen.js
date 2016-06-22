@@ -21,25 +21,38 @@ purchase_screen.prototype = {
     this.pistol.events.onInputDown.add(function() {
       current_weapon = pistol;
     }, this);
-    this.shotgun = this.add.text(400, 250, 'Shotgun');
+    this.shotgun = this.add.text(400, 250, 'Shotgun: $400');
+    this.shotgun.fill = "#FF0000";
     this.shotgun.inputEnabled = true;
     this.shotgun.events.onInputDown.add(function() {
-      current_weapon = shotgun;
+      if (SHOTGUN) {
+        current_weapon = shotgun;
+      }
+      else if (money >= 400) {
+        SHOTGUN = true;
+      }
     }, this);
-    this.mp5 = this.add.text(400, 300, 'MP5');
+    this.mp5 = this.add.text(400, 300, 'MP5: $1000');
+    this.mp5.fill = "#FF0000";
     this.mp5.inputEnabled = true;
     this.mp5.events.onInputDown.add(function() {
-      current_weapon = mp5;
+      if (MP5) {
+        current_weapon = mp5;
+      }
+      else if (money >= 1000) {
+        MP5 = true;
+      }
     }, this);
 
 //back to action    
     this.back_to_action = this.add.text(500, 50, 'Back to action!');
     this.back_to_action.inputEnabled = true;
     this.back_to_action.events.onInputDown.add(function() {
+      WAVE =+ 1;
       this.game.state.start('Kusoge');
     }, this);
 //buy wagons
-    this.buy_wagon_1 = this.add.text(50, 200, 'Buy left wagon: $200');
+/*    this.buy_wagon_1 = this.add.text(50, 200, 'Buy left wagon: $200');
     this.buy_wagon_1.events.onInputDown.add(function() {
       if (money >= 200 && !WAGON_1){
         WAGON_1 = true;
@@ -56,6 +69,7 @@ purchase_screen.prototype = {
         this.money_text.text = 'Money: ' + money;
       }
     }, this);
+*/
 //buy turrets
     this.buy_turret_1 = this.add.text(50, 300, 'Buy left turret: $200');
     WAGON_1 ? this.buy_turret_1.inputEnabled = true : this.buy_turret_1.fill = "#FF0000";
@@ -112,7 +126,7 @@ purchase_screen.prototype = {
       this.recover_text.inputEnabled = false;
     }
 //buy left wagon
-    if (WAGON_1) {
+/*    if (WAGON_1) {
       this.buy_wagon_1.fill = "#AAAAAA";
     }
     else if (money < 200) {
@@ -134,12 +148,12 @@ purchase_screen.prototype = {
     else {
       this.buy_wagon_2.inputEnabled = true;
       this.buy_wagon_2.fill = "#000000";
-    }
+    }*/
 //buy left turret
     if (TURRET_1) {
       this.buy_turret_1.fill = "#AAAAAA";
     }
-    else if (money >= 200 && WAGON_1) {
+    else if (money >= 200) {
       this.buy_turret_1.inputEnabled = true;
       this.buy_turret_1.fill = "#000000";
     }
@@ -151,7 +165,7 @@ purchase_screen.prototype = {
     if (TURRET_2) {
       this.buy_turret_2.fill = "#AAAAAA";
     }
-    else if (money >= 200 && WAGON_2) {
+    else if (money >= 200) {
       this.buy_turret_2.inputEnabled = true;
       this.buy_turret_2.fill = "#000000";
     }
@@ -186,8 +200,23 @@ purchase_screen.prototype = {
       this.buy_turret_2_upgrade.inputEnabled = false;
     }
     //weapons
-    this.pistol.fill = current_weapon === pistol? "#0000FF" : "#000000";
-    this.shotgun.fill = current_weapon === shotgun? "#0000FF" : "#000000"
-    this.mp5.fill = current_weapon === mp5? "#0000FF" : "#000000"
+    if (PISTOL) {
+      this.pistol.fill = current_weapon === pistol? "#0000FF" : "#000000";
+      this.pistol.text = "Pistol";
+    }
+    if (SHOTGUN) {
+      this.shotgun.fill = current_weapon === shotgun? "#0000FF" : "#000000"
+      this.shotgun.text = "Shotgun";
+    }
+    else if (money >= 400) {
+      this.shotgun.fill = "#000000";
+    }
+    if (MP5) {
+      this.mp5.fill = current_weapon === mp5? "#0000FF" : "#000000"
+      this.mp5.text = "MP5";
+    }
+    else if (money >= 1000) {
+      this.mp5.fill = "#000000";
+    }
   }
 };

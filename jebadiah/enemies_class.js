@@ -80,17 +80,18 @@ Enemy = function (game, state, x, y, sprite) {
   this.getChildAt(0).anchor.set(0.5);
   this.getChildAt(0).smoothed = false;
 //physics
+  this.y = 500 + Math.random() * 70;
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.body.setSize(40, 40, 0, 0);
   this.body.gravity.y = 400;
   this.body.bounce.y = 1;
   if (Math.random() > 0.5) {
+    this.x = this.game.world.bounds.x - 40;
     this.body.velocity.x = 90;
-    this.x = -1040;
     this.direction = 1;
  }
   else {
-    this.x = 1040;
+    this.x = this.game.world.bounds.x + this.game.world.bounds.width + 40;;
     this.body.velocity.x = -90;
     this.direction =- 1;
   }
@@ -98,10 +99,8 @@ Enemy = function (game, state, x, y, sprite) {
 //healthbar
   this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
   this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
-  this.maxHealth = 100;
-  this.health = 100;
-  this.maxHealth = 100;
-  this.health = 100;
+  this.maxHealth = 45 + WAVE * 5;
+  this.health = 45 + WAVE * 5;
 //add indicator
   this.indicator = this.game.add.image(0, 0, 'indicator');
 //when dead
@@ -161,7 +160,7 @@ Enemy.prototype.update = function() {
 };
 
 Enemy.prototype.receiveDamage = function(damage) {
-  tweenDamage(this.game, this.state, this);
+  tweenDamage(this.game, this.state, this.getChildAt(0));
   this.damage(damage);
   this.getChildAt(1).scale.x = this.health / this.maxHealth * 0.5;
 };
@@ -183,19 +182,19 @@ Enemy_2 = function (game, state, x, y, sprite) {
 //healthbar
   this.addChild(this.game.make.image(-25, -50, 'healthbar')).scale.x = 0.5;
   this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
-  this.maxHealth = 200;
-  this.health = 200;
+  this.maxHealth = 95 + WAVE * 5;
+  this.health = 95 + WAVE * 5;
   this.dead = false;
 //add indicator
   this.indicator = this.game.add.image(0, 0, 'indicator');
 //spawn
   if (Math.random() > 0.5) {
-    this.x = -1480;
+    this.x = this.game.world.bounds.x - 40;
     this.target_position_x = -700 + Math.random() * 400;
     this.target_position_y = 270 + Math.random() * 100;
   }
   else {
-    this.x = 1480;
+    this.x = this.game.world.bounds.x + this.game.world.bounds.width + 40;
     this.target_position_x = 430 + Math.random() * 400;
     this.target_position_y = 270 + Math.random() * 100;
   }

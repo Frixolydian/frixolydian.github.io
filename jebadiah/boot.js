@@ -6,14 +6,21 @@ var camera_offset_x = 0;
 var camera_offset_y = 0;
 
 //weapons
-var pistol = {sprite: 'pistol', max_bullets: 6, shots: 1, bullet_speed: 1000, shooting_speed: 300, reload_time: 1200, deviation: 1, damage: 40};
-var mp5 = {sprite: 'mp5', max_bullets: 50, shots: 1, bullet_speed: 1200, shooting_speed: 75, reload_time: 1200, deviation: 3, damage: 20};
-var shotgun = {sprite: 'shotgun', max_bullets: 8, shots: 5, bullet_speed: 1000, shooting_speed: 600, reload_time: 1200, deviation: 3, damage: 10};
+var pistol = {sprite: 'pistol', max_bullets: 6, shots: 1, bullet_speed: 1000, shooting_speed: 300, reload_time: 1200, deviation: 1, damage: 40, shake_time: 5, shake_intensity: 5, recoil: 2};
+var shotgun = {sprite: 'shotgun', max_bullets: 4, shots: 5, bullet_speed: 1000, shooting_speed: 800, reload_time: 1200, deviation: 3, damage: 10, shake_time: 10, shake_intensity: 8, recoil: 4};
+var mp5 = {sprite: 'mp5', max_bullets: 50, shots: 1, bullet_speed: 1200, shooting_speed: 75, reload_time: 1200, deviation: 3, damage: 20, shake_time: 8, shake_intensity: 7, recoil : 1.1};
 var current_weapon = pistol;
+
+var PISTOL = true;
+var SHOTGUN = false;
+var MP5 = false;
+
 var MOBILE;
 
 var money = 0;
 var structure_health = 100;
+
+var WAVE = 1;
 
 var TIMER = 60;
 //upgrades
@@ -40,7 +47,7 @@ boot.prototype = {
 
   }
 /* ADD AUTO SCALING!!! */
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+//    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
   },
