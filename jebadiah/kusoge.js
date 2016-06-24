@@ -2,6 +2,45 @@ Array.prototype.randomElement = function () {
   return this[Math.floor(Math.random() * this.length)];
 };
 
+
+
+Impact = function (game, state, x, y, sprite, direction) {
+  Phaser.Sprite.call(this, game, x , y , sprite);
+  game.add.existing(this);
+  this.state = state;
+  bullet_group.add(this);
+  this.autoCull = true;
+  this.anchor.set(0.5);
+  this.scale.set(0.5 + Math.random() * 0.5);
+  j = Math.random();
+  if (j > 0.6) {
+    this.tint = 0xFFC038;
+  }
+  else if (j > 0.3) {
+    this.tint = 0xFFF585;
+  }
+  else {
+    this.tint = 0xFFFFFF;
+  }
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(direction) - 195 + Math.random() * 60, 150 + Math.random() * 150, this.body.velocity);
+//  this.body.gravity.y = 400;
+  this.game.time.events.add(150, function(){
+    this.destroy();
+  }, this);
+  this.events.onOutOfBounds.add(function() {
+    this.destroy();
+  }, this);
+};
+
+Impact.prototype = Object.create(Phaser.Sprite.prototype);
+Impact.prototype.constructor = Impact;
+
+Impact.prototype.update = function() {
+
+};
+
+
 Bullet = function (game, state, x, y, sprite, directionx, directiony, speed, power, enemy, deviation) {
   Phaser.Sprite.call(this, game, x , y , sprite);
   game.add.existing(this);
@@ -10,14 +49,19 @@ Bullet = function (game, state, x, y, sprite, directionx, directiony, speed, pow
   bullet_group.add(this);
   this.power = power;
   this.enemy = enemy;
-  this.scale.set(2);
   this.anchor.set(0.5);
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.setSize(4, 2, 2, 2);
   this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, directionx, directiony)) + Math.random() * deviation - deviation / 2, speed, this.body.velocity);
   this.angle = this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, directionx, directiony));
 
   this.events.onOutOfBounds.add(function() {
     this.destroy();
+  }, this);
+  this.events.onKilled.add(function(){
+    for (i = 1; i <= 20; i++) {
+      new Impact(this.game, this.state, this.x, this.y, 'impact', Math.atan2(this.body.velocity.y, this.body.velocity.x));
+    }
   }, this);
 };
 Bullet.prototype = Object.create(Phaser.Sprite.prototype);
@@ -27,10 +71,20 @@ Bullet.prototype.update = function() {
   if (this.enemy === false && this.x < this.game.camera.x - 150 || this.x > this.game.camera.x + this.game.width + 150) {
     this.pendingDestroy = true;
   }
-  this.game.physics.arcade.overlap(this, terrain_group, function() {
+  this.game.physics.arcade.overlap(this, terrain_group, function(a, b) {
+    if (b.playerTrain) {
+      new Howl({
+        urls: ['assets/audio/metal_' + Math.ceil(Math.random() * 15) + '.wav'],
+        volume: 0.1,
+        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
+      }).play();
+      if (this.enemy) {
+
+      }
+    }
     new Howl({
       urls: ['assets/audio/tarmac_' + Math.ceil(Math.random() * 4) + '.ogg'],
-      volume: 0.01,
+      volume: 0.1,
       pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
     }).play();
     this.kill();
@@ -131,7 +185,7 @@ kusoge.prototype = {
 
     LEFT_ENEMY_TRAIN = false;
     this.time.events.loop(10000, function() {
-      if (!LEFT_ENEMY_TRAIN && WAVE > 4) {
+      if (!LEFT_ENEMY_TRAIN && WAVE > 20000) {
         if (Math.random() < 0.5){
           new EnemyTrain(this.game, this.state, -1300, 580).body.velocity.x = 170;
         }
@@ -211,6 +265,7 @@ kusoge.prototype = {
     this.joystick_camera_y = 0;
 //clock
     new Clock(this.game, this.state);
+    new WaveIndicator(this.game, this.state, WAVE);
 //gamepad
     if (MOBILE) {
       // Add the VirtualGamepad plugin to the game
@@ -221,6 +276,7 @@ kusoge.prototype = {
       this.button = this.gamepad.addButton(400, 420, 1.0);
       gamepad = new Gamepad(this.game, this.state);
     }
+
   },
 
   update:function(){

@@ -36,9 +36,9 @@ Player = function (game, state, x, y, sprite) {
   this.body.maxVelocity.x = 350;
   this.body.gravity.y = 700;
 //hud
-  this.hud_bullets = this.game.add.bitmapText(500, 70, 'font', 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets);
+  this.hud_bullets = this.game.add.bitmapText(500, 70, 'font', 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets, 18);
   this.hud_bullets.fixedToCamera = true;
-  this.hud_money = this.game.add.bitmapText(100, 70, 'font', '$$$: ' + money);
+  this.hud_money = this.game.add.bitmapText(100, 70, 'font', '$$$: ' + money, 18);
   this.hud_money.fixedToCamera = true;
 //death
   this.events.onKilled.add(function() {

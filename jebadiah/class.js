@@ -1,14 +1,37 @@
+WaveIndicator = function (game, state, wave) {
+  this.state = state;
+  Phaser.Sprite.call(this, game, 0, 0);
+//  this.addChild(this.game.make.sprite(0, 0, 'back'));
+  this.letter = game.add.bitmapText(-200, 400, 'font', 'WAVE ' + wave, 50);
+  this.letter.fixedToCamera = true;
+  this.game.add.tween(this.letter.cameraOffset).to( { x: 50 }, 1500, Phaser.Easing.Back.InOut, true);
+  this.game.time.events.add(3000, function(){
+    this.game.add.tween(this.letter.cameraOffset).to( { x: -200 }, 1500, Phaser.Easing.Back.InOut, true);
+  }, this);
+  this.game.time.events.add(4500, function(){
+    this.letter.destroy();
+    this.destroy();
+  }, this);
+};
+  WaveIndicator.prototype = Object.create(Phaser.Sprite.prototype);
+  WaveIndicator.prototype.constructor = WaveIndicator;
+
+
 Clock = function (game, state) {
-  this.state= state;
+  this.state = state;
   Phaser.Sprite.call(this, game, 0, 0);
   game.add.existing(this);
-  this.clock_text = game.add.bitmapText(500, 22, 'font', '', 36);
+  this.clock_text = game.add.bitmapText(500, 22, 'font', '', 18);
   this.clock_text.fixedToCamera = true;
 
-  game.time.events.loop(1000, function() {
+  game.time.events.loop(500, function() {
     if (TIMER < 0){
-      TIMER = 60;
-      game.state.start('Purchase_screen');
+      TIMER = 30;
+      WAVE = WAVE + 1;
+      if (WAVE % 5 === 0) {
+        this.game.state.start('Purchase_screen');
+      }
+      new WaveIndicator(this.game, this.state, WAVE);
     }
     if (TIMER % 60 < 10 ){
       this.clock_text.text = 'Time left: ' + Math.floor(Math.floor(TIMER) / 60) +': 0' + Math.floor(TIMER) % 60;
@@ -21,7 +44,6 @@ Clock = function (game, state) {
     }
     TIMER -= 1;
   }, this);
-
 };
   Clock.prototype = Object.create(Phaser.Sprite.prototype);
   Clock.prototype.constructor = Clock;
@@ -44,7 +66,7 @@ Explosion = function (game, state, x, y, sprite, duration, power, enemy) {
   new Explosion_smoke(this.game, this.state, this.x, this.y);
   new Howl({
     urls: ['assets/audio/explosion.ogg'],
-    volume: 0.1,
+    volume: 0.4,
     pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
   }).play();
 };

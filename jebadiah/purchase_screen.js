@@ -30,6 +30,7 @@ purchase_screen.prototype = {
       }
       else if (money >= 400) {
         SHOTGUN = true;
+        money -= 400;
       }
     }, this);
     this.mp5 = this.add.text(400, 300, 'MP5: $1000');
@@ -41,6 +42,7 @@ purchase_screen.prototype = {
       }
       else if (money >= 1000) {
         MP5 = true;
+        money -= 1000;
       }
     }, this);
 
@@ -115,6 +117,7 @@ purchase_screen.prototype = {
     }, this);
   },
   update: function() {
+    this.money_text.text = money;
 //recover_text
     if (money >= (100 - structure_health) * 10 && structure_health < 100) {
       this.recover_text.inputEnabled = true

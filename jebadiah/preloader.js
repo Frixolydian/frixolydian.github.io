@@ -5,7 +5,7 @@ preloader.prototype = {
   },
   preload:function(){
     this.add.image(this.game.width * 0.5, this.game.height * 0.75, 'preloader_back').anchor.set(0.5); 
-    this.loadingbar = this.add.sprite(120, 292, 'preloader_bar');
+    this.loadingbar = this.add.sprite(159, 292, 'preloader_bar');
     this.add.image(this.game.width * 0.5, this.game.height * 0.4, 'credits').anchor.set(0.5); 
     this.load.setPreloadSprite(this.loadingbar, 0);
 
@@ -24,6 +24,7 @@ preloader.prototype = {
     this.load.image('back_4', 'assets/back_4.png');
     this.load.spritesheet('wagon_1', 'assets/wagon_1.png', 328, 200);
     this.load.image('bullet', 'assets/bullet.png');
+    this.load.image('impact', 'assets/impact.png');
     this.load.image('turret', 'assets/turret.png');
     this.load.image('turret_stand', 'assets/turret_stand.png');
     this.load.image('seagull', 'assets/seagull.png');

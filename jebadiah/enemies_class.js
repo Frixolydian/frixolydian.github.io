@@ -56,7 +56,7 @@ Boss.prototype.shootMissile = function() {
 Boss.prototype.update = function() {
   this.game.physics.arcade.collide(this, terrain_group);
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
-    b.pendingDestroy = true;
+    b.kill();
     a.receiveDamage(b.power);
   }, null, this);
 };
@@ -110,7 +110,7 @@ Enemy = function (game, state, x, y, sprite) {
 //    for (i = 1; i <= 10; i++) {
 //      new Money(this.game, this.state, this.x, this.y, 'small_fish');
 //    }
-    money += 25;
+    money += 50;
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
     this.pendingDestroy = true;
@@ -154,8 +154,8 @@ Enemy.prototype.update = function() {
         volume: 0.05,
         pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
       }).play();
-    b.pendingDestroy = true;
     a.receiveDamage(b.power);
+    b.pendingDestroy = true;
   }, null, this);
 };
 
@@ -206,7 +206,7 @@ Enemy_2 = function (game, state, x, y, sprite) {
 //    for (i = 1; i <= 10; i++) {
 //      new Money(this.game, this.state, this.x, this.y, 'small_fish');
 //    }
-    money += 50;
+    money += 75;
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
     Shake (this.game, this.state, 15, 20, 1);
@@ -288,7 +288,7 @@ Enemy_2.prototype.update = function() {
   }, null, this);
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
     if (b.enemy === false) {
-      b.pendingDestroy = true;
+      b.kill();
       a.receiveDamage(b.power);
     }
   }, null, this);
