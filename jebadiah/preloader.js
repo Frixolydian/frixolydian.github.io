@@ -37,6 +37,7 @@ preloader.prototype = {
     this.load.image('mp5', 'assets/mp5.png');
     this.load.spritesheet('explosion', 'assets/explosion.png', 64, 64);
     this.load.spritesheet('explosion_smoke', 'assets/explosion_smoke.png', 16, 16);
+    this.load.image('fullscreen', 'assets/fullscreen.png');
 
     this.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');//font
 
@@ -47,6 +48,6 @@ preloader.prototype = {
 
   },
   create:function(){
-    this.game.state.start('Purchase_screen');
+    this.game.state.start('Kusoge');
   }
 };

@@ -41,11 +41,11 @@ boot.prototype = {
   }
   else{
     MOBILE = true;
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     console.log(MOBILE);
 
   }
 /* ADD AUTO SCALING!!! */
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
   },

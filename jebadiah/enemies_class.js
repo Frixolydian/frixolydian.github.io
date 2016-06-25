@@ -78,7 +78,6 @@ Enemy = function (game, state, x, y, sprite) {
 //skin
   this.addChild(this.game.make.sprite(0, 0, sprite));
   this.getChildAt(0).anchor.set(0.5);
-  this.getChildAt(0).smoothed = false;
 //physics
   this.y = 500 + Math.random() * 70;
   this.game.physics.enable(this, Phaser.Physics.ARCADE);

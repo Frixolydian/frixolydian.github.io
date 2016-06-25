@@ -164,16 +164,12 @@ kusoge.prototype = {
 //background
     this.scrolling_background_4 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_4');
     this.scrolling_background_4.autoScroll(-10, 0);
-    this.scrolling_background_4.smoothed = false;
     this.scrolling_background_3 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_3');
     this.scrolling_background_3.autoScroll(-20, 0);
-    this.scrolling_background_3.smoothed = false;
     this.scrolling_background_2 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_2');
     this.scrolling_background_2.autoScroll(-50, 0);
-    this.scrolling_background_2.smoothed = false;
     this.scrolling_background_1 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_1');
     this.scrolling_background_1.autoScroll(-500, 0);
-    this.scrolling_background_1.smoothed = false;
 
     bullet_group = this.add.group();  //create groups
     player_group = this.add.group();
@@ -252,11 +248,9 @@ kusoge.prototype = {
 //structure healthbar
     healthbar_fill = this.add.image(100, 30, 'healthbar');
     healthbar_fill.right = 100;
-    healthbar_fill.smoothed = false;
     healthbar_fill.scale.set(3);
     healthbar_fill.fixedToCamera = true;
     healthbar_outline = this.add.image(100, 30, 'healthbar_back');
-    healthbar_outline.smoothed = false;
     healthbar_outline.scale.set(3);
     healthbar_outline.fixedToCamera = true;
     updateHealthBar(this.game, this.state);
@@ -276,10 +270,22 @@ kusoge.prototype = {
       this.button = this.gamepad.addButton(400, 420, 1.0);
       gamepad = new Gamepad(this.game, this.state);
     }
-
+    else {
+      this.furu = this.add.button(730, 435, 'fullscreen', this.fullscreen, this).fixedToCamera = true;
+      this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    }
   },
 
-  update:function(){
+  fullscreen: function() {
+    if (this.game.scale.isFullScreen){
+      this.game.scale.stopFullScreen();
+    }
+    else{
+    this.game.scale.startFullScreen(false);
+    }
+  },
+
+  update: function() {
     if (MOBILE && this.joystick.properties.distance !== 0) {
       this.joystick_camera_x = this.joystick.properties.x * 2.5;
       this.joystick_camera_y = this.joystick.properties.y * 2.5 + 150;
@@ -289,7 +295,7 @@ kusoge.prototype = {
   },
 
 
-  render:function(){
+  render: function() {
 //    terrain_group.forEach(function(item) {
 //      this.game.debug.body(item);
 //    }, this);
