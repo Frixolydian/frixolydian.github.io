@@ -34,13 +34,13 @@ boot.prototype = {
   TURRET_2_UPGRADE = 0;
 
   this.game.time.advancedTiming = true;
-//  this.game.forceSingleUpdate = true;
   if(this.game.device.desktop) {
     MOBILE = false;
     console.log(MOBILE);
   }
   else{
     MOBILE = true;
+    this.game.forceSingleUpdate = true;
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     console.log(MOBILE);
 
