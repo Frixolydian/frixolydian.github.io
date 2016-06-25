@@ -302,7 +302,9 @@ kusoge.prototype = {
     //this.game.debug.body(playa);
     this.game.debug.text("X: " + this.input.worldX, 32, 32);
     this.game.debug.text("Y: " + this.input.worldY, 32, 64);
-//    this.game.debug.text("FPS: " + this.game.time.fps, 32, 32);  
+    if (MOBILE) {
+      this.game.debug.text("FPS: " + this.game.time.fps, 32, 32);  
+    }
   }
 };
 
