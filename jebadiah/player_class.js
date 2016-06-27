@@ -97,7 +97,7 @@ Player.prototype.shoot = function() {
   Shake (this.game, this.state, current_weapon.shake_time, current_weapon.shake_intensity, 1);
   new Howl({
     urls: ['assets/audio/' + current_weapon.sprite + '_shot.ogg'],
-    volume: 0.1
+    volume: 0.6
  }).play();
   this.can_shoot = false;
   this.game.time.events.add(this.current_weapon.shooting_speed, function(){

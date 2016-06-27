@@ -17,6 +17,7 @@ preloader.prototype = {
     this.load.image('healthbar_back', 'assets/healthbar_back.png');
     this.load.image('trajectory', 'assets/trajectory.png');
     this.load.image('enemy_spike', 'assets/enemy_spike.png');
+    this.load.image('enemy_barrel', 'assets/enemy_barrel.png');
     this.load.spritesheet('player','assets/player.png', 90, 105);
     this.load.image('back_1', 'assets/back_1.png');
     this.load.image('back_2', 'assets/back_2.png');

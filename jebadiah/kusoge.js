@@ -2,9 +2,7 @@ Array.prototype.randomElement = function () {
   return this[Math.floor(Math.random() * this.length)];
 };
 
-
-
-Impact = function (game, state, x, y, sprite, direction) {
+Impact = function (game, state, x, y, sprite, direction, impact_tint) {
   Phaser.Sprite.call(this, game, x , y , sprite);
   game.add.existing(this);
   this.state = state;
@@ -14,13 +12,13 @@ Impact = function (game, state, x, y, sprite, direction) {
   this.scale.set(0.5 + Math.random() * 0.5);
   j = Math.random();
   if (j > 0.6) {
-    this.tint = 0xFFC038;
+    this.tint = impact_tint[0];
   }
   else if (j > 0.3) {
-    this.tint = 0xFFF585;
+    this.tint = impact_tint[1];
   }
   else {
-    this.tint = 0xFFFFFF;
+    this.tint = impact_tint[2];
   }
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(direction) - 195 + Math.random() * 60, 150 + Math.random() * 150, this.body.velocity);
@@ -36,9 +34,6 @@ Impact = function (game, state, x, y, sprite, direction) {
 Impact.prototype = Object.create(Phaser.Sprite.prototype);
 Impact.prototype.constructor = Impact;
 
-Impact.prototype.update = function() {
-
-};
 
 
 Bullet = function (game, state, x, y, sprite, directionx, directiony, speed, power, enemy, deviation) {
@@ -54,13 +49,13 @@ Bullet = function (game, state, x, y, sprite, directionx, directiony, speed, pow
   this.body.setSize(4, 2, 2, 2);
   this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, directionx, directiony)) + Math.random() * deviation - deviation / 2, speed, this.body.velocity);
   this.angle = this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, directionx, directiony));
-
+  this.impact_tint = [];
   this.events.onOutOfBounds.add(function() {
     this.destroy();
   }, this);
   this.events.onKilled.add(function(){
     for (i = 1; i <= 20; i++) {
-      new Impact(this.game, this.state, this.x, this.y, 'impact', Math.atan2(this.body.velocity.y, this.body.velocity.x));
+      new Impact(this.game, this.state, this.x, this.y, 'impact', Math.atan2(this.body.velocity.y, this.body.velocity.x), this.impact_tint);
     }
   }, this);
 };
@@ -71,66 +66,34 @@ Bullet.prototype.update = function() {
   if (this.enemy === false && this.x < this.game.camera.x - 150 || this.x > this.game.camera.x + this.game.width + 150) {
     this.pendingDestroy = true;
   }
-  this.game.physics.arcade.overlap(this, terrain_group, function(a, b) {
-    if (b.playerTrain) {
-      new Howl({
-        urls: ['assets/audio/metal_' + Math.ceil(Math.random() * 15) + '.wav'],
-        volume: 0.1,
-        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
-      }).play();
-      if (this.enemy) {
-
-      }
+  this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
+    if (this.enemy) {
+      structure_health -= 3;
+      updateHealthBar(this.game, this.state);
     }
     new Howl({
-      urls: ['assets/audio/tarmac_' + Math.ceil(Math.random() * 4) + '.ogg'],
-      volume: 0.1,
+      urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
+      volume: 0.5,
       pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
     }).play();
+    this.impact_tint = b.impact_tint;
     this.kill();
-    this.pendingDestroy = true;
   }, null, this);
-};
-
-Money = function (game, state, x, y, sprite) {
-  Phaser.Sprite.call(this, game, x , y , sprite);
-  game.add.existing(this);
-  this.state = state;
-  this.anchor.set(0.5);
-//dissappear
-  this.game.time.events.add(8000, function(){
-    if(!this.alive){
-      return;
+  this.game.physics.arcade.overlap(this, enemy_group, function(a, b) {
+    if (!this.enemy){
+      new Howl({
+        urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
+        volume: 0.5,
+        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
+      }).play();
+      b.receiveDamage(a.power);
+      this.impact_tint = b.impact_tint;
+      a.kill();
     }
-    this.game.add.tween(this).to( { alpha: 0}, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
-    this.game.time.events.add(5000, function(){
-        this.destroy();
-    }, this);
-  }, this);
-//physics
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
-  this.body.drag.x = 50;
-  this.body.angularDrag = 500;
-  this.body.velocity.x = Math.random() * 200 - 100;
-  this.body.velocity.y = Math.random() * -100;
-  this.body.angularVelocity = Math.random() * 1000 - 500;
-  this.body.gravity.y = 400;
-  this.body.bounce.y = 0.3;
+  }, null, this);
 };
 
-Money.prototype = Object.create(Phaser.Sprite.prototype);
-Money.prototype.constructor = Money;
-
-Money.prototype.update = function() {
-  this.game.physics.arcade.collide(this, terrain_group);
-  this.game.physics.arcade.overlap(this, player_group, function(a, b) {
-    a.destroy();
-    money += 10;
-    b.hud_money.text = '$$$: ' + money;
-  }, null, this);
-};(40, 10);
-
-Terrain = function (game, state, a, b, c, d, oneway) {
+Terrain = function (game, state, a, b, c, d, oneway, material, impact_tint) {
   Phaser.Sprite.call(this, game, a, b);
   game.add.existing(this);
   state = this.state;
@@ -138,6 +101,8 @@ Terrain = function (game, state, a, b, c, d, oneway) {
   this.body.setSize(c, d, 0, 0);
   this.body.immovable = true;
   this.oneway = oneway;
+  this.material = material;
+  this.impact_tint = impact_tint;
   if (this.oneway) {
     this.body.checkCollision.down = false;
     this.body.checkCollision.left = false;
@@ -147,10 +112,6 @@ Terrain = function (game, state, a, b, c, d, oneway) {
 };
 Terrain.prototype = Object.create(Phaser.Sprite.prototype);
 Terrain.prototype.constructor = Terrain;
-
-Terrain.prototype.update = function() {
-
-};
 
 kusoge = function(game){};
 
@@ -195,31 +156,31 @@ kusoge.prototype = {
     this.time.events.loop(Math.max(5000 - WAVE * 100, 3000), function() {
       i = Math.random();
       if(i > 0.4){
-        new Enemy(this.game, this.state, Math.random() *  500, 500, 'enemy_spike');
+        new Enemy(this.game, this.state, Math.random() *  500, 500, 'enemy_barrel');
       }
       else {
         new Enemy_2(this.game, this.state, 0, 200 + Math.random() *  100, 'enemy_2');
       }
     }, this);
 
-    floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false);
+    floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false, 'tarmac', [0x92705E, 0xC99689, 0x444B25]);
 //wagon1
-    new Terrain(this, this.state, 32, 497, 240, 20, false).playerTrain = true; //floorstructure1
-    new Terrain(this, this.state, 0, 638, 300, 5, false).playerTrain = true;
-    new Terrain(this, this.state, 295, 593, 24, 50, true).playerTrain = true;  //floorstructure2
-    new Terrain(this, this.state, -14, 593, 24, 50, true).playerTrain = true;
-    new Terrain(this, this.state, 315, 593, 4, 50, false).playerTrain = true;  //floorstructure2
+    new Terrain(this, this.state, 32, 497, 240, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true; //floorstructure1
+    new Terrain(this, this.state, 0, 638, 300, 5, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+    new Terrain(this, this.state, 295, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
+    new Terrain(this, this.state, -14, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+    new Terrain(this, this.state, 315, 593, 4, 50, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
     this.wagon_front = this.add.sprite (154, 580, 'wagon_1');
     this.wagon_front.anchor.set(0.5);
     this.wagon_front.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
     this.wagon_front.animations.play('anim');
 //wagon2
     if (true) {
-      new Terrain(this, this.state, -272 , 497, 240, 20, false).playerTrain = true; //floorstructure1
-      new Terrain(this, this.state, -300, 638, 300, 5, false).playerTrain = true;
-      new Terrain(this, this.state, -11, 593, 24, 50, true).playerTrain = true;  //floorstructure2
-      new Terrain(this, this.state, -316, 593, 24, 50, true).playerTrain = true;
-      new Terrain(this, this.state, -319, 593, 4, 50, false).playerTrain = true;  //floorstructure2
+      new Terrain(this, this.state, -272 , 497, 240, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true; //floorstructure1
+      new Terrain(this, this.state, -300, 638, 300, 5, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+      new Terrain(this, this.state, -11, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
+      new Terrain(this, this.state, -316, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+      new Terrain(this, this.state, -319, 593, 4, 50, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
       this.wagon_front1 = this.add.sprite (-154, 580, 'wagon_1');
       this.wagon_front1.anchor.set(0.5);
       this.wagon_front1.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
@@ -296,14 +257,14 @@ kusoge.prototype = {
 
 
   render: function() {
-//    terrain_group.forEach(function(item) {
+//    enemy_group.forEach(function(item) {
 //      this.game.debug.body(item);
 //    }, this);
     //this.game.debug.body(playa);
     this.game.debug.text("X: " + this.input.worldX, 32, 32);
     this.game.debug.text("Y: " + this.input.worldY, 32, 64);
     if (MOBILE) {
-      this.game.debug.text("FPS: " + this.game.time.fps, 32, 32);  
+      this.game.debug.text("FPS: " + this.game.time.fps, 32, 96);  
     }
   }
 };
