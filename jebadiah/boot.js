@@ -5,7 +5,7 @@
 var pistol = {bullet: 'bullet', sprite: 'pistol', max_bullets: 6, shots: 1, bullet_speed: 1500, shooting_speed: 300, reload_time: 1200, deviation: 1, damage: 40, shake_time: 5, shake_intensity: 5, recoil: 2};
 var shotgun = {bullet: 'bullet', sprite: 'shotgun', max_bullets: 4, shots: 5, bullet_speed: 1200, shooting_speed: 750, reload_time: 1200, deviation: 3, damage: 20, shake_time: 10, shake_intensity: 8, recoil: 4};
 var mp5 = {bullet: 'bullet', sprite: 'mp5', max_bullets: 50, shots: 1, bullet_speed: 1500, shooting_speed: 75, reload_time: 1200, deviation: 3, damage: 20, shake_time: 8, shake_intensity: 7, recoil: 0.5};
-var rocket_launcher = {bullet: 'rocket', sprite: 'shotgun', max_bullets: 1, shots: 1, bullet_speed: 700, shooting_speed: 0, reload_time: 1200, deviation: 0, damage: 100, shake_time: 0, shake_intensity: 0, recoil: 100}
+var rocket_launcher = {bullet: 'rocket', sprite: 'shotgun', max_bullets: 1, shots: 1, bullet_speed: 700, shooting_speed: 0, reload_time: 1200, deviation: 0, damage: 250, shake_time: 0, shake_intensity: 0, recoil: 100}
 
 boot = function(game){};
 boot.prototype = {
@@ -25,7 +25,7 @@ boot.prototype = {
 
   WAVE = 1;
 
-  TIMER = 30;
+  TIMER = 60;
   //upgrades
   WAGON_1 = false;
   WAGON_2 = false;

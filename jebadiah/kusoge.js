@@ -45,7 +45,7 @@ kusoge.prototype = {
 
     this.time.events.loop(Math.max(5000 - WAVE * 100, 3000), function() {
       i = Math.random();
-      if(i > 0.4){
+      if(i > 0.5){
         new Enemy(this.game, this.state, Math.random() *  500, 500, 'enemy_barrel');
       }
       else {
@@ -56,10 +56,10 @@ kusoge.prototype = {
     floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false, 'tarmac', [0x92705E, 0xC99689, 0x444B25]);
 //wagon1
     new Terrain(this, this.state, 32, 497, 240, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true; //floorstructure1
-    new Terrain(this, this.state, 0, 638, 300, 5, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
-    new Terrain(this, this.state, 295, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
-    new Terrain(this, this.state, -14, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
-    new Terrain(this, this.state, 315, 593, 4, 50, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
+    new Terrain(this, this.state, 0, 638, 300, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+    new Terrain(this, this.state, 295, 593, 24, 50, true, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
+    new Terrain(this, this.state, -14, 593, 24, 50, true, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+    new Terrain(this, this.state, 315, 593, 4, 50, false, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
     this.wagon_front = this.add.sprite (154, 580, 'wagon_1');
     this.wagon_front.anchor.set(0.5);
     this.wagon_front.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
@@ -67,10 +67,10 @@ kusoge.prototype = {
 //wagon2
     if (true) {
       new Terrain(this, this.state, -272 , 497, 240, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true; //floorstructure1
-      new Terrain(this, this.state, -300, 638, 300, 5, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
-      new Terrain(this, this.state, -11, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
-      new Terrain(this, this.state, -316, 593, 24, 50, true, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
-      new Terrain(this, this.state, -319, 593, 4, 50, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
+      new Terrain(this, this.state, -300, 638, 300, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+      new Terrain(this, this.state, -11, 593, 24, 50, true, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
+      new Terrain(this, this.state, -316, 593, 24, 50, true, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
+      new Terrain(this, this.state, -319, 593, 4, 50, false, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
       this.wagon_front1 = this.add.sprite (-154, 580, 'wagon_1');
       this.wagon_front1.anchor.set(0.5);
       this.wagon_front1.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);

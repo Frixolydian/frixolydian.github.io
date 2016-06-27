@@ -35,7 +35,6 @@ Enemy = function (game, state, x, y, sprite) {
   this.indicator = this.game.add.image(0, 0, 'indicator');
 //when dead
   this.events.onKilled.add(function(){
-    Shake (this.game, this.state, 15, 10, 1);
     new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
 //    for (i = 1; i <= 10; i++) {
 //      new Money(this.game, this.state, this.x, this.y, 'small_fish');
@@ -129,10 +128,10 @@ Enemy_2 = function (game, state, x, y, sprite) {
     money += 75;
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
-    Shake (this.game, this.state, 15, 20, 1);
     new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
     this.pendingDestroy = true;
   }, this);
+  this.thrust();
 //attack
 //  this.throwGrenade();
 };
@@ -155,6 +154,20 @@ Enemy_2.prototype.shoot = function() {
   }, this);
   this.game.time.events.add(1500, function() {
     this.shooting = false;
+  }, this);
+};
+
+Enemy_2.prototype.thrust = function() {
+  if (this.frame === 0) {
+    new Impact(this.game, this.state, this.x - 12, this.y + 12, 'impact', this.game.math.degToRad(300), [0xfaf223, 0xffc600, 0xfffbb7], 200, 0.5);
+  }
+  else {
+    new Impact(this.game, this.state, this.x + 12, this.y + 12, 'impact', this.game.math.degToRad(240), [0xfaf223, 0xffc600, 0xfffbb7], 200, 0.5);
+  }
+  this.game.time.events.add(3, function() {
+    if (this.alive) {
+      this.thrust();
+    }
   }, this);
 };
 
@@ -210,6 +223,10 @@ Enemy_2.prototype.update = function() {
 
 Enemy_2.prototype.receiveDamage = function(damage) {
   tweenDamage(this.game, this.state, this);
+  if (damage > 200) {
+    this.kill();
+    return;
+  }
   if (this.health <= damage && !this.dead) {
     this.dead = true;
     this.health = 70;

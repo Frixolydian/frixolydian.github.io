@@ -18,6 +18,7 @@ Explosion = function (game, state, x, y, sprite, duration, power, enemy) {
   for (var i = 0; i <= 100; i++) {
     new Impact(this.game, this.state, this.x, this.y, 'impact', Math.random() * 360, [0xFFFFFF, 0xFF0000, 0x000000], 200, 0.5);
   }
+  Shake (this.game, this.state, 18, 20, 1);
   new Howl({
     urls: ['assets/audio/explosion.ogg'],
     volume: 1,

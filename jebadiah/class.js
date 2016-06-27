@@ -15,9 +15,8 @@ Rocket = function (game, state, x, y, sprite, directionx, directiony, speed, pow
   this.events.onOutOfBounds.add(function() {
     this.pendingDestroy = true;
   }, this);
-  this.impulse();
+  this.thrust();
   this.events.onKilled.add(function(){
-    Shake (this.game, this.state, 15, 10, 1);
     new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
   }, this);
 };
@@ -26,10 +25,10 @@ Rocket.prototype.constructor = Rocket;
 
 Rocket.prototype.update = function() {
   this.angle = this.game.math.radToDeg(Math.atan2(this.body.velocity.y, this.body.velocity.x));
-  if (this.enemy === false && this.x < this.game.camera.x - 150 || this.x > this.game.camera.x + this.game.width + 150) {
-    this.pendingDestroy = true;
-  }
-  this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
+  this.game.physics.arcade.overlap(this, terrain_group, function(a, b) {
+    if (b.material === 'none') {
+      return;
+    }
     if (this.enemy) {
       structure_health -= 3;
       updateHealthBar(this.game, this.state);
@@ -44,11 +43,11 @@ Rocket.prototype.update = function() {
   }, null, this);
 };
 
-Rocket.prototype.impulse = function() {
+Rocket.prototype.thrust = function() {
   new Impact(this.game, this.state, this.x, this.y, 'impact', Math.atan2(this.body.velocity.y, this.body.velocity.x), [0x555555, 0xCCCCCC, 0xFFFFFF], 250, 1);
   this.game.time.events.add(5, function() {
     if (this.alive) {
-      this.impulse();
+      this.thrust();
     }
   }, this);
 };
@@ -117,19 +116,22 @@ Bullet.prototype.update = function() {
   if (this.enemy === false && this.x < this.game.camera.x - 150 || this.x > this.game.camera.x + this.game.width + 150) {
     this.pendingDestroy = true;
   }
-  this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
-    if (this.enemy) {
-      structure_health -= 3;
-      updateHealthBar(this.game, this.state);
-    }
-    new Howl({
-      urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
-      volume: 0.5,
-      pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
-    }).play();
-    this.impact_tint = b.impact_tint;
-    this.kill();
-  }, null, this);
+  this.game.physics.arcade.overlap(this, terrain_group, function(a, b) {
+    if (b.material === 'none') {
+      return;
+    } 
+      if (this.enemy) {
+        structure_health -= 3;
+        updateHealthBar(this.game, this.state);
+      }
+      new Howl({
+        urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
+        volume: 0.5,
+        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
+      }).play();
+      this.impact_tint = b.impact_tint;
+      this.kill();
+    }, null, this);
   this.game.physics.arcade.overlap(this, enemy_group, function(a, b) {
     if (!this.enemy){
       new Howl({
@@ -194,7 +196,7 @@ Clock = function (game, state) {
 
   game.time.events.loop(500, function() {
     if (TIMER < 0){
-      TIMER = 30;
+      TIMER = 60;
       WAVE = WAVE + 1;
       if (WAVE % 5 === 0) {
         this.game.state.start('Purchase_screen');
@@ -312,7 +314,6 @@ EnemyTrain = function (game, state, x, y) {
   this.addChild(this.game.make.image(-25, -50, 'healthbar_back')).scale.x = 0.5;
   this.maxHealth = 1000;
   this.health = 1000;
-
 };
 
 EnemyTrain.prototype = Object.create(Phaser.Sprite.prototype);
@@ -321,11 +322,11 @@ EnemyTrain.prototype.constructor = EnemyTrain;
 EnemyTrain.prototype.update = function() {
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
     if(!this.dead){
-        new Howl({
-          urls: ['assets/audio/metal_' + Math.ceil(Math.random() * 15) + '.wav'],
-          volume: 0.05,
-          pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
-        }).play();
+      new Howl({
+        urls: ['assets/audio/metal_' + Math.ceil(Math.random() * 15) + '.wav'],
+        volume: 0.05,
+        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
+      }).play();
       b.destroy();
       a.receiveDamage(b.power);
     }
@@ -341,7 +342,6 @@ EnemyTrain.prototype.receiveDamage = function(damage) {
     this.getChildAt(0).kill();
     this.getChildAt(1).kill();
     this.game.time.events.repeat(200, 20, function() {
-      Shake (this.game, this.state, 15, 10, 1);
       new Explosion(this.game, this.state, this.x + Math.random() * 320 - 160, this.y + Math.random() * 170 - 85, 'bullet', 50, 30, false);
     }, this);
     this.game.time.events.add(4001, function() {
