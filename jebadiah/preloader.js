@@ -25,6 +25,7 @@ preloader.prototype = {
     this.load.image('back_4', 'assets/back_4.png');
     this.load.spritesheet('wagon_1', 'assets/wagon_1.png', 328, 200);
     this.load.image('bullet', 'assets/bullet.png');
+    this.load.image('rocket', 'assets/rocket.png');
     this.load.image('impact', 'assets/impact.png');
     this.load.image('turret', 'assets/turret.png');
     this.load.image('turret_stand', 'assets/turret_stand.png');

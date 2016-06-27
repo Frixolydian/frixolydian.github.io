@@ -12,8 +12,12 @@ Explosion = function (game, state, x, y, sprite, duration, power, enemy) {
   this.smoothed = false;
   this.anchor.set(0.5);
   this.scale.set(Math.random() * 0.5 + 1);
+  bullet_group.add(this);
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
   new Explosion_smoke(this.game, this.state, this.x, this.y);
+  for (var i = 0; i <= 100; i++) {
+    new Impact(this.game, this.state, this.x, this.y, 'impact', Math.random() * 360, [0xFFFFFF, 0xFF0000, 0x000000], 200, 0.5);
+  }
   new Howl({
     urls: ['assets/audio/explosion.ogg'],
     volume: 1,
@@ -29,7 +33,8 @@ Explosion_smoke = function (game, state, x, y, sprite, duration, power, enemy) {
   Phaser.Sprite.call(this, game, x , y);
   game.add.existing(this);
   this.state = state;
-  this.explosions = []
+  bullet_group.add(this);
+  this.explosions = [];
   for (var i = 0; i <= 8; i++) {
     this.explosions[i] = this.addChild(game.make.sprite(0, 0, 'explosion_smoke'));
     this.explosions[i].smooth = false;
@@ -45,21 +50,6 @@ Explosion_smoke = function (game, state, x, y, sprite, duration, power, enemy) {
       this.destroy();
     }, this);
   }
-
-/*  this.power = power;
-  this.duration = duration;
-  this.enemy = enemy;
-  this.smoothed = false;
-  this.anchor.set(0.5);
-  this.scale.set(Math.random() * 0.5 + 1);
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
-
-  new Howl({
-    urls: ['assets/audio/explosion.ogg'],
-    volume: 0.1,
-    pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
-  }).play();
-*/
 };
 Explosion_smoke.prototype = Object.create(Phaser.Sprite.prototype);
 Explosion_smoke.prototype.constructor = Explosion;

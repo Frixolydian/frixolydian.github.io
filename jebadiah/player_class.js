@@ -84,12 +84,24 @@ Player.prototype.runRight = function() {
 Player.prototype.shoot = function() {
   if (MOBILE) {
     for (i = 1; i <= this.current_weapon.shots; i++) {
-      new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.getChildAt(0).world.x + Math.cos(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.getChildAt(0).world.y + Math.sin(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
+      if (this.current_weapon.bullet === 'bullet') {
+        new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.getChildAt(0).world.x + Math.cos(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.getChildAt(0).world.y + Math.sin(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
+      }
+      else if (this.current_weapon.bullet === 'rocket') {
+        new Rocket (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'rocket', this.getChildAt(0).world.x + Math.cos(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.getChildAt(0).world.y + Math.sin(this.game.math.degToRad(this.state.states.Kusoge.joystick.properties.angle)), this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
+        console.log (000);
+      }
     }
   }
   else {
     for (i = 1; i<= this.current_weapon.shots; i++) {
-      new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
+      if (this.current_weapon.bullet === 'bullet') {
+        new Bullet (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'bullet', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
+      }
+      else if (this.current_weapon.bullet === 'rocket') {
+        new Rocket (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'rocket', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
+        console.log (000);
+      }
     }
   }
   this.body.velocity.x -= Math.cos(Math.atan2(this.getChildAt(0).world.y - this.y, this.getChildAt(0).world.x - this.x )) * current_weapon.recoil * 70;

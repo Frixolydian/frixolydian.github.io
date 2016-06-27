@@ -2,117 +2,6 @@ Array.prototype.randomElement = function () {
   return this[Math.floor(Math.random() * this.length)];
 };
 
-Impact = function (game, state, x, y, sprite, direction, impact_tint) {
-  Phaser.Sprite.call(this, game, x , y , sprite);
-  game.add.existing(this);
-  this.state = state;
-  bullet_group.add(this);
-  this.autoCull = true;
-  this.anchor.set(0.5);
-  this.scale.set(0.5 + Math.random() * 0.5);
-  j = Math.random();
-  if (j > 0.6) {
-    this.tint = impact_tint[0];
-  }
-  else if (j > 0.3) {
-    this.tint = impact_tint[1];
-  }
-  else {
-    this.tint = impact_tint[2];
-  }
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
-  this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(direction) - 195 + Math.random() * 60, 150 + Math.random() * 150, this.body.velocity);
-//  this.body.gravity.y = 400;
-  this.game.time.events.add(150, function(){
-    this.destroy();
-  }, this);
-  this.events.onOutOfBounds.add(function() {
-    this.destroy();
-  }, this);
-};
-
-Impact.prototype = Object.create(Phaser.Sprite.prototype);
-Impact.prototype.constructor = Impact;
-
-
-
-Bullet = function (game, state, x, y, sprite, directionx, directiony, speed, power, enemy, deviation) {
-  Phaser.Sprite.call(this, game, x , y , sprite);
-  game.add.existing(this);
-  this.state = state;
-  this.autoCull = true;
-  bullet_group.add(this);
-  this.power = power;
-  this.enemy = enemy;
-  this.anchor.set(0.5);
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
-  this.body.setSize(4, 2, 2, 2);
-  this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, directionx, directiony)) + Math.random() * deviation - deviation / 2, speed, this.body.velocity);
-  this.angle = this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, directionx, directiony));
-  this.impact_tint = [];
-  this.events.onOutOfBounds.add(function() {
-    this.destroy();
-  }, this);
-  this.events.onKilled.add(function(){
-    for (i = 1; i <= 20; i++) {
-      new Impact(this.game, this.state, this.x, this.y, 'impact', Math.atan2(this.body.velocity.y, this.body.velocity.x), this.impact_tint);
-    }
-  }, this);
-};
-Bullet.prototype = Object.create(Phaser.Sprite.prototype);
-Bullet.prototype.constructor = Bullet;
-
-Bullet.prototype.update = function() {
-  if (this.enemy === false && this.x < this.game.camera.x - 150 || this.x > this.game.camera.x + this.game.width + 150) {
-    this.pendingDestroy = true;
-  }
-  this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
-    if (this.enemy) {
-      structure_health -= 3;
-      updateHealthBar(this.game, this.state);
-    }
-    new Howl({
-      urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
-      volume: 0.5,
-      pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
-    }).play();
-    this.impact_tint = b.impact_tint;
-    this.kill();
-  }, null, this);
-  this.game.physics.arcade.overlap(this, enemy_group, function(a, b) {
-    if (!this.enemy){
-      new Howl({
-        urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
-        volume: 0.5,
-        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
-      }).play();
-      b.receiveDamage(a.power);
-      this.impact_tint = b.impact_tint;
-      a.kill();
-    }
-  }, null, this);
-};
-
-Terrain = function (game, state, a, b, c, d, oneway, material, impact_tint) {
-  Phaser.Sprite.call(this, game, a, b);
-  game.add.existing(this);
-  state = this.state;
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
-  this.body.setSize(c, d, 0, 0);
-  this.body.immovable = true;
-  this.oneway = oneway;
-  this.material = material;
-  this.impact_tint = impact_tint;
-  if (this.oneway) {
-    this.body.checkCollision.down = false;
-    this.body.checkCollision.left = false;
-    this.body.checkCollision.right = false;
-  }
-  terrain_group.add(this);
-};
-Terrain.prototype = Object.create(Phaser.Sprite.prototype);
-Terrain.prototype.constructor = Terrain;
-
 kusoge = function(game){};
 
 kusoge.prototype = {
@@ -132,10 +21,11 @@ kusoge.prototype = {
     this.scrolling_background_1 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_1');
     this.scrolling_background_1.autoScroll(-500, 0);
 
-    bullet_group = this.add.group();  //create groups
     player_group = this.add.group();
-    terrain_group = this.add.group();
     enemy_group = this.add.group();
+    bullet_group = this.add.group();  //create groups
+    terrain_group = this.add.group();
+
 
     playa = new Player(this.game, this.state, 0, 570, 'player');
     player_group.add(playa);
