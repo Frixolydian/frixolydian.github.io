@@ -28,8 +28,13 @@ Player = function (game, state, x, y, sprite) {
   this.down_button = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
   this.space_button = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   this.reload_button = this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(this.reload, this);
+  this.change_weapon_1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE).onDown.add(this.weapon_1, this);
+  this.change_weapon_2 = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO).onDown.add(this.weapon_2, this);
+  this.change_weapon_3 = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE).onDown.add(this.weapon_3, this);
+  this.change_weapon_4 = this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR).onDown.add(this.weapon_4, this);
 //physics
   this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.collideWorldBounds = true;
   this.anchor.set(0.5);
   this.body.setSize(22, 63, 9, 5)
   this.body.drag.x = 1000;
@@ -100,7 +105,6 @@ Player.prototype.shoot = function() {
       }
       else if (this.current_weapon.bullet === 'rocket') {
         new Rocket (this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'rocket', this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, this.current_weapon.bullet_speed, this.current_weapon.damage, false, this.current_weapon.deviation);
-        console.log (000);
       }
     }
   }
@@ -119,8 +123,44 @@ Player.prototype.shoot = function() {
   this.hud_bullets.text = 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets;
 };
 
+Player.prototype.weapon_1 = function() {
+  if (PISTOL_SHOP.bought){
+    current_weapon = pistol;
+    this.current_weapon = current_weapon;
+    this.bullets = 0;
+    this.getChildAt(2).loadTexture(this.current_weapon.sprite);
+  }
+};
+
+Player.prototype.weapon_2 = function() {
+  if (SHOTGUN_SHOP.bought){
+    current_weapon = shotgun;
+    this.current_weapon = current_weapon;
+    this.bullets = 0;
+    this.getChildAt(2).loadTexture(this.current_weapon.sprite);
+  }
+};
+
+Player.prototype.weapon_3 = function() {
+  if (MP5_SHOP.bought){
+    current_weapon = mp5;
+    this.current_weapon = current_weapon;
+    this.bullets = 0;
+    this.getChildAt(2).loadTexture(this.current_weapon.sprite);
+  }
+};
+
+Player.prototype.weapon_4 = function() {
+  if (ROCKET_LAUNCHER_SHOP.bought){
+    current_weapon = rocket_launcher;
+    this.current_weapon = current_weapon;
+    this.bullets = 0;
+    this.getChildAt(2).loadTexture(this.current_weapon.sprite);
+  }
+};
+
 Player.prototype.pointWeapon = function(pointingLeft, joystickAngle) {
-  if (pointingLeft){
+  if (pointingLeft && !SHOP_OPEN){
     if (this.frame !== 0){
       this.frame = 0;
       this.getChildAt(0).x = -4;
@@ -130,7 +170,7 @@ Player.prototype.pointWeapon = function(pointingLeft, joystickAngle) {
     this.getChildAt(2).angle = MOBILE ? joystickAngle : this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY));
     this.getChildAt(0).angle = this.getChildAt(2).angle;
   }
-  else{
+  else if (!SHOP_OPEN) {
     if (this.frame !== 1){
       this.frame = 1;
       this.getChildAt(0).x = 4;
@@ -159,14 +199,16 @@ Player.prototype.update = function() {
   }, null, this);
 //collision
   this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
-    if (MOBILE) {
-      if ((this.up_button.isDown || this.space_button.isDown || (gamepad_jump.input.pointerOver() && gamepad_jump.pressed && MOBILE)) && this.body.touching.down) {
-        this.body.velocity.y = -400;
+    if (!SHOP_OPEN) {
+      if (MOBILE) {
+        if ((this.up_button.isDown || this.space_button.isDown || (gamepad_jump.input.pointerOver() && gamepad_jump.pressed && MOBILE)) && this.body.touching.down) {
+          this.body.velocity.y = -400;
+        }
       }
-    }
-    else {
-      if ((this.up_button.isDown || this.space_button.isDown) && this.body.touching.down) {
-        this.body.velocity.y = -400;
+      else {
+        if ((this.up_button.isDown || this.space_button.isDown) && this.body.touching.down) {
+          this.body.velocity.y = -400;
+        }
       }
     }
   }, null, this);
@@ -183,7 +225,10 @@ Player.prototype.update = function() {
   this.game.physics.arcade.overlap(this, enemy_group, function(a, b) {
     this.kill();
   }, null, this);
-
+  if (SHOP_OPEN) {
+    this.getChildAt(1).animations.play('stand');
+    return;
+  }
 //movement keys
   if (this.right_button.isDown) {
     this.runRight();

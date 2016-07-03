@@ -44,12 +44,14 @@ kusoge.prototype = {
     }, this);
 
     this.time.events.loop(Math.max(5000 - WAVE * 100, 3000), function() {
-      i = Math.random();
-      if(i > 0.5){
-        new Enemy(this.game, this.state, Math.random() *  500, 500, 'enemy_barrel');
-      }
-      else {
-        new Enemy_2(this.game, this.state, 0, 200 + Math.random() *  100, 'enemy_2');
+      if (!BUYING && TIMER > 10) {
+        i = Math.random();
+        if(i > 0.5){
+          new Enemy(this.game, this.state, Math.random() *  500, 500, 'enemy_barrel');
+        }
+        else {
+          new Enemy_2(this.game, this.state, 0, 200 + Math.random() *  100, 'enemy_2');
+        }
       }
     }, this);
 
@@ -76,26 +78,6 @@ kusoge.prototype = {
       this.wagon_front1.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
       this.wagon_front1.animations.play('anim');
     }
-//wagon3
-    if (WAGON_2) {
-      new Terrain(this, this.state, 229 , 497, 320, 20, false); //floorstructure1
-      new Terrain(this, this.state, 185, 636, 408, 5, false);
-      new Terrain(this, this.state, 573, 593, 24, 50, false);  //floorstructure2
-      new Terrain(this, this.state, 181, 593, 24, 50, false);
-      this.wagon_front2 = this.add.sprite (389, 580, 'wagon_1');
-      this.wagon_front2.anchor.set(0.5);
-      this.wagon_front2.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
-      this.wagon_front2.animations.play('anim');
-    }
-
-    if(TURRET_1){
-      this.add.image(-250, 479, 'turret_stand').anchor.set(0.5);
-      new Turret(this.game, this.state, -250, 464, 'turret', TURRET_1_UPGRADE).angle = 180;
-    }
-    if(TURRET_2){
-      this.add.image(250, 479, 'turret_stand').anchor.set(0.5);
-      new Turret(this.game, this.state, 250, 464, 'turret', TURRET_2_UPGRADE);
-    }
 //structure healthbar
     healthbar_fill = this.add.image(100, 30, 'healthbar');
     healthbar_fill.right = 100;
@@ -104,6 +86,9 @@ kusoge.prototype = {
     healthbar_outline = this.add.image(100, 30, 'healthbar_back');
     healthbar_outline.scale.set(3);
     healthbar_outline.fixedToCamera = true;
+    healthbar_text = this.add.bitmapText(250, 44, 'font', 'Train health: ' + structure_health + ' / ' + 100, 12);
+    healthbar_text.anchor.set(0.5);
+    healthbar_text.fixedToCamera = true;
     updateHealthBar(this.game, this.state);
 
     this.joystick_camera_x = 0;
@@ -111,6 +96,12 @@ kusoge.prototype = {
 //clock
     new Clock(this.game, this.state);
     new WaveIndicator(this.game, this.state, WAVE);
+
+    Shoppe(this.game, this.state);
+    LeftShopUnfold(this.game, this.state);
+    new EnemyHandcar(this.game, this.state, 450, 640);
+
+
 //gamepad
     if (MOBILE) {
       // Add the VirtualGamepad plugin to the game
@@ -137,22 +128,24 @@ kusoge.prototype = {
   },
 
   update: function() {
-    if (MOBILE && this.joystick.properties.distance !== 0) {
-      this.joystick_camera_x = this.joystick.properties.x * 2.5;
-      this.joystick_camera_y = this.joystick.properties.y * 2.5 + 150;
+    if (playa.alive && !SHOP_OPEN) {
+      if (MOBILE && this.joystick.properties.distance !== 0) {
+        this.joystick_camera_x = this.joystick.properties.x * 2.5;
+        this.joystick_camera_y = this.joystick.properties.y * 2.5 + 150;
+      }
+      this.camera.x = MOBILE ? camera_offset_x + playa.x - this.game.width * 0.5 + this.joystick_camera_x : camera_offset_x + (playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
+      this.camera.y = MOBILE ? camera_offset_y + playa.y - this.game.width * 0.5 + this.joystick_camera_y : camera_offset_y + (playa.y - this.game.height * 0.5) + (this.input.y - this.game.height * 0.5) * 0.66;
     }
-    this.camera.x = MOBILE ? camera_offset_x + playa.x - this.game.width * 0.5 + this.joystick_camera_x : camera_offset_x + (playa.x - this.game.width * 0.5) + (this.input.x - this.game.width * 0.5) * 0.66;
-    this.camera.y = MOBILE ? camera_offset_y + playa.y - this.game.width * 0.5 + this.joystick_camera_y : camera_offset_y + (playa.y - this.game.height * 0.5) + (this.input.y - this.game.height * 0.5) * 0.66;
   },
 
 
   render: function() {
-//    enemy_group.forEach(function(item) {
+//    terrain_group.forEach(function(item) {
 //      this.game.debug.body(item);
 //    }, this);
     //this.game.debug.body(playa);
-    this.game.debug.text("X: " + this.input.worldX, 32, 32);
-    this.game.debug.text("Y: " + this.input.worldY, 32, 64);
+//    this.game.debug.text("X: " + this.input.worldX, 32, 32);
+//    this.game.debug.text("Y: " + this.input.worldY, 32, 64);
     if (MOBILE) {
       this.game.debug.text("FPS: " + this.game.time.fps, 32, 96);  
     }
@@ -162,6 +155,7 @@ kusoge.prototype = {
 updateHealthBar = function (game, state) {
   this.state = state;
   healthbar_fill.scale.x = structure_health * 0.03;
+  healthbar_text.text = 'Train health: ' + structure_health + ' / ' + 100;
   if (structure_health <= 0) {
     game.time.events.repeat(200, 20, function() {
       Shake (game, state, 15, 10, 1);
@@ -253,4 +247,3 @@ Gamepad.prototype.update = function() {
 //  gamepad_left.input.pointerOver = false;
 //  gamepad_right.input.pointerOver = false;
 };
-

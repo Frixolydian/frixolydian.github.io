@@ -13,7 +13,6 @@ Explosion = function (game, state, x, y, sprite, duration, power, enemy) {
   this.anchor.set(0.5);
   this.scale.set(Math.random() * 0.5 + 1);
   bullet_group.add(this);
-  this.game.physics.enable(this, Phaser.Physics.ARCADE);
   new Explosion_smoke(this.game, this.state, this.x, this.y);
   for (var i = 0; i <= 100; i++) {
     new Impact(this.game, this.state, this.x, this.y, 'impact', Math.random() * 360, [0xFFFFFF, 0xFF0000, 0x000000], 200, 0.5);
@@ -36,7 +35,7 @@ Explosion_smoke = function (game, state, x, y, sprite, duration, power, enemy) {
   this.state = state;
   bullet_group.add(this);
   this.explosions = [];
-  for (var i = 0; i <= 8; i++) {
+  for (var i = 0; i <= 5; i++) {
     this.explosions[i] = this.addChild(game.make.sprite(0, 0, 'explosion_smoke'));
     this.explosions[i].smooth = false;
     this.explosions[i].angle = Math.random() * 360;
@@ -45,7 +44,7 @@ Explosion_smoke = function (game, state, x, y, sprite, duration, power, enemy) {
     this.explosions[i].x += Math.random() * 80 - 40;
     this.explosions[i].y += Math.random() * 80 - 40;
     this.explosions[i].tint = Math.random() > 0.5? 0xffffff : 0xaaaaaa;
-    this.explosions[i].animations.add('explode', [0,1,2,3,4], 15, false);
+    this.explosions[i].animations.add('explode', [0,1,2,3,4], 20, false);
     this.explosions[i].animations.play('explode');
     this.explosions[i].animations.currentAnim.onComplete.add(function(a) {
       this.destroy();

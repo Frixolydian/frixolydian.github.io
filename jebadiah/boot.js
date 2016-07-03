@@ -11,21 +11,25 @@ boot = function(game){};
 boot.prototype = {
   init:function() {
 
-  current_weapon = rocket_launcher;
+  BUYING = false;
+  SHOP_OPEN = false;
+
+  current_weapon = pistol;
   //camera
   camera_offset_x = 0;
   camera_offset_y = 0;
 
-  PISTOL = true;
-  SHOTGUN = false;
-  MP5 = false;
+  PISTOL_SHOP = {bought: true, cost: 0, upgrade: 1, upgrade_cost: 100};
+  SHOTGUN_SHOP = {bought: false, cost: 250, upgrade: 1, upgrade_cost: 200};
+  MP5_SHOP = {bought: false, cost: 650, upgrade: 1, upgrade_cost: 300};
+  ROCKET_LAUNCHER_SHOP = {bought: false, cost: 1000, upgrade: 1, upgrade_cost: 500};
 
-  money = 1000;
+  money = 10000;
   structure_health = 100;
 
   WAVE = 1;
 
-  TIMER = 60;
+  TIMER = 20;
   //upgrades
   WAGON_1 = false;
   WAGON_2 = false;

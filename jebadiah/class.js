@@ -120,18 +120,21 @@ Bullet.prototype.update = function() {
     if (b.material === 'none') {
       return;
     } 
-      if (this.enemy) {
-        structure_health -= 3;
-        updateHealthBar(this.game, this.state);
-      }
-      new Howl({
-        urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
-        volume: 0.5,
-        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
-      }).play();
-      this.impact_tint = b.impact_tint;
-      this.kill();
-    }, null, this);
+    if (b.enemy) {
+      b.receiveDamage(this.power);
+    }
+    if (this.enemy) {
+      structure_health -= 3;
+      updateHealthBar(this.game, this.state);
+    }
+    new Howl({
+      urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
+      volume: 0.5,
+      pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
+    }).play();
+    this.impact_tint = b.impact_tint;
+    this.kill();
+  }, null, this);
   this.game.physics.arcade.overlap(this, enemy_group, function(a, b) {
     if (!this.enemy){
       new Howl({
@@ -195,24 +198,33 @@ Clock = function (game, state) {
   this.clock_text.fixedToCamera = true;
 
   game.time.events.loop(500, function() {
-    if (TIMER < 0){
-      TIMER = 60;
+    if (TIMER < 0 && !BUYING){
       WAVE = WAVE + 1;
-      if (WAVE % 5 === 0) {
-        this.game.state.start('Purchase_screen');
+      if (WAVE % 3 === 0 && WAVE !== 1) {
+        BUYING = true;
+        shop_wagon = new ShopWagon(this.game, this.state, -1500, 550);
       }
-      new WaveIndicator(this.game, this.state, WAVE);
+      else {
+        TIMER = 20;
+        new WaveIndicator(this.game, this.state, WAVE);
+      }
     }
-    if (TIMER % 60 < 10 ){
-      this.clock_text.text = 'Time left: ' + Math.floor(Math.floor(TIMER) / 60) +': 0' + Math.floor(TIMER) % 60;
+    if (BUYING) {
+      TIMER = 0;
+      this.clock_text.text = ':^)';
     }
-    else if (Math.ceil(TIMER / 60) < 10 ){
-      this.clock_text.text = 'Time left: ' + Math.floor(Math.floor(TIMER) / 60) +': '+ Math.floor(TIMER) % 60;
+    else {
+      if (TIMER % 60 < 10 ) {
+        this.clock_text.text = 'Time left: ' + Math.floor(Math.floor(TIMER) / 60) +': 0' + Math.floor(TIMER) % 60;
+      }
+      else if (Math.ceil(TIMER / 60) < 10 ){
+        this.clock_text.text = 'Time left: ' + Math.floor(Math.floor(TIMER) / 60) +': '+ Math.floor(TIMER) % 60;
+      }
+      else{
+        this.clock_text.text = 'Time left: ' + Math.floor(Math.floor(TIMER) / 60) +': '+ Math.floor(TIMER) % 60;
+      }
+      TIMER -= 1;
     }
-    else{
-      this.clock_text.text = 'Time left: ' + Math.floor(Math.floor(TIMER) / 60) +': '+ Math.floor(TIMER) % 60;
-    }
-    TIMER -= 1;
   }, this);
 };
   Clock.prototype = Object.create(Phaser.Sprite.prototype);
@@ -257,6 +269,7 @@ Turret = function (game, state, x, y, sprite, upgrade) {
   this.target = null;
   this.upgrade = upgrade;
   this.shoot();
+  terrain_group.add(this);
 };
 
 Turret.prototype = Object.create(Phaser.Sprite.prototype);
@@ -292,9 +305,7 @@ Turret.prototype.shoot = function() {
 };
 
 LEFT_ENEMY_TRAIN = false;
-console.log(LEFT_ENEMY_TRAIN);
 RIGHT_ENEMY_TRAIN = false;
-console.log(RIGHT_ENEMY_TRAIN);
 
 EnemyTrain = function (game, state, x, y) {
   Phaser.Sprite.call(this, game, x , y , 'wagon_1');
@@ -353,5 +364,40 @@ EnemyTrain.prototype.receiveDamage = function(damage) {
     this.damage(damage);
     this.getChildAt(0).scale.x = this.health / this.maxHealth * 0.5;    
   }
+};
 
+ShopWagon = function (game, state, x, y) {
+  Phaser.Sprite.call(this, game, x , y , 'shop_wagon');
+  game.add.existing(this);
+  this.state = state;
+  terrain_group.add(this);
+  this.material = 'metal';
+  this.impact_tint = [0xFFFF99, 0xFFD699, 0xFFFFFF];
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.setSize(240, 170, 43, 65);
+  this.body.drag.x = 20;
+  this.body.immovable = true;
+  this.playerTrain = false;
+  this.anchor.set(0.5);
+  this.body.velocity.x = 200;
+};
+
+ShopWagon.prototype = Object.create(Phaser.Sprite.prototype);
+ShopWagon.prototype.constructor = ShopWagon;
+
+ShopWagon.prototype.update = function() {
+  this.game.physics.arcade.collide(this, player_group, function(a, b) {
+    if (b.y < a.y - 40 && BUYING && !SHOP_OPEN) {
+      //this.goAway();
+      LeftShopUnfold(this.game, this.state);
+
+    }
+  }, null, this);
+};
+
+ShopWagon.prototype.goAway = function() {
+  this.body.acceleration.x = -50;
+  BUYING = false;
+  TIMER = 20;
+  new WaveIndicator(this.game, this.state, WAVE);
 };

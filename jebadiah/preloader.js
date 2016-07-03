@@ -12,6 +12,8 @@ preloader.prototype = {
 //gamepad
     this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
+    this.load.image('shop_frame', 'assets/shop_frame.png');
+
     this.load.image('indicator', 'assets/indicator.png');
     this.load.image('healthbar', 'assets/healthbar.png');
     this.load.image('healthbar_back', 'assets/healthbar_back.png');
@@ -24,6 +26,7 @@ preloader.prototype = {
     this.load.image('back_3', 'assets/back_3.png');
     this.load.image('back_4', 'assets/back_4.png');
     this.load.spritesheet('wagon_1', 'assets/wagon_1.png', 328, 200);
+    this.load.image('shop_wagon', 'assets/shop_wagon.png');
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('rocket', 'assets/rocket.png');
     this.load.image('impact', 'assets/impact.png');
@@ -42,6 +45,11 @@ preloader.prototype = {
     this.load.image('fullscreen', 'assets/fullscreen.png');
 
     this.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');//font
+
+    this.load.image('handcar', 'assets/handcar.png');
+    this.load.image('handcar_wheel', 'assets/handcar_wheel.png');
+    this.load.image('handcar_handle', 'assets/handcar_handle.png');
+
 
     mp5_reload = new Howl({
       urls: ['assets/audio/mp5_reload.ogg'],
