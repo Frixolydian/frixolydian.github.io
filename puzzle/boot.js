@@ -17,7 +17,7 @@ boot.prototype = {
  	create:function(){
     this.game.stage.backgroundColor = "#FFFFFF"; //set the background color
     this.add.image(this.game.width * 0.5, this.game.height * 0.4, 'credits').anchor.set(0.5); 
-    this.game.time.events.add (2000, function() {
+    this.game.time.events.add (500, function() {
       this.game.state.start('Preloader');      
     }, this);
 	}
