@@ -25,6 +25,8 @@ kusoge.prototype = {
     enemy_group = this.add.group();
     bullet_group = this.add.group();  //create groups
     terrain_group = this.add.group();
+    front_enemy_group = this.add.group();
+    front_fx = this.add.group();
 
 
     playa = new Player(this.game, this.state, 0, 570, 'player');
@@ -63,6 +65,7 @@ kusoge.prototype = {
     new Terrain(this, this.state, -14, 593, 24, 50, true, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
     new Terrain(this, this.state, 315, 593, 4, 50, false, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
     this.wagon_front = this.add.sprite (154, 580, 'wagon_1');
+    terrain_group.add(this.wagon_front);
     this.wagon_front.anchor.set(0.5);
     this.wagon_front.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
     this.wagon_front.animations.play('anim');
@@ -74,6 +77,7 @@ kusoge.prototype = {
       new Terrain(this, this.state, -316, 593, 24, 50, true, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
       new Terrain(this, this.state, -319, 593, 4, 50, false, 'none', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;  //floorstructure2
       this.wagon_front1 = this.add.sprite (-154, 580, 'wagon_1');
+      terrain_group.add(this.wagon_front1);
       this.wagon_front1.anchor.set(0.5);
       this.wagon_front1.animations.add('anim', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 16, true);
       this.wagon_front1.animations.play('anim');
@@ -98,9 +102,8 @@ kusoge.prototype = {
     new WaveIndicator(this.game, this.state, WAVE);
 
     Shoppe(this.game, this.state);
-    LeftShopUnfold(this.game, this.state);
     new EnemyHandcar(this.game, this.state, 450, 640);
-
+    new EnemyPlane(this.game, this.state, 0, 400);
 
 //gamepad
     if (MOBILE) {
@@ -140,7 +143,7 @@ kusoge.prototype = {
 
 
   render: function() {
-//    terrain_group.forEach(function(item) {
+//    enemy_group.forEach(function(item) {
 //      this.game.debug.body(item);
 //    }, this);
     //this.game.debug.body(playa);

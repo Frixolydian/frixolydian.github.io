@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8" />
+    <!--phaser code- version 2.4.6*/-->
+    <script src="libs/phaser.min.js"></script>
+    <script src="libs/localstoragedb.min.js"></script>
+    <script src="libs/jquery.min.js"></script>
+    <script src="libs/localstoragedb.min.js"></script>
+    <script src="libs/transition.js"></script>
+    <script src="boot.js"></script>
+    <script src="preloader.js"></script>
+    <script src="kusoge.js"></script>
+    <script>
+    (function() {
+        var game = new Phaser.Game(720, 1080, Phaser.CANVAS,'',this);
+        game.state.add('Boot', boot);
+        game.state.add('Preloader', preloader);
+        game.state.add('Kusoge', kusoge);
+        game.state.start('Boot');
+    })();
+    </script>
+</html>

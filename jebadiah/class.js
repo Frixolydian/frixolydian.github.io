@@ -147,6 +147,18 @@ Bullet.prototype.update = function() {
       this.kill();
     }
   }, null, this);
+  this.game.physics.arcade.overlap(this, front_enemy_group, function(a, b) {
+    if (!this.enemy){
+      new Howl({
+        urls: ['assets/audio/'+ b.material + '_' + Math.ceil(Math.random() * 4) + '.wav'],
+        volume: 0.5,
+        pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.005, 0, 0],
+      }).play();
+      b.receiveDamage(a.power);
+      this.impact_tint = b.impact_tint;
+      this.kill();
+    }
+  }, null, this);
 };
 
 Terrain = function (game, state, a, b, c, d, oneway, material, impact_tint) {

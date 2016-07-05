@@ -46,6 +46,7 @@ preloader.prototype = {
 
     this.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');//font
 
+    this.load.spritesheet('enemy_plane', 'assets/enemy_plane.png', 242, 114);
     this.load.image('handcar', 'assets/handcar.png');
     this.load.image('handcar_wheel', 'assets/handcar_wheel.png');
     this.load.image('handcar_handle', 'assets/handcar_handle.png');

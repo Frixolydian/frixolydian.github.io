@@ -444,3 +444,95 @@ Enemy_cowboy.prototype.receiveDamage = function(damage) {
     this.damage(damage);
   }
 };
+
+EnemyPlane = function (game, state, x, y) {
+  Phaser.Sprite.call(this, game, x , y , 'enemy_plane');
+  game.add.existing(this);
+  this.state = state;
+  this.enemy = true;
+  front_enemy_group.add(this);
+  this.material = 'metal';
+  this.impact_tint = [0xFFFF99, 0xFFD699, 0xFFFFFF];
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.setSize(250, 40, 20, 50);
+  this.anchor.set(0.5);
+  this.y = Math.random() * 50 + 250;
+  this.x = Math.random() > 0.5 ? -1500 : 1500;
+  this.addChild(this.game.make.sprite(0, 20)).anchor.set(0.5);
+  this.getChildAt(0).x = this.x > 0 ?  -130 : 130;
+  this.body.velocity.x = this.x > 0 ? -250 : 250;
+  this.body.velocity.y = Math.random() * 50 - 25;
+  this.frame = this.x > 0 ? 0 : 1;
+//healthbar
+  this.maxHealth = 100;
+  this.health = 100;
+  this.dead = false;
+//add indicator
+  this.indicator = this.game.add.image(0, 0, 'indicator');
+}
+
+EnemyPlane.prototype = Object.create(Phaser.Sprite.prototype);
+EnemyPlane.prototype.constructor = EnemyPlane;
+
+EnemyPlane.prototype.update = function() {
+  if (!this.alive) {
+    return;
+  }
+  //indicator
+  if (this.x > this.game.camera.x + this.game.width && this.x < 1000){
+    this.indicator.x = this.game.camera.x + this.game.width - 40;
+    this.indicator.scale.set(Math.min((this.x - this.game.camera.x - 1040) * 0.001 - 1, -0.5));
+    this.indicator.alpha = 1;
+  }
+  else if (this.x < this.game.camera.x && this.x > -1000){
+    this.indicator.x = this.game.camera.x + 40;
+    this.indicator.scale.set(Math.max((this.x - this.game.camera.x) * 0.001 + 1, 0.5));
+    this.indicator.alpha = 1;
+  }
+  else {
+    this.indicator.alpha = 0;
+  }
+  this.indicator.y = this.y;
+//behaviour
+/*  if (!this.shooting && this.game.math.distance(this.x, this.y, playa.x, playa.y) < 400) {  
+    this.shoot();
+  }*/
+  this.game.physics.arcade.overlap(this, floor, function(a, b) {
+    this.body.setSize(0, 0, 0, -5000);
+    for (i = 1; i <= 4; i++) {
+      this.game.time.events.add(i * 50, function() {
+        new Explosion(this.game, this.state, this.x + Math.random() * 250 - 125, this.y + Math.random() * 70 - 35, 'bullet', 50, 30, false);          
+      }, this);
+      this.game.time.events.add(200, function() {
+        this.pendingDestroy = true;
+      }, this);
+    }
+  }, null, this);
+};
+
+EnemyPlane.prototype.receiveDamage = function(damage) {
+  tweenDamage(this.game, this.state, this);
+  if (damage > 200) {
+    this.kill();
+    return;
+  }
+  if (this.health <= damage && !this.dead) {
+    this.body.gravity.y = 200;
+    this.body.angularAcceleration = this.body.velocity.x > 0 ? 10 : -10;
+    this.smoke();
+  }
+  else {
+    this.damage(damage);
+  }
+};
+
+EnemyPlane.prototype.smoke = function() {
+  this.impact = new Impact(this.game, this.state, this.getChildAt(0).world.x, this.getChildAt(0).world.y, 'impact', this.game.math.degToRad(90), [0xffffff, 0xfff281, 0x999999], 300, 3);
+  front_fx.add(this.impact);
+
+  this.game.time.events.add(2, function() {
+    if (this.alive) {
+      this.smoke();
+    }
+  }, this);
+};

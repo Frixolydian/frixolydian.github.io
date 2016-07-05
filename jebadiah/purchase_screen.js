@@ -118,8 +118,9 @@ LeftShopUnfold = function (game, state) {
 };
 
 Close_shop = function (game, state) {
-  game.time.events.add(500, function() {
+  game.time.events.add(1000, function() {
     SHOP_OPEN = false;
+    shop_wagon.goAway();
   }, this)
   left_shop.forEach(function(item) {
     game.time.events.add((item.y - 100) * 2, function() {
@@ -132,7 +133,6 @@ Close_shop = function (game, state) {
     }, this);
   }, this);
   game.add.tween(close_shop_button.cameraOffset).to( { y: 600 }, 300, Phaser.Easing.Exponential.Out, true);
-  shop_wagon.goAway();
 };
 
 Buy_left_turret = function (game, state) {
@@ -168,7 +168,7 @@ Buy_weapon = function (game, state, weapon, target, name) {
       money -= weapon.upgrade_cost;
       playa.hud_money.text = '$$$: ' + money;
       weapon.upgrade_cost = Math.floor(weapon.upgrade_cost * 1.5);
-      target.getChildAt(0).text = 'Buy '+ name.toLowerCase() + ' upgrade (' + weapon.upgrade +'): $' + weapon.upgrade_cost;
+      target.getChildAt(0).text = 'Upgrade '+ name.toLowerCase() + ' (' + weapon.upgrade +'): $' + weapon.upgrade_cost;
       if (weapon.upgrade === 5) {
         target.getChildAt(0).destroy();
         target.addChild(game.make.bitmapText(10, 10, 'font', name + ' MAXED', 14)).tint = 0xFF0000;
@@ -180,6 +180,6 @@ Buy_weapon = function (game, state, weapon, target, name) {
     money -= weapon.cost;
     playa.hud_money.text = '$$$: ' + money;
     weapon.bought = true;
-    target.getChildAt(0).text = 'Buy '+ name.toLowerCase() + ' upgrade (' + weapon.upgrade +'): $' + weapon.upgrade_cost;
+    target.getChildAt(0).text = 'Upgrade '+ name.toLowerCase() + ' (' + weapon.upgrade +'): $' + weapon.upgrade_cost;
   }
 };
