@@ -45,14 +45,20 @@ kusoge.prototype = {
       }
     }, this);
 
-    this.time.events.loop(Math.max(5000 - WAVE * 100, 3000), function() {
+    this.time.events.loop(Math.max(2000 - WAVE * 100, 2000), function() {
       if (!BUYING && TIMER > 10) {
         i = Math.random();
-        if(i > 0.5){
+        if(i > 0.7){
           new Enemy(this.game, this.state, Math.random() *  500, 500, 'enemy_barrel');
         }
-        else {
+        else if (i > 0.5) {
           new Enemy_2(this.game, this.state, 0, 200 + Math.random() *  100, 'enemy_2');
+        }
+        else if (i > 0.2) {
+          new EnemyPlane(this.game, this.state, 0, 400);
+        }
+        else {
+          new EnemyHandcar(this.game, this.state, 450, 640);
         }
       }
     }, this);
@@ -102,8 +108,6 @@ kusoge.prototype = {
     new WaveIndicator(this.game, this.state, WAVE);
 
     Shoppe(this.game, this.state);
-    new EnemyHandcar(this.game, this.state, 450, 640);
-    new EnemyPlane(this.game, this.state, 0, 400);
 
 //gamepad
     if (MOBILE) {

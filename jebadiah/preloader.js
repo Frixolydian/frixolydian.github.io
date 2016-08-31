@@ -12,6 +12,8 @@ preloader.prototype = {
 //gamepad
     this.load.spritesheet('gamepad', 'assets/gamepad/gamepad_spritesheet.png', 100, 100);
 
+
+    this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
     this.load.image('shop_frame', 'assets/shop_frame.png');
 
     this.load.image('indicator', 'assets/indicator.png');

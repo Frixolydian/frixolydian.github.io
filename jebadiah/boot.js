@@ -29,7 +29,7 @@ boot.prototype = {
 
   WAVE = 1;
 
-  TIMER = 20;
+  TIMER = 60;
   //upgrades
   WAGON_1 = false;
   WAGON_2 = false;

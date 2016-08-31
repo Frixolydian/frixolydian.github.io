@@ -219,11 +219,11 @@ Player.prototype.update = function() {
 //die
   this.game.physics.arcade.overlap(this, bullet_group, function(a, b) {
     if (b.enemy){
-      this.kill();
+//      this.kill();
     }
   }, null, this);
   this.game.physics.arcade.overlap(this, enemy_group, function(a, b) {
-    this.kill();
+//    this.kill();
   }, null, this);
   if (SHOP_OPEN) {
     this.getChildAt(1).animations.play('stand');

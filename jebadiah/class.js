@@ -1,3 +1,48 @@
+Coin = function (game, state, x, y) {
+  Phaser.Sprite.call(this, game, x , y , 'coin');
+  game.add.existing(this);
+  this.state = state;
+  this.autoCull = true;
+  this.anchor.set(0.5);
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  this.body.velocity.y = -Math.random() * 100;
+  this.body.velocity.x = Math.random() * 100 - 50;
+  this.body.gravity.y = 400;
+  this.body.bounce.y = 0.9;
+  this.animations.add('gubi', [0, 1, 2, 3, 4, 5], Math.random() * 10 + 10, true);
+  this.animations.play('gubi');
+  this.events.onOutOfBounds.add(function() {
+    this.pendingDestroy = true;
+  }, this);
+  this.events.onKilled.add(function(){
+    money += 5;
+    new Howl({
+      urls: ['assets/audio/coin.wav'],
+      volume: 0.5,
+      pos3d: [(this.x - this.game.camera.x - this.game.width * 0.5) * 0.01, 0, 0],
+    }).play();
+    for (i = 1; i <= 20; i++) {
+      new Impact(this.game, this.state, this.x, this.y, 'impact', Math.random() * 360, [0xffb400, 0xf7ff20, 0xffd800], Math.random() * 100 + 100, 0.5);
+    }
+  }, this);
+  this.body.acceleration.x = -150;
+};
+Coin.prototype = Object.create(Phaser.Sprite.prototype);
+Coin.prototype.constructor = Coin;
+
+Coin.prototype.update = function() {
+  this.game.physics.arcade.collide(this, floor, function(a, b) {
+    if (b.playerTrain === true) {
+      this.kill();
+    }
+  }, null, this);
+  this.game.physics.arcade.overlap(this, terrain_group, function(a, b) {
+    if (b.playerTrain === true) {
+      this.kill();
+    }
+  }, null, this);
+};
+
 Rocket = function (game, state, x, y, sprite, directionx, directiony, speed, power, enemy, deviation) {
   Phaser.Sprite.call(this, game, x , y , sprite);
   game.add.existing(this);
@@ -217,7 +262,7 @@ Clock = function (game, state) {
         shop_wagon = new ShopWagon(this.game, this.state, -1500, 550);
       }
       else {
-        TIMER = 20;
+        TIMER = 60;
         new WaveIndicator(this.game, this.state, WAVE);
       }
     }

@@ -34,13 +34,13 @@ Block.prototype.constructor = Block;
 Block.prototype.update = function() {
   var direction = this.swipe.check();
   this.game.physics.arcade.collide(this, walls_group, function() {
-    this.body.immovable = true;
+/*    this.body.immovable = true;
     this.body.velocity.x = 0;
     this.body.velocity.y = 0;
     this.game.time.events.add(100, function(){
       this.x = Math.round(this.x / 50) * 50;
       this.y = Math.round(this.y / 50) * 50;
-    }, this);
+    }, this);*/
   }, null, this);
   if (direction !== null && this.body.velocity.x === 0 && this.body.velocity.y === 0) {
     switch (direction.direction) {

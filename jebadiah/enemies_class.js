@@ -110,6 +110,9 @@ Enemy_2 = function (game, state, x, y, sprite) {
   this.throwing = false;
 //when dead
   this.events.onKilled.add(function(){
+    for (i = 1; i <= 10; i++) {
+      new Coin(this.game, this.state, this.x, this.y);          
+    }
     money += 75;
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
@@ -245,6 +248,7 @@ EnemyHandcar = function (game, state, x, y) {
   game.add.existing(this);
   this.state = state;
   this.enemy = true;
+  this.cowboydead = false;
   terrain_group.add(this);
   this.material = 'metal';
   this.impact_tint = [0xFFFF99, 0xFFD699, 0xFFFFFF];
@@ -262,7 +266,20 @@ EnemyHandcar = function (game, state, x, y) {
   this.health = 180;
   this.dead = false;
 
-  new Enemy_cowboy(game, state, this.x, this.y - 40, 'enemy_2');
+  this.events.onKilled.add(function() {
+    for (i = 1; i <= 10; i++) {
+      new Coin(this.game, this.state, this.x, this.y);          
+    }
+  }, this);
+
+  this.cowboy = new Enemy_cowboy(game, state, this.x, this.y - 40, 'enemy_2');
+  this.cowboy.events.onKilled.add(function() {
+    if (this.alive) {
+      this.cowboydead = true;
+      this.body.acceleration.x = -250;
+      this.body.maxVelocity.x = 200;
+    }
+  }, this);
 
   this.addChild(this.game.make.image(-30, 20, 'handcar_wheel')).anchor.set(0.5);
   this.addChild(this.game.make.image(30, 20, 'handcar_wheel')).anchor.set(0.5);
@@ -288,17 +305,19 @@ EnemyHandcar.prototype.update = function() {
   if (this.getChildAt(2).angle < -25) {
     this.getChildAt(2).rotationchange = false;
   }
-  if (this.x > 0 && this.x < 450) {
-    this.body.acceleration.x = 250;
-  }
-  if (this.x > 700) {
-    this.body.acceleration.x = -250;
-  }
-  if (this.x < 0 && this.x > -450) {
-    this.body.acceleration.x = -250;
-  }
-  if (this.x < -700) {
-    this.body.acceleration.x = 250;
+  if (!this.cowboydead) {
+    if (this.x > 0 && this.x < 450) {
+      this.body.acceleration.x = 250;
+    }
+    if (this.x > 700) {
+      this.body.acceleration.x = -250;
+    }
+    if (this.x < 0 && this.x > -450) {
+      this.body.acceleration.x = -250;
+    }
+    if (this.x < -700) {
+      this.body.acceleration.x = 250;
+    }
   }
 };
 
@@ -346,6 +365,9 @@ Enemy_cowboy = function (game, state, x, y, sprite) {
 //when dead
   this.events.onKilled.add(function(){
     money += 75;
+    for (i = 1; i <= 10; i++) {
+      new Coin(this.game, this.state, this.x, this.y);          
+    }
     playa.hud_money.text = '$$$: ' + money;
     this.indicator.destroy();
     new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
@@ -467,7 +489,14 @@ EnemyPlane = function (game, state, x, y) {
   this.maxHealth = 100;
   this.health = 100;
   this.dead = false;
+  this.destroyed = false;
 //add indicator
+  this.events.onKilled.add(function() {
+    for (i = 1; i <= 10; i++) {
+      new Coin(this.game, this.state, this.x, this.y - 50);          
+    }
+    this.indicator.destroy();
+  }, this);
   this.indicator = this.game.add.image(0, 0, 'indicator');
 }
 
@@ -498,14 +527,17 @@ EnemyPlane.prototype.update = function() {
     this.shoot();
   }*/
   this.game.physics.arcade.overlap(this, floor, function(a, b) {
-    this.body.setSize(0, 0, 0, -5000);
-    for (i = 1; i <= 4; i++) {
-      this.game.time.events.add(i * 50, function() {
-        new Explosion(this.game, this.state, this.x + Math.random() * 250 - 125, this.y + Math.random() * 70 - 35, 'bullet', 50, 30, false);          
-      }, this);
+    if (!this.destroyed) {
+      for (i = 1; i <= 4; i++) {
+        this.game.time.events.add(i * 50, function() {
+          new Explosion(this.game, this.state, this.x + Math.random() * 250 - 125, this.y + Math.random() * 70 - 35, 'bullet', 50, 30, false);          
+        }, this);
+      }
       this.game.time.events.add(200, function() {
+        this.kill();
         this.pendingDestroy = true;
       }, this);
+      this.destroyed = true;
     }
   }, null, this);
 };
