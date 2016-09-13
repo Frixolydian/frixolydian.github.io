@@ -4,22 +4,16 @@ tempoToMs = function (t) {
    return 60000 / t;
 }
 
-Array.prototype.randomElement = function () {
-    return this[Math.floor(Math.random() * this.length)]
-}
-
 kuso = function(game){};
 kuso.prototype = {
   init:function() {
-    this.turn = 0;
-
+    this.metro_high = this.add.audio('metro_high');
+    this.metro_low = this.add.audio('metro_low');
+    this.tap_sound = this.add.audio('sound_1', 0.3);
   },
 
   create: function(){
-    this.game.stage.backgroundColor = "#66CC66"; //set the background color
-
-
-    this.sound_1 = this.add.audio('sound_1');
+    this.game.stage.backgroundColor = "#0000FF"; //set the background color
 
     this.pattern = [];
 
@@ -31,15 +25,25 @@ kuso.prototype = {
     this.key2.onDown.add(this.screenTap, this);
     this.game.input.onDown.add(this.screenTap, this);
 
+    this.count = 1;
+
     this.quarter = this.game.time.create(false);
     this.quarter.loop(tempoToMs(tempo), function(){
-      this.sound_1.play();
+      if (this.count === 0) {
+        this.metro_high.play();
+      }
+      else {
+        this.metro_low.play();
+      }
+      this.count += 1
+      if (this.count === 4) {
+        this.count = 0;
+      }
     },this);
     this.quarter.start();
 
     this.phrase = this.game.time.create(false);
     this.phrase.loop(tempoToMs(tempo) * 8, function(){
-      this.sound_1.play();
       this.createPattern();
     },this);
     this.phrase.start();
@@ -79,11 +83,11 @@ kuso.prototype = {
     tapped = false;
     correct_note = false;
     this.current_pattern.forEach(function(item){
-      if (tap > item - 30 && tap < item + 100 && tapped === false) {
-        console.log('jex');
-        console.log(tap);
+      if (tap > item - tempoToMs(tempo) * 0.1 && tap < item + tempoToMs(tempo) * 0.2 && tapped === false) {
+        this.tap_sound.play();
         correct_note = true;
         this.correct += 1;
+//        this.current_pattern.splice(this.current_pattern.indexOf(tap), 1);
       }
     },this);
     if (!correct_note) {
@@ -98,7 +102,8 @@ kuso.prototype = {
     }, this);
     this.current_render = [];
     for (var i = 0; i < 8; i++) {
-      this.current_render[i] = this.add.image(i * 100, 300, 'figures', this.current_render_pattern[i]);
+      this.current_render[i] = this.add.image(100 + i * 75, 300, 'figures', this.current_render_pattern[i]);
+      this.current_render[i].scale.set(0.75);
     }
   },
 
