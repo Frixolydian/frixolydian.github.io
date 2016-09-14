@@ -5,7 +5,7 @@ tempoToMs = function (t) {
 kuso = function(game){};
 kuso.prototype = {
   init:function() {
-    this.game.stage.backgroundColor = "#0000FF"; //set the background color
+    this.game.stage.backgroundColor = "#5555FF"; //set the background color
 
     this.metro_high = this.add.audio('metro_high');
     this.metro_low = this.add.audio('metro_low');
@@ -42,13 +42,13 @@ kuso.prototype = {
       if (this.count === 4) {
         this.count = 0;
       }
-      this.checkUntapped();
+      this.checkUntapped(1);
     },this);
     this.quarter.start();
 
     this.phrase = this.game.time.create(false);
     this.phrase.loop(tempoToMs(tempo) * 8, function(){
-      this.checkUntapped();
+      this.checkUntapped(0.2);
       this.createPattern();
     },this);
     this.phrase.start();
@@ -64,6 +64,11 @@ kuso.prototype = {
     this.back.events.onInputDown.add(function(){
       this.game.state.start('Tempo_select');
     }, this);
+//temporal lines
+    this.line1 = this.add.text(373, 190, 'l');
+    this.line1.scale.set(1, 3);
+    this.line2 = this.add.text(373, 290, 'l');
+    this.line2.scale.set(1, 3);
   },
 
   createPattern: function(){
@@ -100,7 +105,7 @@ kuso.prototype = {
     tapped = false;
     correct_note = false;
     this.current_pattern.forEach(function(item){
-      if (tap > item - tempoToMs(tempo) * 0.1 && tap < item + tempoToMs(tempo) * 0.2 && tapped === false) {
+      if (tap > item - tempoToMs(tempo) * 0.1 && tap < item + tempoToMs(tempo) * 0.25 && tapped === false) {
         this.tap_sound.play();
         correct_note = true;
         this.correct += 1;
@@ -121,7 +126,7 @@ kuso.prototype = {
     }, this);
     this.current_render = [];
     for (var i = 0; i < 8; i++) {
-      this.current_render[i] = this.add.image(100 + i * 75, 200, 'figures', this.current_render_pattern[i]);
+      this.current_render[i] = this.add.image(60 + i * 80, 200, 'figures', this.current_render_pattern[i]);
       this.current_render[i].scale.set(0.75);
     }
 
@@ -130,31 +135,21 @@ kuso.prototype = {
     }, this);
     this.next_render = [];
     for (var i = 0; i < 8; i++) {
-      this.next_render[i] = this.add.image(100 + i * 75, 300, 'figures', this.next_render_pattern[i]);
+      this.next_render[i] = this.add.image(60 + i * 80, 300, 'figures', this.next_render_pattern[i]);
       this.next_render[i].scale.set(0.75);
     }
   },
 
-  checkUntapped: function(){
+  checkUntapped: function(offset){
     t = tempoToMs(tempo) * 8 - this.phrase.duration;
     this.current_pattern.forEach(function(item){
-      if (t > item + tempoToMs(tempo) * 0.2) {
-        correct_note = true;
+      if (t > item && t < item + tempoToMs(tempo)) {
+//        this.current_pattern.splice(this.current_pattern.indexOf(item), 1);
+//        console.log(this.current_pattern);
         this.errors += 1;
-        this.current_pattern.splice(this.current_pattern.indexOf(item), 1);
       }
     },this);
     this.errors_text.text = 'Errors: ' + this.errors;    
     this.accurracy_text.text = 'Accurracy: ' + Math.round(this.correct / (this.correct + this.errors) * 100) + '%';
-  },
-
-  update: function(){
-
-  },
-  render: function(){
-/*    this.game.debug.text(this.quarter.duration, 30, 60);
-    this.game.debug.text(this.phrase.duration, 30, 90);
-    this.game.debug.text('Err' + this.errors, 30, 120);
-    this.game.debug.text('Corr' + this.correct, 30, 150);*/
   }
 };

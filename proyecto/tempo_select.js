@@ -10,7 +10,7 @@ tempo_select.prototype = {
   },
 
   create: function(){
-    this.game.stage.backgroundColor = "#0000FF"; //set the background color
+    this.game.stage.backgroundColor = "#5555FF"; //set the background color
     this.tempo_indicator = this.add.text(150, 150, 'Tempo ' + tempo);
     this.game.input.onUp.add(function(){
       if (this.game.input.x > 360) {
