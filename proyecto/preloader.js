@@ -17,6 +17,6 @@ preloader.prototype = {
         this.load.image('enemy', 'assets/enemy_test.png');
     },
     create:function(){
-        this.game.state.start('Kuso');
+        this.game.state.start('Tempo_select');
     }
 };

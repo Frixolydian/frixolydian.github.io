@@ -9,14 +9,14 @@
     <script src="boot.js"></script>
     <script src="preloader.js"></script>
     <script src="kuso.js"></script>
-    <script src="drops.js"></script>
+    <script src="tempo_select.js"></script>
     <script>
     (function() {
         var game = new Phaser.Game(720, 480, Phaser.CANVAS,'',this);
         game.state.add('Boot', boot);
         game.state.add('Preloader', preloader);
         game.state.add('Kuso', kuso);
-        game.state.add('Drops', drops);
+        game.state.add('Tempo_select', tempo_select);
         game.state.start('Boot');
     })();
     </script>
