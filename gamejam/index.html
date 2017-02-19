@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>01</title>
+    <style> body { margin: 0; background: #333; } </style>
+    <script src="src/phaser.min.js"></script>
+    <script src="src/Boot.js"></script>
+    <script src="src/Preloader.js"></script>
+    <script src="src/MainMenu.js"></script>
+    <script src="src/Game.js"></script>
+    <script src="src/Intro.js"></script>
+    <script src="src/Gameover.js"></script>
+
+</head>
+<body>
+<script>
+(function() {
+    var game = new Phaser.Game(480, 640, Phaser.CANVAS, 'game');
+    game.state.add('Boot', Doge.Boot);
+    game.state.add('Preloader', Doge.Preloader);
+    game.state.add('Intro',Doge.Intro);
+    game.state.add('Game',Doge.Husky);
+    game.state.add('Gameover',Doge.Gameover);
+    game.state.start('Boot');
+})();
+</script>
+</body>
+</html>
