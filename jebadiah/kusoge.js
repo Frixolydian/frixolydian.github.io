@@ -45,7 +45,7 @@ kusoge.prototype = {
       }
     }, this);
 
-    this.time.events.loop(Math.max(2000 - WAVE * 100, 2000), function() {
+    this.time.events.loop(Math.max(3500 - WAVE * 100, 2000), function() {
       if (!BUYING && TIMER > 10) {
         i = Math.random();
         if(i > 0.7){
