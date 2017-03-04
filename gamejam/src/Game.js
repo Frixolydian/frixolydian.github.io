@@ -257,7 +257,7 @@ damageClick: function() {
         this.money-=this.velocost;
         this.velocost=Math.floor(this.velocost*1.5);
         this.velolabel.setText('Acceleration '+this.velocost);
-        this.moneylabel.setText('DINERO$ '+this.money);
+        this.moneylabel.setText('Orbs: '+this.money);
     }
     },
 healthClick: function() {
@@ -266,7 +266,7 @@ healthClick: function() {
         this.money-=this.healthcost;
         this.healthcost+=10;
         this.healthlabel.setText('Heal '+this.healthcost);
-        this.moneylabel.setText('DINERO$ '+this.money);
+        this.moneylabel.setText('Orbs: '+this.money);
     }
     },
 maxspeedClick: function() {
@@ -276,7 +276,7 @@ maxspeedClick: function() {
         this.money-=this.maxspeedcost;
         this.maxspeedcost=Math.floor(this.maxspeedcost*1.5);
         this.maxspeedlabel.setText('Max Speed '+this.maxspeedcost);
-        this.moneylabel.setText('DINERO$ '+this.money);
+        this.moneylabel.setText('Orbs: '+this.money);
     }
     },
 create:function(){
@@ -335,7 +335,7 @@ this.tiling = this.game.add.group();
     this.damagetext=this.game.add.group();
 //menu
     this.money=100;
-    this.moneylabel=this.game.add.text(300,20,'DINERO$: '+this.money,{ font: '16px Arial', fill: '#00FFFF' });
+    this.moneylabel=this.game.add.text(300,20,'Orbs: '+this.money,{ font: '16px Arial', fill: '#00FFFF' });
     this.score=0;
     this.moneylabel.fixedToCamera=true;
     this.scorelabel=this.game.add.text(360,600,'Score: '+this.score,{ font: '16px Arial', fill: '#00FFFF' });
@@ -639,9 +639,9 @@ update:function(){
 },
 
 render:function(){
-    this.game.debug.text(mapa.getTile(Math.floor(this.bobby.x/96),Math.floor(this.bobby.y/96)),16,16);
+//    this.game.debug.text(mapa.getTile(Math.floor(this.bobby.x/96),Math.floor(this.bobby.y/96)),16,16);
 //    this.game.debug.inputInfo(16, 16);
-    this.game.debug.text('Velocidad'+Math.sqrt(Math.pow(this.bobby.body.velocity.x,2)+Math.pow(this.bobby.body.velocity.y,2)),16,32);
+//    this.game.debug.text('Velocidad'+Math.sqrt(Math.pow(this.bobby.body.velocity.x,2)+Math.pow(this.bobby.body.velocity.y,2)),16,32);
 
 },
 crearestela:function(){
@@ -681,7 +681,7 @@ enemycollide:function(bobby,enemy,bamash){
             else{
                 this.stamina=100;
             }
-            this.moneylabel.setText('DINERO$ '+this.money);
+            this.moneylabel.setText('Orbs: '+this.money);
         }
         this.displaybamash(Math.floor(0.5 *bamash),enemy.x,enemy.y);
         this.score+=Math.floor(0.5 *bamash);
@@ -697,7 +697,7 @@ enemycollide:function(bobby,enemy,bamash){
 },
 getorb:function(a,b){
     this.money+=5;
-    this.moneylabel.setText('DINERO$ '+this.money);
+    this.moneylabel.setText('Orbs: '+this.money);
     b.destroy();
 },
 damageenemy:function(bobby,enemy,bamash){
