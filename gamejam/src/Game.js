@@ -284,7 +284,7 @@ create:function(){
 this.audio=this.add.audio('gamejam2');
 this.audio2=this.add.audio('sfx3');
 this.audio3=this.add.audio('sfx5');
-//this.audio.loopFull();
+this.audio.loopFull();
 
 this.enemigo1=0;
 this.enemigo2=0;
