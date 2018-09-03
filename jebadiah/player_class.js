@@ -22,6 +22,7 @@ Player = function (game, state, x, y, sprite) {
   this.getChildAt(2).pivot.set(34, 5);
 
 //buttons
+  this.hook_button = this.game.input.keyboard.addKey(Phaser.Keyboard.F).onDown.add(this.shootHook, this);
   this.left_button = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
   this.right_button = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
   this.up_button = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -37,8 +38,10 @@ Player = function (game, state, x, y, sprite) {
   this.collideWorldBounds = true;
   this.anchor.set(0.5);
   this.body.setSize(22, 63, 9, 5)
-  this.body.drag.x = 1000;
-  this.body.maxVelocity.x = 350;
+  this.body.drag.x = 700;
+  this.body.maxVelocity.y = 500;
+
+//  this.body.maxVelocity.x = 350;
   this.body.gravity.y = 700;
 //hud
   this.hud_bullets = this.game.add.bitmapText(500, 70, 'font', 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets, 18);
@@ -70,8 +73,31 @@ Player.prototype.reload = function() {
   }
 };
 
+
+Player.prototype.shootHook = function() {
+
+  new Hook(this.game, this.state, this.x, this.y, 'bullet');
+
+
+//manual reloading
+/*  if (this.current_weapon.max_bullets !== this.bullets && this.reloading === false){
+    this.reloading = true;
+    mp5_reload.play();
+    this.game.time.events.add(this.current_weapon.reload_time, function(){
+      this.bullets = this.current_weapon.max_bullets;
+      this.reloading = false;
+    this.hud_bullets.text = 'Bullets: ' + this.bullets + '/' + this.current_weapon.max_bullets;
+    }, this);
+  }
+*/
+};
+
+
+
 Player.prototype.runLeft = function() {
-  this.body.velocity.x -= 40;
+  if (this.body.velocity.x > -350){
+    this.body.velocity.x -= 40;
+  }
   if (this.getChildAt(1).key !== 'legs_left'){
     this.getChildAt(1).loadTexture('legs_left');
   }
@@ -79,7 +105,9 @@ Player.prototype.runLeft = function() {
 };
 
 Player.prototype.runRight = function() {
-  this.body.velocity.x += 40;
+  if (this.body.velocity.x < 350){
+    this.body.velocity.x += 40;
+  }
   if (this.getChildAt(1).key !== 'legs_right'){
     this.getChildAt(1).loadTexture('legs_right');
   }
@@ -194,10 +222,7 @@ Player.prototype.update = function() {
     this.pointWeapon(this.state.states.Kusoge.joystick.properties.angle > -90 && this.state.states.Kusoge.joystick.properties.angle < 90, this.state.states.Kusoge.joystick.properties.angle);
   }
 //pit
-  this.game.physics.arcade.collide(this, floor, function() {
-    this.kill();
-  }, null, this);
-//collision
+
   this.game.physics.arcade.collide(this, terrain_group, function(a, b) {
     if (!SHOP_OPEN) {
       if (MOBILE) {
@@ -258,4 +283,88 @@ Player.prototype.update = function() {
   else if (this.game.input.activePointer.isDown && this.can_shoot && this.reloading === false && this.bullets !== 0) {
     this.shoot();
   }
+};
+
+
+
+Hook = function (game, state, x, y, sprite) {
+  Phaser.Sprite.call(this, game, x , y, sprite);
+  game.add.existing(this);
+  this.state = state;
+  this.autoCull = true;
+  this.hooking = false;
+  this.anchor.set(0.5);
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+//  this.body.gravity.y = 200;
+  bullet_group.add(this);
+
+  this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(this.game.math.angleBetween(this.x, this.y, this.game.input.activePointer.worldX, this.game.input.activePointer.worldY)), 750, this.body.velocity);
+
+  this.game.time.events.add(500, function(){
+    if (hooked == null){
+      this.kill();
+    }
+  }, this);
+//when dead
+  this.events.onKilled.add(function(){
+    this.pendingDestroy = true;
+  }, this);
+};
+
+Hook.prototype = Object.create(Phaser.Sprite.prototype);
+Hook.prototype.constructor = Hook;
+
+Hook.prototype.update = function() {
+//indicator
+  this.game.physics.arcade.collide(this, floor, function(a, b) {
+    this.kill();
+  }, null, this);
+
+
+  this.game.physics.arcade.overlap(this, enemy_group, function(a, b) {
+    hooked = b;
+    this.body.velocity.x = 0;
+    this.body.velocity.y = 0
+    if (this.hooking == false){
+      this.game.time.events.add(100, function(){
+        this.kill();
+        hooked = null;
+        this.hooking = false;
+      }, this);
+    }
+    this.hooking = true;
+    this.hook(this.game.math.angleBetween(playa.x, playa.y, this.x, this.y));
+//    this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(this.game.math.angleBetween(playa.x, playa.y, this.x, this.y)), 800, playa.body.velocity);
+    if (hooked == null) {
+      this.kill();
+    }
+  }, null, this);
+
+
+  this.game.physics.arcade.overlap(this, terrain_group, function(a, b) {
+    hooked = b;
+    this.body.velocity.x = 0;
+    this.body.velocity.y = 0
+    if (this.hooking == false){
+      this.game.time.events.add(100, function(){
+        this.kill();
+        hooked = null;
+        this.hooking = false;
+      }, this);
+    }
+    this.hooking = true;
+    this.hook(this.game.math.angleBetween(playa.x, playa.y, this.x, this.y));
+//    this.game.physics.arcade.velocityFromAngle(this.game.math.radToDeg(this.game.math.angleBetween(playa.x, playa.y, this.x, this.y)), 800, playa.body.velocity);
+    if (hooked == null) {
+      this.kill();
+    }
+  }, null, this);
+
+
+};
+
+Hook.prototype.hook = function(angle) {
+  console.log("oa")
+  playa.body.velocity.x += Math.cos(angle) * 200;
+  playa.body.velocity.y += Math.sin(angle) * 200;
 };

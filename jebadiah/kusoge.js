@@ -13,13 +13,13 @@ kusoge.prototype = {
     this.game.world.setBounds(-1500, 120, 3000, 600);
 //background
     this.scrolling_background_4 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_4');
-    this.scrolling_background_4.autoScroll(-10, 0);
+//    this.scrolling_background_4.autoScroll(-10, 0);
     this.scrolling_background_3 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_3');
-    this.scrolling_background_3.autoScroll(-20, 0);
+//    this.scrolling_background_3.autoScroll(-20, 0);
     this.scrolling_background_2 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_2');
-    this.scrolling_background_2.autoScroll(-50, 0);
+//    this.scrolling_background_2.autoScroll(-50, 0);
     this.scrolling_background_1 = this.add.tileSprite(this.world.bounds.x, 0, this.world.width, 720, 'back_1');
-    this.scrolling_background_1.autoScroll(-500, 0);
+//    this.scrolling_background_1.autoScroll(-500, 0);
 
     player_group = this.add.group();
     enemy_group = this.add.group();
@@ -28,11 +28,21 @@ kusoge.prototype = {
     front_enemy_group = this.add.group();
     front_fx = this.add.group();
 
+    console.log((9+12+(7+9+14)/3+11)/4)
 
     playa = new Player(this.game, this.state, 0, 570, 'player');
     player_group.add(playa);
 
-    LEFT_ENEMY_TRAIN = false;
+    floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false, 'tarmac', [0x92705E, 0xC99689, 0x444B25]);
+
+    new ProtoEnemy(this.game, this.state, 300, 400, 'enemy_barrel');
+
+    hooked = null;
+
+    ceiling = new Terrain(this, this.state, -1500, 300, 3000, 20, false, 'tarmac', [0x92705E, 0xC99689, 0x444B25]);
+
+
+/*    LEFT_ENEMY_TRAIN = false;
     this.time.events.loop(10000, function() {
       if (!LEFT_ENEMY_TRAIN && WAVE > 20000) {
         if (Math.random() < 0.5){
@@ -63,7 +73,6 @@ kusoge.prototype = {
       }
     }, this);
 
-    floor = new Terrain(this, this.state, -1500, 666, 3000, 20, false, 'tarmac', [0x92705E, 0xC99689, 0x444B25]);
 //wagon1
     new Terrain(this, this.state, 32, 497, 240, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true; //floorstructure1
     new Terrain(this, this.state, 0, 638, 300, 20, false, 'metal', [0xFFFF99, 0xFFD699, 0xFFFFFF]).playerTrain = true;
@@ -108,7 +117,7 @@ kusoge.prototype = {
     new WaveIndicator(this.game, this.state, WAVE);
 
     Shoppe(this.game, this.state);
-
+*/
 //gamepad
     if (MOBILE) {
       // Add the VirtualGamepad plugin to the game

@@ -568,3 +568,43 @@ EnemyPlane.prototype.smoke = function() {
     }
   }, this);
 };
+
+
+
+
+
+
+
+
+
+ProtoEnemy = function (game, state, x, y, sprite) {
+  Phaser.Sprite.call(this, game, x , y, sprite);
+  game.add.existing(this);
+  this.state = state;
+  this.material = 'metal';
+  this.impact_tint = [0x92705E, 0xC99689, 0x444B25];
+  this.autoCull = true;
+  this.anchor.set(0.5);
+
+  this.game.physics.enable(this, Phaser.Physics.ARCADE);
+//  this.body.gravity.y = 400;
+  enemy_group.add(this);
+//when dead
+  this.events.onKilled.add(function(){
+    new Explosion(this.game, this.state, this.x, this.y, 'bullet', 50, 30, false);
+    this.pendingDestroy = true;
+  }, this);
+};
+
+ProtoEnemy.prototype = Object.create(Phaser.Sprite.prototype);
+ProtoEnemy.prototype.constructor = ProtoEnemy;
+
+ProtoEnemy.prototype.update = function() {
+//indicator
+  this.game.physics.arcade.collide(this, floor);
+};
+
+ProtoEnemy.prototype.receiveDamage = function(damage) {
+  tweenDamage(this.game, this.state, this);
+//  this.damage(damage);
+};
