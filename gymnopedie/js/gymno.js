@@ -1,18 +1,111 @@
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
+
+//initial seed
+Math.seed = getQueryVariable('seed');
+if (Math.seed == undefined){
+	Math.seed = Math.floor(Math.random() * 1000000);
+	console.log('Seed set to ' + Math.seed)
+}
+
+document.getElementById('seed').innerHTML = 'Seed: ' + Math.seed
+
+//Create a Pixi Application
+var app = new PIXI.Application({ 
+    width: window.innerWidth, 
+    height: window.innerHeight,
+    antialias: true,
+    transparent: true,
+    resolution: 1,
+    zindex: 1
+  }
+);
+
+//Add the canvas that Pixi automatically created for you to the HTML document
+document.body.appendChild(app.view);
+
+app.renderer.view.style.pointerEvents = "none";
+app.renderer.autoResize = true;
+app.renderer.view.style.position = "absolute";
+app.renderer.view.style.display = "block";
+app.renderer.resize(window.innerWidth, window.innerHeight);
+
+
+
+//load an image and run the `setup` function when it's done
+PIXI.loader
+  .add("assets/piano.png")
+  .add("assets/gradient.png")
+  .load(setup);
+
+  var gradients = {}
+
+var indications = ['Lent et douloureux', 'Lent et grave', 'Lent et triste'];
+
+function setup() {
+	var text = new PIXI.Text(indications[randomBetween(0,2)],{fontFamily : 'Times New Roman', fontSize: 24, fill : 0x000000, align : 'center', fontWeight:'bold'});
+	text.x = 30;
+	text.y = 20;
+	app.stage.addChild(text)
+	var image = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
+	image.x = window.innerWidth / 2;
+	image.y = window.innerHeight / 2;
+	image.anchor.x = 0.5;
+	image.anchor.y = 0.5;
+	image.alpha = 0.8
+	app.stage.addChild(image);
+
+}
+
+function gameLoop() {
+	for (var i in gradients){
+		gradients[i].alpha -= 0.01;
+		if (gradients[i].alpha < 0){
+		}
+	}
+	requestAnimationFrame(gameLoop);
+
+}
+
+gameLoop();
+
+
+// in order to work 'Math.seed' must NOT be undefined,
+// so in any case, you HAVE to provide a Math.seed
+Math.seededRandom = function(max, min) {
+    max = max || 1;
+    min = min || 0;
+
+    Math.seed = (Math.seed * 9301 + 49297) % 233280;
+    var rnd = Math.seed / 233280;
+
+    return min + rnd * (max - min);
+}
+
 function randomFromArray(list){
-  return list[Math.floor((Math.random()*list.length))];
+  return list[Math.floor((Math.seededRandom()*list.length))];
 }
 
 function randomBetween(min,max){
-    return Math.floor(Math.random()*(max-min+1)+min);
+    return Math.floor(Math.seededRandom()*(max-min+1)+min);
 }
 
 
-var key = Math.floor(Math.random() * 12);
+var key = Math.floor(Math.seededRandom() * 12);
 
 var major_scale = [-3, -1, 0, 2, 4, 5, 7, 9, 11, 12, 14, 16];
 var minor_scale = [-4, -2, 0, 2, 3, 5, 7, 8, 10, 12, 14, 15];
 
-var tonality = Math.round(Math.random()); //minor 0, major 1
+var tonality = Math.round(Math.seededRandom()); //minor 0, major 1
 console.log(key, tonality)
 
 //ZERO EQUALS TO ROOT IN KEY
@@ -30,7 +123,7 @@ var chords_sequence = [];
 //////////////////////////////////first phase
 
 if (tonality === 0){ //if minor
-	if (Math.random() > 0.5){ //Im Vm Im Vm
+	if (Math.seededRandom() > 0.5){ //Im Vm Im Vm
 		chords_sequence.push(min_ton[0]);
 		chords_sequence.push(min_ton[2]);
 		chords_sequence.push(min_ton[0]);
@@ -103,7 +196,7 @@ else{ //if major
 
 if (tonality === 0){ //if minor
 	for (var i = 0; i < 4; i++){
-		if (Math.random() > 0.5){ //any tonal or modal
+		if (Math.seededRandom() > 0.5){ //any tonal or modal
 			chords_sequence.push(randomFromArray(min_mod));
 		}
 		else{
@@ -113,7 +206,7 @@ if (tonality === 0){ //if minor
 }
 else{ //if major
 	for (var i = 0; i < 4; i++){ //any tonal or modal
-		if (Math.random() > 0.5){
+		if (Math.seededRandom() > 0.5){
 			chords_sequence.push(randomFromArray(maj_mod));
 		}
 		else{
@@ -150,7 +243,7 @@ else{ //if major
 //////////////////////////////////sixth phase
 
 if (tonality === 0){ //if minor
-	if (Math.random() > 0.5){ //Im Vm Im Vm
+	if (Math.seededRandom() > 0.5){ //Im Vm Im Vm
 		chords_sequence.push(min_ton[0]);
 		chords_sequence.push(min_ton[2]);
 		chords_sequence.push(min_ton[0]);
@@ -200,7 +293,7 @@ else{ //if major
 //////////////////////////////////final phase
 
 if (tonality === 0){ //if minor
-	if (Math.random() > 0.5){ //Im Vm
+	if (Math.seededRandom() > 0.5){ //Im Vm
 		chords_sequence.push(min_ton[0]);
 		chords_sequence.push(min_ton[2]);
 	}
