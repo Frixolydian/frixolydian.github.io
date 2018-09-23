@@ -24,6 +24,7 @@ function noteAppear(note){
 	gradients[Object.keys(gradients).length - 1].y = window.innerHeight - 560;
 	gradients[Object.keys(gradients).length - 1].x = window.innerWidth / 85 * note;
 	gradients[Object.keys(gradients).length - 1].tint = selectedColor;
+	gradients[Object.keys(gradients).length - 1].alpha = 1.5;
 	gradients[Object.keys(gradients).length - 1].blendMode = PIXI.BLEND_MODES.ADD;
 	app.stage.addChild(gradients[Object.keys(gradients).length - 1]);
 }
