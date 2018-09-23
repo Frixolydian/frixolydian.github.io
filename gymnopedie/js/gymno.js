@@ -43,7 +43,7 @@ app.renderer.resize(window.innerWidth, window.innerHeight);
 
 //load an image and run the `setup` function when it's done
 PIXI.loader
-  .add("assets/piano.png")
+//  .add("assets/piano.png")
   .add("assets/gradient.png")
   .load(setup);
 
@@ -56,14 +56,14 @@ function setup() {
 	text.x = 30;
 	text.y = 20;
 	app.stage.addChild(text)
-	var image = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
+/*	var image = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
 	image.x = window.innerWidth / 2;
 	image.y = window.innerHeight / 2;
 	image.anchor.x = 0.5;
 	image.anchor.y = 0.5;
 	image.alpha = 0.8
 	app.stage.addChild(image);
-
+*/
 }
 
 function gameLoop() {
