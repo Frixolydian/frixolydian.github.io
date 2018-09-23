@@ -7,7 +7,7 @@ function getQueryVariable(variable) {
             return decodeURIComponent(pair[1]);
         }
     }
-    console.log('Query variable %s not found', variable);
+//    console.log('Query variable %s not found', variable);
 }
 
 //initial seed
@@ -52,9 +52,9 @@ PIXI.loader
 var indications = ['Lent et douloureux', 'Lent et grave', 'Lent et triste'];
 
 function setup() {
-	var text = new PIXI.Text(indications[randomBetween(0,2)],{fontFamily : 'Times New Roman', fontSize: 24, fill : 0x000000, align : 'center', fontWeight:'bold'});
+	var text = new PIXI.Text(indications[randomBetween(0,2)],{fontFamily : 'Helvetica', fontSize: 24, fill : 0xFFFFFF, align : 'center'});
 	text.x = 30;
-	text.y = 20;
+	text.y = 28;
 	app.stage.addChild(text)
 /*	var image = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
 	image.x = window.innerWidth / 2;
@@ -309,5 +309,5 @@ else{ //if major
 
 //////////////////////////////////
 
-console.log(chords_sequence);
+//console.log(chords_sequence);
 
