@@ -13,7 +13,6 @@ html, body {
 	float:right;
 	width:80px;
 	margin-top: 30px;
-	z-index: 99;
 }
 
 .seedButton {
@@ -26,8 +25,20 @@ html, body {
 .section1{
 	margin: 0;
 	padding:0px;
-	display: block;	
-    z-index: 99;
+	display: block;
+	z-index: 5;
+	position:relative;
+
+}
+
+.section1 p{
+	color: #ffffff;
+	position:fixed;
+}
+
+
+.pixi{
+
 }
 
 .seed{

@@ -17,7 +17,8 @@ if (Math.seed == undefined){
 	console.log('Seed set to ' + Math.seed)
 }
 
-document.getElementById('seed').innerHTML = 'Seed: ' + Math.seed
+
+
 
 //Create a Pixi Application
 var app = new PIXI.Application({ 
@@ -31,11 +32,11 @@ var app = new PIXI.Application({
 );
 
 //Add the canvas that Pixi automatically created for you to the HTML document
-document.body.appendChild(app.view);
+document.getElementById("pixi").appendChild(app.view);
 
 app.renderer.view.style.pointerEvents = "none";
 app.renderer.autoResize = true;
-app.renderer.view.style.position = "absolute";
+app.renderer.view.style.position = "fixed";
 app.renderer.view.style.display = "block";
 app.renderer.resize(window.innerWidth, window.innerHeight);
 
@@ -43,7 +44,7 @@ app.renderer.resize(window.innerWidth, window.innerHeight);
 
 //load an image and run the `setup` function when it's done
 PIXI.loader
-//  .add("assets/piano.png")
+  .add("assets/piano.png")
   .add("assets/gradient.png")
   .load(setup);
 
@@ -52,18 +53,19 @@ PIXI.loader
 var indications = ['Lent et douloureux', 'Lent et grave', 'Lent et triste'];
 
 function setup() {
-	var text = new PIXI.Text(indications[randomBetween(0,2)],{fontFamily : 'Helvetica', fontSize: 24, fill : 0xFFFFFF, align : 'center'});
+	var image = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
+	image.x = window.innerWidth / 2;
+	image.y = window.innerHeight;
+	image.scale.x = window.innerWidth / 1282;
+	image.scale.y = image.scale.x;
+	image.anchor.x = 0.5;
+	image.anchor.y = 1;
+	app.stage.addChild(image);
+	var text = new PIXI.Text(indications[randomBetween(0,2)],{fontFamily : 'Helvetica', fontSize: 24, fill : 0x250e3a, align : 'center', fontWeight: 'bold'});
 	text.x = 30;
 	text.y = 28;
 	app.stage.addChild(text)
-/*	var image = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
-	image.x = window.innerWidth / 2;
-	image.y = window.innerHeight / 2;
-	image.anchor.x = 0.5;
-	image.anchor.y = 0.5;
-	image.alpha = 0.8
-	app.stage.addChild(image);
-*/
+
 }
 
 function gameLoop() {

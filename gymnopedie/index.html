@@ -13,18 +13,33 @@
 
 	<body>
 
+	<article class = "pixi" id = "pixi">
+
+	</article>
+
+
+	<script src="js/gymno.js"></script>
+	<script src="js/play.js"></script>
+
+
+
+
 	<section class = "section1">
 		<form action="">
 			<input class="seedButton" type="submit" value="Enter Seed"/>
 			<input class="seedInput" id="seedInput" type="number" name=seed minlength = 1 maxlength = "6"/>
 		</form>
-		<p id="seed" class="seed">
-			
+		<p id="seed" class="seed" style="color:white">
 		</p>
 	</section>
 
-	<script src="js/gymno.js"></script>
-	<script src="js/play.js"></script>
+
+
+	<script>
+		document.getElementById('seed').innerHTML = 'Seed: ' + Math.seed
+	</script>
+
+
 	</body>
 
 </html>

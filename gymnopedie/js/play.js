@@ -16,7 +16,7 @@ for (var i = 1; i < 7; i++){
 	}
 }
 
-var colors = [0x92f3ef, 0x41bce6, 0x046ec8];
+var colors = [0xfffd3a, 0xfffd3a, 0xfffd3a];
 var selectedColor = colors[randomBetween(0,2)]
 
 function noteAppear(note){
@@ -25,7 +25,7 @@ function noteAppear(note){
 	gradients[Object.keys(gradients).length - 1].x = window.innerWidth / 85 * note;
 	gradients[Object.keys(gradients).length - 1].tint = selectedColor;
 	gradients[Object.keys(gradients).length - 1].alpha = 1.5;
-	gradients[Object.keys(gradients).length - 1].blendMode = PIXI.BLEND_MODES.ADD;
+	gradients[Object.keys(gradients).length - 1].blendMode = PIXI.BLEND_MODES.SCREEN;
 	app.stage.addChild(gradients[Object.keys(gradients).length - 1]);
 }
 
