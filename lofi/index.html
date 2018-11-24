@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+
+	<meta charset=utf-8>
+	<head>
+		<title>LoFiBot</title>
+	    <style> body { margin: 0; background: #001f54; } </style>
+		<script src="lib/pixi.min.js"></script>
+		<script src="lib/howler.min.js"></script>
+		<script src="lib/pizzicato.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+	</head>
+
+	<body>
+
+	<article class = "pixi" id = "pixi">
+
+	</article>
+
+	<script src="js/gymno.js"></script>
+	<script src="js/beat.js"></script>
+	<script src="js/chords.js"></script>
+	<script src="js/play.js"></script>
+
+
+
+
+	<section class = "section1">
+		<form action="">
+			<input class="seedButton" type="submit" value="Enter Seed"/>
+			<input class="seedInput" id="seedInput" type="number" name=seed minlength = 1 maxlength = "6"/>
+		</form>
+		<p id="seed" class="seed" style="color:white">
+		</p>
+	</section>
+
+
+
+	<script>
+		document.getElementById('seed').innerHTML = 'Seed: ' + Math.seed
+	</script>
+
+
+	</body>
+
+</html>
