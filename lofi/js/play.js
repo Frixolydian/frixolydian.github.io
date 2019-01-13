@@ -1,5 +1,5 @@
 
-var tempo = 80;
+var tempo = randomBetween(60, 80);
 
 
 setTimeout(function(){

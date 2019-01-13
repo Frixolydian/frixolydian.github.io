@@ -1,5 +1,16 @@
 //LOAD ALL SOUNDS
 
+var idle = [0,0,0,0,
+			1,1,1,2,
+			0,0,0,0,
+			1,1,1,2,
+			0,0,0,0,
+			1,1,1,1,
+			1,1,1,2,
+			0,0,0,0]
+
+
+
 function getNote(octave, note){
 	return octave * 12 + note
 }
@@ -30,6 +41,9 @@ function noteAppear(note){
 }
 
 function playBass(array){
+	for (var i = 0; i < pianoSounds.length; i++){
+		pianoSounds[i].stop();
+	}
 	i = randomBetween(0,1);
 	noteAppear(getNote(1, array[i] + key - 6));
 	pianoSounds[getNote(1, array[i] + key - 6)].volume(0.3 + Math.seededRandom() * 0.2);
@@ -51,16 +65,21 @@ var melody = randomBetween(2,6);
 var melodyChance = 0.5;
 
 function playMelody(){
-	if (Math.seededRandom() > 0.15 && chord > 3 && chord < 28){
+	var i = 6;
+	if (idle[chord] == 0){
+		i = 18;
+	}
+
+	if (Math.seededRandom() > 0.1 && chord > 3 && chord < 28){
 		if (tonality === 1){
-			noteAppear(getNote(4, major_scale[melody] + key - 6));
-			pianoSounds[getNote(4, major_scale[melody] + key - 6)].volume(1);
-			pianoSounds[getNote(4, major_scale[melody] + key - 6)].play();
+			noteAppear(getNote(4, major_scale[melody] + key - i));
+			pianoSounds[getNote(4, major_scale[melody] + key - i)].volume(1);
+			pianoSounds[getNote(4, major_scale[melody] + key - i)].play();
 		}
 		else{
-			noteAppear(getNote(4, minor_scale[melody] + key - 6));
-			pianoSounds[getNote(4, minor_scale[melody] + key - 6)].volume(1);		
-			pianoSounds[getNote(4, minor_scale[melody] + key - 6)].play();		
+			noteAppear(getNote(4, minor_scale[melody] + key - i));
+			pianoSounds[getNote(4, minor_scale[melody] + key - i)].volume(1);		
+			pianoSounds[getNote(4, minor_scale[melody] + key - i)].play();		
 		}
 		//next note
 		if (Math.seededRandom() > 0.15){
@@ -103,12 +122,12 @@ function jumpMelody(){
 
 var chord = -1;
 
-var timeInterval = Math.seededRandom() * 1500 + 2750;
+var timeInterval = Math.seededRandom() * 1000 + 3500;
 
 
 setTimeout(function(){
 	setInterval(function(){
-		if (chord < 30){
+		if (chord < chords_sequence.length - 1){
 			setTimeout(function(){
 				chord += 1;
 				console.log(chords_sequence[chord])
@@ -116,12 +135,34 @@ setTimeout(function(){
 				playMelody();
 				setTimeout(function(){
 					playChord(chords_sequence[chord]);
-					playMelody();
+					if (idle[chord] > 0){
+						playMelody();
+					}
 				}, timeInterval / 3 - 50 + Math.seededRandom() * 100)
 				setTimeout(function(){
-					playMelody();
+					if (idle[chord] > 0){
+						playMelody();
+					}
 				}, timeInterval / 3 * 2 - 50 + Math.seededRandom() * 100)
 			}, Math.seededRandom() * 200)
+		}
+		if (chord === 15){
+			if (Math.seededRandom() > 0 ){
+				if (Math.seededRandom() > 0.5){
+					key = (key + 5) % 12;
+					console.log('mod down')
+				}
+				else{
+					key = (key + 7) % 12;
+					console.log('mod up')
+				}
+			}
+		}
+		if (chord == chords_sequence.length - 1){
+			console.log('RESET')
+			setInterval(function(){
+				window.location.reload(false);
+			}, 3000)
 		}
 	}, timeInterval)
 }, 3000);

@@ -28,7 +28,7 @@ for (var i = 1; i < 7; i++){
 //4 = Eb
 //5 = E
 //6 = F
-//7 = F#
+//7 = Gb
 //8 = G
 //9 = Ab
 //10 = A
@@ -41,46 +41,88 @@ var modal = ['n1', 'm2', 'm4', 'm9', 'm12', 'n6', 'n8', 'n12'];
 
 var progression = [null, null, null, null, null, null, null, null];
 
-//add strong beats
-for (var i = 0; i < 4; i++){
+function addStrong(i){
 	if (Math.seededRandom() > 0.3){
 		progression[i * 2] = tonic[randomBetween(0, 2)];	//add tonic
 	}
 	else{
 		progression[i * 2] = subdominant[randomBetween(0,1)];	//add subdominant
 	}
+	//avoid repeat
+	if (progression[i * 2] === progression[i * 2 - 2]){
+		addStrong(i);
+	}
+}
+
+function addWeak(i){
+	if (Math.seededRandom() > 0.3){
+		progression[i * 2 + 1] = subdominant[randomBetween(0,1)];	//add subdominant
+	}
+	else if (Math.seededRandom() > 0.9){
+		progression[i * 2 + 1] = modal[randomBetween(0, 7)]	//add modal
+	}
+	else{	//add dominant
+		if (Math.seededRandom > 0.4){
+			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,2)) + 7) % 12);
+		}
+		else{
+			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,2)) + 1) % 12);
+		}
+	}
+	//avoid repeat
+	if (progression[i * 2 + 1] === progression[i * 2] || progression[i * 2 + 1] === progression[i * 2 + 2]){
+		addWeak(i);
+	}
+}
+
+
+
+
+//add strong beats
+for (var i = 0; i < 4; i++){
+	addStrong(i);
 }
 
 //add weak beats
 for (var i = 0; i < 4; i++){
-	if (Math.seededRandom() > 0.4){
-		progression[i * 2 + 1] = subdominant[randomBetween(0,1)];	//add subdominant
-	}
-	else if (Math.seededRandom() > 0.5){
-		progression[i * 2 + 1] = modal[randomBetween(0, 7)]
-	}
-	else{
-		if (Math.seededRandom > 0.4){
-			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,1)) + 7) % 12);
-		}
-		else{
-			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,1)) + 1) % 12);
-		}
-	}
+	addWeak(i);
 }
 
 console.log(progression)
 
-function playBass(array){
-	i = randomBetween(0,1);
-	pianoSounds[getNote(1, array[i] + key - 6)].volume(0.3 + Math.seededRandom() * 0.2);
-	setTimeout(function(){
-		pianoSounds[getNote(1, array[i] + key - 6)].play();
-	}, Math.seededRandom() * 20)
+var progressionLog = [];
+
+function progLog(array){
+	for (var i = 0; i < 8; i++){
+		var j;
+		var k;
+		j = notes[(Number(progression[i].substring(1,2)) + key + 6) % 12];
+		switch(progression[i].substring(0, 1)){
+			case 'm':
+				k = 'maj7';
+				break;
+			case 'n':
+				k = 'm7';
+				break;
+			case 'd':
+				k = '7';
+				break;
+		}
+		progressionLog.push(j + k);
+	}
+
+	console.log(progressionLog);
+}
+
+progLog(progression)
+
+function playBass(chord){
+	var bass = Number(chord.substring(1,2));
+	pianoSounds[getNote(1, (bass + key - 6) % 12)].play();
 }
 
 var maj = [0, 4, 7, 11, 2]; //9th optional :)
-var min = [0, 3, 7, 10, 2, 5]; //9th optional :)
+var min = [0, 3, 7, 10]; //9th optional :)
 var dom = [0, 7, 10, 2, 5]; //someday ill get to extensions lol
 
 function playChord(chord){
@@ -98,13 +140,17 @@ function playChord(chord){
 			break;
 	}
 	for (var i in tones){
-		pianoSounds[getNote(3, tones[i] % 12 + bass + key - 6)].play();
+		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
 	}
 }
 
 function chords(){
 	if (step % 16 == 0){
+		for (var i = 0; i < pianoSounds.length; i++){
+			pianoSounds[i].stop();
+		}
 		playChord(progression[(step / 16) % 8]);
+		playBass(progression[(step / 16) % 8]);
 		console.log(progression[(step / 16) % 8])
 	}
 }

@@ -298,16 +298,21 @@ if (tonality === 0){ //if minor
 	if (Math.seededRandom() > 0.5){ //Im Vm
 		chords_sequence.push(min_ton[0]);
 		chords_sequence.push(min_ton[2]);
+		chords_sequence.push(min_ton[0]);
 	}
 	else{ //IVm Im
 		chords_sequence.push(min_ton[1]);
 		chords_sequence.push(min_ton[0]);
+		chords_sequence.push(min_ton[1]);
 	}
 }
 else{ //if major
 	chords_sequence.push(maj_ton[1]);
 	chords_sequence.push(maj_ton[0]);
+	chords_sequence.push(maj_ton[1]);
 }
+
+console.log(chords_sequence.length)
 
 //////////////////////////////////
 
