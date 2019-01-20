@@ -122,7 +122,7 @@ function jumpMelody(){
 
 var chord = -1;
 
-var timeInterval = Math.seededRandom() * 1000 + 3500;
+var timeInterval = Math.seededRandom() * 1000 + 3000;
 
 
 setTimeout(function(){

@@ -7,7 +7,7 @@ function getQueryVariable(variable) {
             return decodeURIComponent(pair[1]);
         }
     }
-//    console.log('Query variable %s not found', variable);
+    console.log('Query variable %s not found', variable);
 }
 
 //initial seed
@@ -17,8 +17,7 @@ if (Math.seed == undefined){
 	console.log('Seed set to ' + Math.seed)
 }
 
-
-
+var seedNumber = Math.seed;
 
 //Create a Pixi Application
 var app = new PIXI.Application({ 
