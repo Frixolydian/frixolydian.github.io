@@ -36,8 +36,8 @@ for (var i = 1; i < 7; i++){
 //12 = B
 
 var tonic = ['m1', 'n5', 'n10'];
-var subdominant = ['n2', 'm6'];
-var modal = ['n1', 'm2', 'm4', 'm9', 'm12', 'n6', 'n8', 'n12'];
+var subdominant = ['n3', 'm6'];
+var modal = ['n1', 'm2', 'm4', 'm9', 'n6', 'n8', 'n12'];
 
 var progression = [null, null, null, null, null, null, null, null];
 
@@ -118,6 +118,7 @@ progLog(progression)
 
 function playBass(chord){
 	var bass = Number(chord.substring(1,2));
+	pianoSounds[getNote(1, (bass + key - 6) % 12)].volume(0.5);	
 	pianoSounds[getNote(1, (bass + key - 6) % 12)].play();
 }
 
@@ -140,6 +141,7 @@ function playChord(chord){
 			break;
 	}
 	for (var i in tones){
+		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.7);
 		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
 	}
 }

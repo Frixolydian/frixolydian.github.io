@@ -9,9 +9,6 @@ var kickSound = new Howl({src:['./sound/drum/kick/kick_' + randomBetween(1, 12) 
 var snareSound = new Howl({src:['./sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav']})
 var hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.5})
 
-
-
-
 var kick = 	[1,0,0,0,
 			0,0,0,0,
 			0,0,0,0,
@@ -78,6 +75,17 @@ var hihat = [1,0,1,0,
 			1,0,1,0,
 			1,0,1,0,
 			1,0,1,0];
+
+if (Math.seededRandom() > 0){
+	hihat = [0,0,1,0,
+			0,0,1,0,
+			0,0,1,0,
+			0,0,1,0,
+			0,0,1,0,
+			0,0,1,0,
+			0,0,1,0,
+			0,0,1,0];
+}
 
 function beat(){
 	if (kick[step % 32] == 1){
