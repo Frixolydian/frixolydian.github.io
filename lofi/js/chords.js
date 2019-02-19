@@ -13,7 +13,8 @@ var pianoSounds = [];
 for (var i = 1; i < 7; i++){
 	for (var j = 0; j < 12; j++){
 		pianoSounds.push(new Howl({
-			src:['sound/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3']
+			src:['sound/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3'],
+			preload: true
 		}));
 	}
 }
@@ -58,15 +59,15 @@ function addWeak(i){
 	if (Math.seededRandom() > 0.3){
 		progression[i * 2 + 1] = subdominant[randomBetween(0,1)];	//add subdominant
 	}
-	else if (Math.seededRandom() > 0.9){
+	else if (Math.seededRandom() > 0.8){
 		progression[i * 2 + 1] = modal[randomBetween(0, 7)]	//add modal
 	}
 	else{	//add dominant
 		if (Math.seededRandom > 0.4){
-			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,2)) + 7) % 12);
+			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,3)) + 7) % 12);
 		}
 		else{
-			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,2)) + 1) % 12);
+			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,3)) + 1) % 12);
 		}
 	}
 	//avoid repeat
@@ -88,15 +89,13 @@ for (var i = 0; i < 4; i++){
 	addWeak(i);
 }
 
-console.log(progression)
-
 var progressionLog = [];
 
 function progLog(array){
 	for (var i = 0; i < 8; i++){
 		var j;
 		var k;
-		j = notes[(Number(progression[i].substring(1,2)) + key + 6) % 12];
+		j = notes[(Number(progression[i].substring(1,3)) + key + 6) % 12];
 		switch(progression[i].substring(0, 1)){
 			case 'm':
 				k = 'maj7';
@@ -110,14 +109,13 @@ function progLog(array){
 		}
 		progressionLog.push(j + k);
 	}
-
 	console.log(progressionLog);
 }
 
 progLog(progression)
 
 function playBass(chord){
-	var bass = Number(chord.substring(1,2));
+	var bass = Number(chord.substring(1,3));
 	pianoSounds[getNote(1, (bass + key - 6) % 12)].volume(0.5);	
 	pianoSounds[getNote(1, (bass + key - 6) % 12)].play();
 }
@@ -127,7 +125,7 @@ var min = [0, 3, 7, 10]; //9th optional :)
 var dom = [0, 7, 10, 2, 5]; //someday ill get to extensions lol
 
 function playChord(chord){
-	var bass = Number(chord.substring(1,2));
+	var bass = Number(chord.substring(1,3));
 	var tones
 	switch(chord.substring(0, 1)){
 		case 'm':
@@ -153,6 +151,6 @@ function chords(){
 		}
 		playChord(progression[(step / 16) % 8]);
 		playBass(progression[(step / 16) % 8]);
-		console.log(progression[(step / 16) % 8])
+		text.text = progressionLog[(step / 16) % 8];
 	}
 }

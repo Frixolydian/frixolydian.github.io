@@ -5,9 +5,9 @@ var kickSound = new Pizzicato.Sound('./sound/drum/kick/kick_' + randomBetween(1,
 var snareSound = new Pizzicato.Sound('./sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav');
 var hihatSound = new Pizzicato.Sound('./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav');
 */
-var kickSound = new Howl({src:['./sound/drum/kick/kick_' + randomBetween(1, 12) + '.wav']})
-var snareSound = new Howl({src:['./sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav']})
-var hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.5})
+var kickSound = new Howl({src:['./sound/drum/kick/kick_' + randomBetween(1, 12) + '.wav'], volume: 0.6})
+var snareSound = new Howl({src:['./sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav'], volume: 0.7})
+var hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.3})
 
 var kick = 	[1,0,0,0,
 			0,0,0,0,
@@ -76,7 +76,7 @@ var hihat = [1,0,1,0,
 			1,0,1,0,
 			1,0,1,0];
 
-if (Math.seededRandom() > 0){
+if (Math.seededRandom() < 0.7){
 	hihat = [0,0,1,0,
 			0,0,1,0,
 			0,0,1,0,
