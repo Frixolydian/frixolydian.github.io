@@ -1,14 +1,13 @@
 
 var tempo = randomBetween(60, 80);
 
-var noise = new Howl({
-			src:['sound/noise/noise' + randomBetween(1,2) + '.ogg', 'sound/noise/noise' + randomBetween(1,2) + '.ogg'],
-			loop: true,
-			preload: true
-	});
+var noise = new Pizzicato.Sound('sound/noise/noise' + randomBetween(1,2) + '.ogg');
+noise.volume = 0.2 + Math.seededRandom() * 0.1
 
 var volume = 0;
+Howler.volume(0);
 var startFadeOut = false;
+
 
 setTimeout(function(){
 	setInterval(function(){
@@ -19,7 +18,6 @@ setTimeout(function(){
 		}
 		step = step + 1;
 	}, 15000/tempo)
-	noise.volume(0.2 + Math.seededRandom() * 0.1);
 	noise.play();
 	setInterval(function(){
 		fadeIn();
