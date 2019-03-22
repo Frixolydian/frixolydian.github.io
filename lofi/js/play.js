@@ -22,7 +22,7 @@ setTimeout(function(){
 	setInterval(function(){
 		fadeIn();
 		fadeOut();
-	}, 100)
+	}, 70 + randomBetween(0,30))
 },4000)
 
 function fadeIn(){
