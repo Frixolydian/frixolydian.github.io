@@ -1,8 +1,8 @@
 
 var tempo = randomBetween(60, 80);
 
-var noise = new Pizzicato.Sound('./sound/noise/noise' + randomBetween(1,2) + '.ogg');
-noise.volume = 0.2 + Math.seededRandom() * 0.1
+var noise = new Howl({src:['./sound/noise/noise' + randomBetween(1,2) + '.ogg'], volume: 0.2 + Math.seededRandom() * 0.1})
+
 
 var volume = 0;
 Howler.volume(0);
