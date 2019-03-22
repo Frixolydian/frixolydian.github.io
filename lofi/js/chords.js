@@ -13,11 +13,24 @@ var pianoSounds = [];
 for (var i = 1; i < 7; i++){
 	for (var j = 0; j < 12; j++){
 		pianoSounds.push(new Howl({
-			src:['sound/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3'],
+			src:['sound/piano/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3'],
 			preload: true
 		}));
 	}
 }
+
+var keySounds = [];
+
+for (var i = 2; i < 7; i++){
+	for (var j = 0; j < 12; j++){
+		keySounds.push(new Howl({
+			src:['sound/fmsynth/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3'],
+			preload: true
+		}));
+	}
+}
+
+
 
 //m = major
 //n = minor
@@ -63,7 +76,7 @@ function addWeak(i){
 		progression[i * 2 + 1] = modal[randomBetween(0, 7)]	//add modal
 	}
 	else{	//add dominant
-		if (Math.seededRandom > 0.4){
+		if (Math.seededRandom() > 0.3){
 			progression[i * 2 + 1] = 'd' + ((Number(progression[(i * 2 + 2) % 8].substring(1,3)) + 7) % 12);
 		}
 		else{
@@ -124,6 +137,11 @@ var maj = [0, 4, 7, 11, 2]; //9th optional :)
 var min = [0, 3, 7, 10]; //9th optional :)
 var dom = [0, 7, 10, 2, 5]; //someday ill get to extensions lol
 
+var chordsKeys = false;
+if (Math.seededRandom() > 0.5){
+	chordsKeys = true;
+}
+
 function playChord(chord){
 	var bass = Number(chord.substring(1,3));
 	var tones
@@ -139,10 +157,15 @@ function playChord(chord){
 			break;
 	}
 	for (var i in tones){
-		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.7);
+		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.5);
 		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+		if (chordsKeys){
+			keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.15);
+			keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+		}
 	}
 }
+
 
 function chords(){
 	if (step % 16 == 0){

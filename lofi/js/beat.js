@@ -7,7 +7,24 @@ var hihatSound = new Pizzicato.Sound('./sound/drum/hats/hat_' + randomBetween(1,
 */
 var kickSound = new Howl({src:['./sound/drum/kick/kick_' + randomBetween(1, 12) + '.wav'], volume: 0.6})
 var snareSound = new Howl({src:['./sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav'], volume: 0.7})
-var hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.3})
+var snareSound2 = new Pizzicato.Sound('./sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav');
+var reverb = new Pizzicato.Effects.Reverb({
+    time: 0.5,
+    decay: 2,
+    reverse: false,
+    mix: 0.3
+});
+
+snareSound2.addEffect(reverb);
+var delay = new Pizzicato.Effects.Delay({
+    feedback: 0.1,
+    time: 0.125,
+    mix: 0.1
+});
+
+
+
+var hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.2})
 
 var kick = 	[1,0,0,0,
 			0,0,0,0,
@@ -85,16 +102,23 @@ if (Math.seededRandom() < 0.7){
 			0,0,1,0,
 			0,0,1,0,
 			0,0,1,0];
+	hihatSound.volume(0.17)
 }
 
+	kickSound.volume(0.7);
+
+kickIntro = 64 * randomBetween(0,2)
+snareIntro = 64 * randomBetween(0,2)
+hihatIntro = 64 * randomBetween(0,2)
+
 function beat(){
-	if (kick[step % 32] == 1){
+	if (kick[step % 32] == 1 && step >= kickIntro){
 		kickSound.play();
 	}
-	if (snare[step % 32] == 1){
+	if (snare[step % 32] == 1 && step >= snareIntro){
 		snareSound.play();
 	}
-	if (hihat[step % 32] == 1){
+	if (hihat[step % 32] == 1 && step >= hihatIntro){
 		hihatSound.play();
 	}
 }

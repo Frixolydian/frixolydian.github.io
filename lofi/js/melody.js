@@ -39,6 +39,7 @@ scales['n8'] = [0,2,3,5,7,8,10,12,14,15,17,19,20,22,24];
 scales['n12'] = [0,2,4,6,7,9,11,12,14,16,18,19,21,23,24];
 
 //all fucking dominant scales yay i accept defeat
+scales['d0'] = [1,3,4,6,8,9,11,13,15,16,18,20,21,23,25];
 scales['d1'] = [0,2,4,5,7,9,10,12,14,16,17,19,21,22,24];
 scales['d2'] = [1,3,5,6,8,10,11,13,15,17,18,20,22,23,25];
 scales['d3'] = [0,2,4,6,7,9,11,12,14,16,18,19,21,23,24];
@@ -84,13 +85,21 @@ function moveMelody(){
 	}
 }
 
+var melodyKeys = false;
+if (Math.seededRandom() > 0.5){
+	melodyKeys = true;
+}
+
 function melody(){
 	if (step % 1 == 0 && Math.seededRandom() < 0.15 + randomBetween(1,20) * 0.01){
 		moveMelody();
 		var i = (progression[(Math.floor(step / 16)) % 8])
 		var k = scales[i][mel]
-		pianoSounds[getNote(3, (k + key - 5))].volume(1);
+		pianoSounds[getNote(3, (k + key - 5))].volume(0.9);
 		pianoSounds[getNote(3, (k + key) - 5)].play();
-
+		if (melodyKeys){
+			keySounds[getNote(2, (k + key - 5))].volume(0.2);
+			keySounds[getNote(2, (k + key) - 5)].play();
+		}
 	}
 }
