@@ -1,7 +1,7 @@
 
 var tempo = randomBetween(60, 80);
 
-var noise = new Pizzicato.Sound('sound/noise/noise' + randomBetween(1,2) + '.ogg');
+var noise = new Pizzicato.Sound('./sound/noise/noise' + randomBetween(1,2) + '.ogg');
 noise.volume = 0.2 + Math.seededRandom() * 0.1
 
 var volume = 0;
