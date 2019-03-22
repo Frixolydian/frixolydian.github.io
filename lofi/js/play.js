@@ -41,7 +41,7 @@ function fadeOut(){
 	if (startFadeOut){
 		volume -= 1;
 		Howler.volume(volume/100);
-		if (volume < 0){
+		if (volume == 0){
 			setInterval(function(){
 				window.location.reload(false);
 			}, 1500)
