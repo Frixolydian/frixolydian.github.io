@@ -1,7 +1,5 @@
 //melody.js
 
-//LOAD ALL SOUNDS
-
 
 //m = major
 //n = minor
@@ -85,13 +83,8 @@ function moveMelody(){
 	}
 }
 
-var melodyKeys = false;
-if (Math.seededRandom() > 0.5){
-	melodyKeys = true;
-}
-
 function melody(){
-	if (step % 1 == 0 && Math.seededRandom() < 0.15 + randomBetween(1,20) * 0.01){
+	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.01){
 		moveMelody();
 		var i = (progression[(Math.floor(step / 16)) % 8])
 		var k = scales[i][mel]

@@ -1,37 +1,3 @@
-//chords.js
-
-//LOAD ALL SOUNDS
-
-var notes = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-
-function getNote(octave, note){
-	return octave * 12 + note;
-}
-
-var pianoSounds = [];
-
-for (var i = 1; i < 7; i++){
-	for (var j = 0; j < 12; j++){
-		pianoSounds.push(new Howl({
-			src:['sound/piano/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3'],
-			preload: true
-		}));
-	}
-}
-
-var keySounds = [];
-
-for (var i = 2; i < 7; i++){
-	for (var j = 0; j < 12; j++){
-		keySounds.push(new Howl({
-			src:['sound/fmsynth/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3'],
-			preload: true
-		}));
-	}
-}
-
-
-
 //m = major
 //n = minor
 //d = dominant
@@ -137,11 +103,6 @@ var maj = [0, 4, 7, 11, 2]; //9th optional :)
 var min = [0, 3, 7, 10]; //9th optional :)
 var dom = [0, 7, 10, 2, 5]; //someday ill get to extensions lol
 
-var chordsKeys = false;
-if (Math.seededRandom() > 0.5){
-	chordsKeys = true;
-}
-
 function playChord(chord){
 	var bass = Number(chord.substring(1,3));
 	var tones
@@ -174,6 +135,6 @@ function chords(){
 		}
 		playChord(progression[(step / 16) % 8]);
 		playBass(progression[(step / 16) % 8]);
-		text.text = progressionLog[(step / 16) % 8];
+//		text.text = progressionLog[(step / 16) % 8];
 	}
 }

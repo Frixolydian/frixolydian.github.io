@@ -1,11 +1,7 @@
-
-var tempo = randomBetween(60, 80);
-
-var noise = new Howl({src:['./sound/noise/noise' + randomBetween(1,2) + '.ogg'], volume: 0.2 + Math.seededRandom() * 0.1, loop:true})
-
-
+var tempo = randomBetween(60, 85);
+var step = 0;
 var volume = 0;
-Howler.volume(0);
+Howler.volume(0.2);
 var startFadeOut = false;
 
 
@@ -22,8 +18,8 @@ setTimeout(function(){
 	setInterval(function(){
 		fadeIn();
 		fadeOut();
-	}, 70 + randomBetween(0,30))
-},4000)
+	}, 50 + randomBetween(0,30))
+},2000)
 
 function fadeIn(){
 	if (volume < 100 && startFadeOut == false){
