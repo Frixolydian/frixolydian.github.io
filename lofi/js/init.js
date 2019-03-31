@@ -1,3 +1,6 @@
+totalSounds = 0;
+loadedSounds = 0;
+
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');
@@ -45,5 +48,3 @@ var notes = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 function getNote(octave, note){
 	return octave * 12 + note;
 }
-
-

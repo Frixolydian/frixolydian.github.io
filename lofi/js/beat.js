@@ -102,7 +102,7 @@ function beat(){
 	if (step == 256){
 		createBeat();
 		kickSound.volume(0.7)
-		hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.25})
-		console.log('change!!')
+//		hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.25})
+//		console.log('change!!')
 	}
 }
