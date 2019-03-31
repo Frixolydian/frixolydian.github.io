@@ -12,7 +12,13 @@ function soundLoaded(){
 
 
 //preload noise
-var noise = new Howl({src:['./sound/noise/noise' + randomBetween(1,2) + '.ogg'], volume: 0.2 + Math.seededRandom() * 0.1, loop:true})
+totalSounds += 1;
+var noise = new Howl({
+	src:['./sound/noise/noise' + randomBetween(1,2) + '.ogg'], volume: 0.2 + Math.seededRandom() * 0.1,
+	loop:true,
+	preload: true,
+	onload: soundLoaded
+})
 
 //preload piano & keys
 var pianoSounds = [];
