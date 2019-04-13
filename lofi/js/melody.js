@@ -84,7 +84,7 @@ function moveMelody(){
 }
 
 function melody(){
-	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.01){
+	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.012){
 		moveMelody();
 		var i = (progression[(Math.floor(step / 16)) % 8])
 		var k = scales[i][mel]
@@ -94,5 +94,6 @@ function melody(){
 			keySounds[getNote(2, (k + key - 5))].volume(0.2);
 			keySounds[getNote(2, (k + key) - 5)].play();
 		}
+		catMelody(mel);
 	}
 }

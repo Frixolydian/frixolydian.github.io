@@ -9,6 +9,7 @@ function play(){
 		setInterval(function(){
 			beat();
 			chords();
+			catFunction();
 			if(step > 64){
 				melody();
 			}
