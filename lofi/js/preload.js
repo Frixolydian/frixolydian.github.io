@@ -6,10 +6,17 @@ function soundLoaded(){
 	document.getElementById('display').innerHTML = 'Loading audio files: ' + loadedSounds + ' / ' + totalSounds;
 	if (loadedSounds == totalSounds){
 		document.getElementById('display').innerHTML = 'Loaded!';
-		play();
+		if (Howler.ctx.state !== "suspended" && playing == false){
+			play();
+		}
 	}
 }
 
+window.onclick = function(){
+	if (playing == false && loadedSounds == totalSounds){
+		play();
+	}
+};
 
 //preload noise
 totalSounds += 1;

@@ -28,14 +28,12 @@ function resize(){
 		app.renderer.view.style.height = h + "px";
 		app.renderer.view.style.marginLeft = (window.innerWidth - h * 1400 / 800) / 2 + "px";
 		app.renderer.view.style.marginTop = (window.innerHeight - h) / 2 + 50 + "px";
-		console.log(app.renderer.view.style.marginTop)
 	}
 	else{
 		app.renderer.view.style.width = w + "px";
 		app.renderer.view.style.height = w * 800 / 1400 + "px";
 		app.renderer.view.style.marginLeft = (window.innerWidth - w) / 2 + "px";
 		app.renderer.view.style.marginTop = (window.innerHeight - w * 800 / 1400) / 2 + 30 + "px";
-		console.log(app.renderer.view.style.marginTop)
 	}
 }
 

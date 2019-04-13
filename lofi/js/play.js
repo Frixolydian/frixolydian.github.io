@@ -1,3 +1,4 @@
+var playing = false;
 var tempo = randomBetween(60, 85);
 var step = 0;
 var volume = 0;
@@ -5,6 +6,7 @@ Howler.volume(0.2);
 var startFadeOut = false;
 
 function play(){
+	playing = true;
 	setTimeout(function(){
 		setInterval(function(){
 			beat();
