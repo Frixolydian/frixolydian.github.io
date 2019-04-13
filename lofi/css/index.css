@@ -31,11 +31,12 @@ html, body {
 }
 
 .section1 p{
-	color: #ffffff;
+	color: #000;
 	position:fixed;
 }
 
 .seed{
+	color: #000;
 	margin: 0;
 	padding:0px;
 	display:block;
@@ -46,7 +47,7 @@ html, body {
 
 .display{
 	float:left;
-	color: #ffffff;
+	color: #000;
 	margin: 0;
 	margin-top: 20px;
 	margin-left: 10px;

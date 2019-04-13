@@ -2,13 +2,13 @@
 
 //Create a Pixi Application
 var app = new PIXI.Application({ 
-    width: window.innerWidth, 
-    height: window.innerHeight,
+    width: 1400, 
+    height: 800,
     antialias: true,
     transparent: true,
     resolution: 1,
-    zindex: 1
-  }
+    zindex: 1,
+	}
 );
 
 //Add the canvas that Pixi automatically created for you to the HTML document
@@ -17,9 +17,33 @@ document.getElementById("pixi").appendChild(app.view);
 app.renderer.view.style.pointerEvents = "none";
 app.renderer.autoResize = true;
 app.renderer.view.style.position = "fixed";
-app.renderer.view.style.display = "block";
-app.renderer.resize(window.innerWidth, window.innerHeight);
+app.renderer.view.style.float = "left";
+app.renderer.view.style.display = "inline-block";
 
+function resize(){
+    var w = window.innerWidth;
+    var h = window.innerHeight * 1.2;
+	if (w / 1400 * 800 > h) {
+		app.renderer.view.style.width = h * 1400 / 800 + "px";
+		app.renderer.view.style.height = h + "px";
+		app.renderer.view.style.marginLeft = (window.innerWidth - h * 1400 / 800) / 2 + "px";
+		app.renderer.view.style.marginTop = (window.innerHeight - h) / 2 + 50 + "px";
+		console.log(app.renderer.view.style.marginTop)
+	}
+	else{
+		app.renderer.view.style.width = w + "px";
+		app.renderer.view.style.height = w * 800 / 1400 + "px";
+		app.renderer.view.style.marginLeft = (window.innerWidth - w) / 2 + "px";
+		app.renderer.view.style.marginTop = (window.innerHeight - w * 800 / 1400) / 2 + 30 + "px";
+		console.log(app.renderer.view.style.marginTop)
+	}
+}
+
+window.onresize = function (event){
+	resize();
+}
+
+resize();
 
 
 //load an image and run the `setup` function when it's done
