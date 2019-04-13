@@ -50,14 +50,14 @@ function setup() {
 	cat = new PIXI.Sprite(PIXI.loader.resources["assets/cat.png"].texture);
 	piano = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
 
-	cat.x = window.innerWidth / 2;
-	cat.y = window.innerHeight / 2;
+	cat.x = 683;
+	cat.y = 327;
 	cat.anchor.x = 0.5;
 	cat.anchor.y = 0.5;
 	app.stage.addChild(cat);
 
-	piano.x = window.innerWidth / 2;
-	piano.y = window.innerHeight / 2;
+	piano.x = cat.x;
+	piano.y = cat.y;
 	piano.anchor.x = 0.5;
 	piano.anchor.y = 0.5;
 	app.stage.addChild(piano);
