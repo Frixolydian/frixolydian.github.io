@@ -84,7 +84,7 @@ function moveMelody(){
 }
 
 function melody(){
-	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.012){
+	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.01){
 		moveMelody();
 		var i = (progression[(Math.floor(step / 16)) % 8])
 		var k = scales[i][mel]
