@@ -98,19 +98,12 @@ function setup() {
 
 }
 
-function gameLoop() {
-
-}
-
-gameLoop();
-
 function catChord(){
 	if (step % 16 == 0){
 		l_hand.y = 422;
 		l_hand.texture = PIXI.loader.resources["assets/l_hand_down.png"].texture;
 	}
 	if ((step + 1) % 16 == 0){
-		l_hand.y = 350;
 		l_hand.x = 870;
 		l_hand.y = 326;
 		l_hand.texture = PIXI.loader.resources["assets/l_hand_up.png"].texture;
@@ -129,7 +122,7 @@ function catBeat(){
 function catMelody(mel){
 	r_hand.texture = PIXI.loader.resources["assets/l_hand_down.png"].texture;
 	r_hand.x = 550 - mel * 4;
-	r_hand.y = 330;
+	r_hand.y = 348 - mel * 2;
 
 	setTimeout(function(){
 		r_hand.texture = PIXI.loader.resources["assets/r_hand_up.png"].texture;
