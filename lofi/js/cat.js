@@ -50,7 +50,6 @@ PIXI.loader
 	.add("assets/l_hand_down.png")
 	.add("assets/r_hand_up.png")
 	.add("assets/r_hand_down.png")
-	.add("assets/head.png")
 	.add("assets/cat.png")
 	.add("assets/piano.png")
 	.load(setup);
@@ -99,15 +98,13 @@ function setup() {
 }
 
 function catChord(){
-	if (step % 16 == 0){
 		l_hand.y = 422;
 		l_hand.texture = PIXI.loader.resources["assets/l_hand_down.png"].texture;
-	}
-	if ((step + 1) % 16 == 0){
+	setTimeout(function(){
 		l_hand.x = 870;
 		l_hand.y = 326;
 		l_hand.texture = PIXI.loader.resources["assets/l_hand_up.png"].texture;
-	}
+	},165)
 }
 
 function catBeat(){
@@ -133,6 +130,5 @@ function catMelody(mel){
 }
 
 function catFunction(){
-	catChord();
 	catBeat();
 }

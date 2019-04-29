@@ -1,4 +1,3 @@
-var playing = false;
 var tempo = randomBetween(60, 85);
 var step = 0;
 var volume = 0;
@@ -12,9 +11,7 @@ function play(){
 			beat();
 			chords();
 			catFunction();
-			if(step > 64){
-				melody();
-			}
+			melody();
 			step = step + 1;
 		}, 15000/tempo)
 		noise.play();

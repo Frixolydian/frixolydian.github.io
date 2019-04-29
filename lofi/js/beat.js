@@ -5,7 +5,7 @@ var hihat
 var kick
 
 function createBeat(){
-	kick = 	[1,0,0,0,
+	kick =	[1,0,0,0,
 			0,0,0,0,
 			0,0,0,0,
 			0,0,0,0,
@@ -25,7 +25,6 @@ function createBeat(){
 			kick[randomBetween(1, 15)] = 1;
 		}
 	}
-
 
 	//duplicate first or create a new
 
@@ -53,24 +52,20 @@ function createBeat(){
 	}
 
 	snare = [0,0,0,0,
-				1,0,0,0,
-				0,0,0,0,
-				1,0,0,0,
-				0,0,0,0,
-				1,0,0,0,
-				0,0,0,0,
-				1,0,0,0];
+			1,0,0,0,
+			0,0,0,0,
+			1,0,0,0,
+			0,0,0,0,
+			1,0,0,0,
+			0,0,0,0,
+			1,0,0,0];
 
-	hihat = [1,0,1,0,
-				1,0,1,0,
-				1,0,1,0,
-				1,0,1,0,
-				1,0,1,0,
-				1,0,1,0,
-				1,0,1,0,
-				1,0,1,0];
+	hihat = [];
 
-	if (Math.seededRandom() < 0.7){
+//	hihatType = 2;
+	hihatType = randomBetween(0,2);
+
+	if (hihatType == 0){
 		hihat = [0,0,1,0,
 				0,0,1,0,
 				0,0,1,0,
@@ -80,13 +75,47 @@ function createBeat(){
 				0,0,1,0,
 				0,0,1,0];
 	}
+	else if(hihatType == 1){
+		hihat = [1,0,1,0,
+				1,0,1,0,
+				1,0,1,0,
+				1,0,1,0,
+				1,0,1,0,
+				1,0,1,0,
+				1,0,1,0,
+				1,0,1,0];
+	}
+	else if(hihatType == 2){
+		hihat = [1,1,1,1,
+				1,1,1,1,
+				1,1,1,1,
+				1,1,1,1,
+				1,1,1,1,
+				1,1,1,1,
+				1,1,1,1,
+				1,1,1,1];		
+	}
 }
+	openhihat = [0,0,0,0,
+				0,0,0,0,
+				0,0,1,0,
+				0,0,0,0,
+				0,0,0,0,
+				0,0,0,0,
+				0,0,1,0,
+				0,0,0,0];
 
 createBeat();
 
-kickIntro = 64 * randomBetween(0,2)
-snareIntro = 64 * randomBetween(0,2)
-hihatIntro = 64 * randomBetween(0,2)
+var kickIntro = 64 * randomBetween(0,2);
+var snareIntro = 64 * randomBetween(0,2);
+var hihatIntro = 64 * randomBetween(0,2);
+var hihatDelay = randomBetween(2,5);
+
+kickIntro = 0
+snareIntro = 0
+hihatIntro = 0
+
 
 function beat(){
 	if (kick[step % 32] == 1 && step >= kickIntro){
@@ -96,12 +125,20 @@ function beat(){
 		snareSound.play();
 	}
 	if (hihat[step % 32] == 1 && step >= hihatIntro){
-		hihatSound.play();
+		setTimeout(function(){
+			hihatSound.volume(0.15 + Math.seededRandom() * 0.1)
+			hihatSound.play();
+		}, randomBetween(5,10))
 	}
-
+	if (openhihat[step % 32] == 1 && step >= hihatIntro){
+		setTimeout(function(){
+			openhihatSound.volume(0.4)
+			openhihatSound.play();
+		}, randomBetween(5,10))
+	}
 	if (step == 256){
-		createBeat();
-		kickSound.volume(0.7)
+//		createBeat();
+//		kickSound.volume(0.7)
 //		hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.25})
 //		console.log('change!!')
 	}

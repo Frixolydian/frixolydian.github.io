@@ -126,7 +126,90 @@ function playChord(chord){
 		}
 	}
 }
+var ornamentRhythm = [1,0,0,0,
+				0,0,0,0,
+				0,0,0,0,
+				0,0,0,0,
+				1,0,0,0,
+				0,0,0,0,
+				0,0,0,0,
+				0,0,0,0];
 
+function createornamentRhythm(){
+	ornamentRhythm = [1,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					1,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0];
+
+	//add second beat kick
+	if (Math.seededRandom() > 0.1){
+		ornamentRhythm[8] = 1;
+	}
+
+	//add three more hits
+	for(var i = 0; i < 3; i++){
+		if (Math.seededRandom() > 0.5){
+			ornamentRhythm[randomBetween(1, 15)] = 1;
+		}
+	}
+
+	//duplicate first or create a new
+
+	ornamentRhythm.twoPhrase = false;
+	if (Math.seededRandom() > 0.8){
+		ornamentRhythm.twoPhrase = true;
+	}
+
+	if (ornamentRhythm.twoPhrase == true){
+		for(var i = 0; i < 16; i++){
+			kick[i + 16] = kick[i];
+		}
+	}
+	else{
+		//add second beat kick
+		if (Math.seededRandom() > 0.1){
+			ornamentRhythm[24] = 1;
+		}
+		//add three more hits
+		for(var i = 0; i < 3; i++){
+			if (Math.seededRandom() > 0.5){
+				ornamentRhythm[randomBetween(17, 31)] = 1;
+			}
+		}
+	}
+}
+
+createornamentRhythm();
+
+function playOrnament(chord){
+	var bass = Number(chord.substring(1,3));
+	var tones
+	switch(chord.substring(0, 1)){
+		case 'm':
+			tones = maj;
+			break;
+		case 'n':
+			tones = min;
+			break;
+		case 'd':
+			tones = dom;
+			break;
+	}
+	for (var i in tones){
+		if (Math.seededRandom() > 0.6){
+			pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.4);
+			pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+			if (chordsKeys){
+				keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.10);
+				keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+			}
+		}
+	}
+}
 
 function chords(){
 	if (step % 16 == 0){
@@ -135,6 +218,13 @@ function chords(){
 		}
 		playChord(progression[(step / 16) % 8]);
 		playBass(progression[(step / 16) % 8]);
-//		text.text = progressionLog[(step / 16) % 8];
+		catChord();
+		document.getElementById('display').innerHTML = progressionLog[(step / 16) % 8];
+	}
+	else{
+		if (kick[step % 32] == 1 && Math.seededRandom() > 0.5){
+			playOrnament(progression[(Math.floor(step / 16)) % 8]);
+			catChord();
+		}
 	}
 }

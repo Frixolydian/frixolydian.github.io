@@ -54,6 +54,51 @@ scales['d12'] = [1,3,4,6,8,9,11,13,15,16,18,20,21,23,25];
 
 var mel = 7;
 
+var melodyRhythm =	[0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0];
+
+console.log(melodyRhythm.length)
+
+
+
+function createMelodyRhythm(){
+	melodyRhythm =	[0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0,
+					0,0,0,0];
+	var repeatGap = randomBetween(1,9);
+	var melodyStep = -1;
+	while (melodyStep < 32){
+		if (Math.seededRandom() > 0.5){
+			repeatGap = randomBetween(1,5);
+			melodyStep += repeatGap;
+		}
+		else{
+			melodyStep += repeatGap;
+		}
+		if (Math.seededRandom() > 0.85){
+			melodyStep += randomBetween(6,12);
+		}
+		melodyRhythm[melodyStep] = 1;
+	}
+	console.log(melodyRhythm)
+}
+createMelodyRhythm();
+
+
+
+
+
 function moveMelody(){
 	//jump melody
 	if (Math.seededRandom() < 0.3){
@@ -83,17 +128,25 @@ function moveMelody(){
 	}
 }
 
+
+
+
+
 function melody(){
-	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.01){
+//	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.01){
+	if (melodyRhythm[step % 32] == 1){
 		moveMelody();
 		var i = (progression[(Math.floor(step / 16)) % 8])
 		var k = scales[i][mel]
-		pianoSounds[getNote(3, (k + key - 5))].volume(0.9);
-		pianoSounds[getNote(3, (k + key) - 5)].play();
+		pianoSounds[getNote(4, (k + key - 5))].volume(0.9);
+		pianoSounds[getNote(4, (k + key) - 5)].play();
 		if (melodyKeys){
-			keySounds[getNote(2, (k + key - 5))].volume(0.2);
-			keySounds[getNote(2, (k + key) - 5)].play();
+			keySounds[getNote(3, (k + key - 5))].volume(0.2);
+			keySounds[getNote(3, (k + key) - 5)].play();
 		}
 		catMelody(mel);
+	}
+	if(step % 64 == 0){
+		createMelodyRhythm();
 	}
 }

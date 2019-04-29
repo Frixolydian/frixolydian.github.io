@@ -1,3 +1,5 @@
+var playing = false;
+
 //PRELOAD ALL SOUNDS
 
 //
@@ -81,7 +83,14 @@ var snareSound = new Howl({
 })
 totalSounds += 1;
 var hihatSound = new Howl({
-	src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'],
+	src:['./sound/drum/closedhat/closedhat_' + randomBetween(1,6) + '.wav'],
+	volume: 0.17,
+	preload: true,
+	onload: soundLoaded
+})
+totalSounds += 1;
+var openhihatSound = new Howl({
+	src:['./sound/drum/openhat/openhat_1.wav'],
 	volume: 0.17,
 	preload: true,
 	onload: soundLoaded
