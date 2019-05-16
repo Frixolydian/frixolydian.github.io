@@ -17,13 +17,31 @@ keySamples['fmsynth'] = [];
 
 for (var i = 1; i < 8; i++){
 	for (var j = 0; j < 12; j++){
-		keySamples['piano'][(i - 1) * 12 + j] = new Wad({source: './sound/piano/A' + i +'.ogg', detune: 100 * j})
+		keySamples['piano'][(i - 1) * 12 + j] = new Wad({
+			source: './sound/piano/A' + i +'.ogg',
+			detune: 100 * j,
+			Chorus : {
+			    intensity: 0.2,  //0 to 1
+			    rate: 4,         //0.001 to 8
+			    stereoPhase: 0,  //0 to 180
+			    bypass: 0
+			}
+		})
 	}
 }
 
 for (var i = 1; i < 8; i++){
 	for (var j = 0; j < 12; j++){
-		keySamples['fmsynth'][(i - 1) * 12 + j] = new Wad({source: './sound/fmsynth/A' + (i + 1) +'.ogg', detune: 100 * j})
+		keySamples['fmsynth'][(i - 1) * 12 + j] = new Wad({
+			source: './sound/fmsynth/A' + (i + 1) +'.ogg',
+			detune: 100 * j,
+			Chorus : {
+			    intensity: 0.2,  //0 to 1
+			    rate: 4,         //0.001 to 8
+			    stereoPhase: 0,  //0 to 180
+			    bypass: 0
+			}
+		})
 	}
 }
 
