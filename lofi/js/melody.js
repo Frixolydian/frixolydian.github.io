@@ -138,11 +138,9 @@ function melody(){
 		moveMelody();
 		var i = (progression[(Math.floor(step / 16)) % 8])
 		var k = scales[i][mel]
-		pianoSounds[getNote(4, (k + key - 5))].volume(0.9);
-		pianoSounds[getNote(4, (k + key) - 5)].play();
+			playNote(3, k + key + 1, 'piano', 0.9);
 		if (melodyKeys){
-			keySounds[getNote(3, (k + key - 5))].volume(0.2);
-			keySounds[getNote(3, (k + key) - 5)].play();
+			playNote(3, k + key + 1, 'fmsynth', 0.2);
 		}
 		catMelody(mel);
 	}

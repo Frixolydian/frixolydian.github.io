@@ -14,12 +14,12 @@ function play(){
 			melody();
 			step = step + 1;
 		}, 15000/tempo)
-		noise.play();
+		noise.play({loop: true});
 		setInterval(function(){
 			fadeIn();
 			fadeOut();
 		}, 50 + randomBetween(0,30))
-	},2000)
+	},1000)
 
 	function fadeIn(){
 		if (volume < 100 && startFadeOut == false){

@@ -74,7 +74,7 @@ function progLog(array){
 	for (var i = 0; i < 8; i++){
 		var j;
 		var k;
-		j = notes[(Number(progression[i].substring(1,3)) + key + 6) % 12];
+		j = notes[(Number(progression[i].substring(1,3)) + key) % 12];
 		switch(progression[i].substring(0, 1)){
 			case 'm':
 				k = 'maj7';
@@ -95,12 +95,11 @@ progLog(progression)
 
 function playBass(chord){
 	var bass = Number(chord.substring(1,3));
-	pianoSounds[getNote(1, (bass + key - 6) % 12)].volume(0.5);	
-	pianoSounds[getNote(1, (bass + key - 6) % 12)].play();
+	playNote(1, (bass + key) % 12, 'piano', 0.5);
 }
 
 var maj = [0, 4, 7, 11, 2]; //9th optional :)
-var min = [0, 3, 7, 10]; //9th optional :)
+var min = [0, 3, 7, 10, 5]; //9th optional :)
 var dom = [0, 7, 10, 2, 5]; //someday ill get to extensions lol
 
 function playChord(chord){
@@ -118,11 +117,9 @@ function playChord(chord){
 			break;
 	}
 	for (var i in tones){
-		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.5);
-		pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+		playNote(2, tones[i] + bass + key, 'piano', 0.5);
 		if (chordsKeys){
-			keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.15);
-			keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+			playNote(1, tones[i] + bass + key, 'fmsynth', 0.15);
 		}
 	}
 }
@@ -201,21 +198,17 @@ function playOrnament(chord){
 	}
 	for (var i in tones){
 		if (Math.seededRandom() > 0.6){
-			pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.4);
-			pianoSounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+			playNote(2, tones[i] + bass + key, 'piano', 0.1);
 			if (chordsKeys){
-				keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].volume(0.10);
-				keySounds[getNote(3, (tones[i] + bass + key - 6) % 12)].play();
+				playNote(1, tones[i] + bass + key, 'fmsynth', 0.05);
 			}
 		}
 	}
 }
 
+
 function chords(){
 	if (step % 16 == 0){
-		for (var i = 0; i < pianoSounds.length; i++){
-			pianoSounds[i].stop();
-		}
 		playChord(progression[(step / 16) % 8]);
 		playBass(progression[(step / 16) % 8]);
 		catChord();

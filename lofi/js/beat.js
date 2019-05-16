@@ -126,13 +126,13 @@ function beat(){
 	}
 	if (hihat[step % 32] == 1 && step >= hihatIntro){
 		setTimeout(function(){
-			hihatSound.volume(0.15 + Math.seededRandom() * 0.1)
+			hihatSound.volume = 0.15 + Math.seededRandom() * 0.1;
 			hihatSound.play();
 		}, randomBetween(5,10))
 	}
 	if (openhihat[step % 32] == 1 && step >= hihatIntro){
 		setTimeout(function(){
-			openhihatSound.volume(0.4)
+			openhihatSound.volume = 0.4;
 			openhihatSound.play();
 		}, randomBetween(5,10))
 	}

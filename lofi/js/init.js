@@ -1,4 +1,3 @@
-
 totalSounds = 0;
 loadedSounds = 0;
 
@@ -42,9 +41,8 @@ function randomBetween(min,max){
     return Math.floor(Math.seededRandom()*(max-min+1)+min);
 }
 
-
-var key = Math.floor(Math.seededRandom() * 12 - 7);
-var notes = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+var key = Math.floor(Math.seededRandom() * 12 - 5);
+var notes = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab'];
 
 function getNote(octave, note){
 	return octave * 12 + note;
