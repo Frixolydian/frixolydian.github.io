@@ -63,10 +63,6 @@ var melodyRhythm =	[0,0,0,0,
 					0,0,0,0,
 					0,0,0,0];
 
-console.log(melodyRhythm.length)
-
-
-
 function createMelodyRhythm(){
 	melodyRhythm =	[0,0,0,0,
 					0,0,0,0,
@@ -91,12 +87,8 @@ function createMelodyRhythm(){
 		}
 		melodyRhythm[melodyStep] = 1;
 	}
-	console.log(melodyRhythm)
 }
 createMelodyRhythm();
-
-
-
 
 
 function moveMelody(){
@@ -128,13 +120,16 @@ function moveMelody(){
 	}
 }
 
+var startMelody = 0;
+if (loadSpeech){
+	startMelody = 128;
+}
 
 
 function melody(){
-//	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.01){
-	if (melodyRhythm[step % 32] == 1){
+	if (melodyRhythm[step % 32] == 1 && step >= startMelody){
 		moveMelody();
-		var i = (progression[(Math.floor(step / 16)) % 8])
+		var i = (progression[(Math.floor(step / halfRhythm)) % 8])
 		var k = scales[i][mel]
 		playNote(2, k + key + 1, 'piano', 0.9);
 		if (melodyKeys){
@@ -152,7 +147,7 @@ function melody(){
 inputKeys = [90, 88, 67, 86, 66, 78, 77, 188, 65, 83, 68, 70, 71, 72, 74, 75, 81, 87, 69, 82, 84, 89, 85, 73];
 
 function keyInput(pressed, octave){
-	var i = (progression[(Math.floor(step / 16)) % 8])
+	var i = (progression[(Math.floor(step / halfRhythm)) % 8])
 	var k = scales[i][pressed]
 	playNote(octave, k + key + 1, 'piano', 0.9);
 	if (melodyKeys){

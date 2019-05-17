@@ -63,6 +63,10 @@ function createBeat(){
 	hihat = [];
 
 	hihatType = randomBetween(0,2);
+	if (hihatType == 2 && tempo > 70){
+		hihatType = 1;
+	}
+
 
 	if (hihatType == 0){
 		hihat = [0,0,1,0,
@@ -95,6 +99,10 @@ function createBeat(){
 				1,1,1,1];		
 	}
 }
+	var playOpenHat = false;
+	if (Math.seededRandom() > 0.5){
+		playOpenHat = true;
+	}
 	openhihat = [0,0,0,0,
 				0,0,0,0,
 				0,0,1,0,
@@ -111,7 +119,10 @@ var snareIntro = 64 * randomBetween(0,2);
 var hihatIntro = 64 * randomBetween(0,2);
 var hihatDelay = randomBetween(2,5);
 
-
+if (loadSpeech){
+	kickIntro = 128;
+	snareIntro = 128;
+}
 
 function beat(){
 	if (kick[step % 32] == 1 && step >= kickIntro){
@@ -134,11 +145,5 @@ function beat(){
 			openhihatSound.volume = 0.4;
 			openhihatSound.play();
 		}, randomBetween(5,10))
-	}
-	if (step == 256){
-//		createBeat();
-//		kickSound.volume(0.7)
-//		hihatSound = new Howl({src:['./sound/drum/hats/hat_' + randomBetween(1,10) + '.wav'], volume: 0.25})
-//		console.log('change!!')
 	}
 }

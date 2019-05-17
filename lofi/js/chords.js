@@ -117,15 +117,21 @@ function playChord(chord){
 			break;
 	}
 	for (var i in tones){
-		playNote(1, tones[i] + bass + key, 'piano', 0.5);
+		if (chordsPiano){
+			playNote(1, tones[i] + bass + key, 'piano', 0.3);
+		}
 		if (chordsKeys){
-			playNote(0, tones[i] + bass + key, 'fmsynth', 0.15);
+			playNote(0, tones[i] + bass + key, 'fmsynth', 0.2);
 		}
 	}
 }
 
 var useArpeggio = false;
 if (Math.seededRandom() > 0.5){
+	useArpeggio = true;
+}
+
+if (halfRhythm == 32){
 	useArpeggio = true;
 }
 
@@ -157,17 +163,18 @@ function arpeggio(chord){
 	playNote(0, tones[currentArp[arp]] + bass + key, 'nylon', 0.3);
 }
 
+
 function chords(){
-	if (step % 16 == 0){
-		playChord(progression[(step / 16) % 8]);
-		playBass(progression[(step / 16) % 8]);
+	if (step % halfRhythm == 0){
+		playChord(progression[(step / halfRhythm) % 8]);
+		playBass(progression[(step / halfRhythm) % 8]);
 		catChord();
-		document.getElementById('display').innerHTML = progressionLog[(step / 16) % 8];
+		document.getElementById('display').innerHTML = progressionLog[(step / halfRhythm) % 8];
 	}
 	if (step % 8 == 0){
 		currentArp = arpeggios[randomBetween(0, arpeggios.length - 1)];
 	}
 	if (step % 2 == 0 && useArpeggio){
-		arpeggio(progression[(Math.floor(step / 16)) % 8]);
+		arpeggio(progression[(Math.floor(step / halfRhythm)) % 8]);
 	}
 }

@@ -1,3 +1,12 @@
+var tempo = randomBetween(60, 85);
+var step = 0;
+var volume = 0;
+var startFadeOut = false;
+var playMelody = true;
+var halfRhythm = randomBetween(0, 1) * 16 + 16;
+var mixSpace = 1;
+
+
 totalSounds = 0;
 loadedSounds = 0;
 
@@ -41,7 +50,7 @@ function randomBetween(min,max){
     return Math.floor(Math.seededRandom()*(max-min+1)+min);
 }
 
-var key = randomBetween(0, 11) + 6;
+var key = randomBetween(0, 11) + 3;
 var notes = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab'];
 
 function getNote(octave, note){

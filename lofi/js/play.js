@@ -1,11 +1,3 @@
-var tempo = randomBetween(60, 85);
-var step = 0;
-var volume = 0;
-Howler.volume(0.2);
-var startFadeOut = false;
-var playMelody = true;
-
-
 function play(){
 	playing = true;
 	setTimeout(function(){
@@ -19,6 +11,9 @@ function play(){
 			step = step + 1;
 		}, 15000/tempo)
 		noise.play({loop: true});
+		if (loadSpeech){
+			speech.play();
+		}
 		setInterval(function(){
 			fadeIn();
 			fadeOut();
