@@ -41,7 +41,7 @@ function randomBetween(min,max){
     return Math.floor(Math.seededRandom()*(max-min+1)+min);
 }
 
-var key = Math.floor(Math.seededRandom() * 12 - 5);
+var key = randomBetween(0, 11) + 6;
 var notes = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab'];
 
 function getNote(octave, note){

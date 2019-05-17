@@ -3,6 +3,8 @@ var step = 0;
 var volume = 0;
 Howler.volume(0.2);
 var startFadeOut = false;
+var playMelody = true;
+
 
 function play(){
 	playing = true;
@@ -11,7 +13,9 @@ function play(){
 			beat();
 			chords();
 			catFunction();
-			melody();
+			if (playMelody){
+				melody();
+			}
 			step = step + 1;
 		}, 15000/tempo)
 		noise.play({loop: true});
@@ -43,3 +47,10 @@ function play(){
 		}
 	}
 }
+
+
+document.addEventListener('keydown', function(event) {
+	if (event.keyCode == 13){
+		playMelody = !playMelody;
+	}
+});

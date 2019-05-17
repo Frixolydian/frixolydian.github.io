@@ -62,7 +62,6 @@ function createBeat(){
 
 	hihat = [];
 
-//	hihatType = 2;
 	hihatType = randomBetween(0,2);
 
 	if (hihatType == 0){
@@ -112,9 +111,6 @@ var snareIntro = 64 * randomBetween(0,2);
 var hihatIntro = 64 * randomBetween(0,2);
 var hihatDelay = randomBetween(2,5);
 
-kickIntro = 0
-snareIntro = 0
-hihatIntro = 0
 
 
 function beat(){
@@ -126,7 +122,10 @@ function beat(){
 	}
 	if (hihat[step % 32] == 1 && step >= hihatIntro){
 		setTimeout(function(){
-			hihatSound.volume = 0.15 + Math.seededRandom() * 0.1;
+			hihatSound.setVolume(0.15 + Math.seededRandom() * 0.07);
+			if (hihatType == 2){
+				hihatSound.setVolume(0.05 + Math.seededRandom() * 0.035);
+			}
 			hihatSound.play();
 		}, randomBetween(5,10))
 	}

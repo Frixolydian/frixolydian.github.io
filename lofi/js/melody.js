@@ -130,17 +130,15 @@ function moveMelody(){
 
 
 
-
-
 function melody(){
 //	if (step % 1 == 0 && Math.seededRandom() < 0.12 + randomBetween(1,20) * 0.01){
 	if (melodyRhythm[step % 32] == 1){
 		moveMelody();
 		var i = (progression[(Math.floor(step / 16)) % 8])
 		var k = scales[i][mel]
-			playNote(3, k + key + 1, 'piano', 0.9);
+		playNote(2, k + key + 1, 'piano', 0.9);
 		if (melodyKeys){
-			playNote(3, k + key + 1, 'fmsynth', 0.2);
+			playNote(1, k + key + 1, 'fmsynth', 0.2);
 		}
 		catMelody(mel);
 	}
@@ -148,3 +146,33 @@ function melody(){
 		createMelodyRhythm();
 	}
 }
+
+
+//MAKE PLAYER ABLE TO PLAY
+inputKeys = [90, 88, 67, 86, 66, 78, 77, 188, 65, 83, 68, 70, 71, 72, 74, 75, 81, 87, 69, 82, 84, 89, 85, 73];
+
+function keyInput(pressed, octave){
+	var i = (progression[(Math.floor(step / 16)) % 8])
+	var k = scales[i][pressed]
+	playNote(octave, k + key + 1, 'piano', 0.9);
+	if (melodyKeys){
+		playNote(octave - 1, k + key + 1, 'fmsynth', 0.2);
+	}
+	catMelody(pressed);
+}
+
+document.addEventListener('keydown', function(event) {
+	for (var i = 0; i < 24; i++){
+		if (inputKeys[i] == event.keyCode){
+			if (i < 8){
+				keyInput(i, 1);
+			}
+			else if (i < 16){
+				keyInput(i - 8, 2);				
+			}
+			else{
+				keyInput(i - 16, 3);
+			}
+		}
+	}
+});

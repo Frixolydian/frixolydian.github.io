@@ -98,9 +98,9 @@ function playBass(chord){
 	playNote(1, (bass + key) % 12, 'piano', 0.5);
 }
 
-var maj = [0, 4, 7, 11, 2]; //9th optional :)
-var min = [0, 3, 7, 10, 5]; //9th optional :)
-var dom = [0, 7, 10, 2, 5]; //someday ill get to extensions lol
+var maj = [0, 4, 7, 11, 14]; //9th optional :)
+var min = [0, 3, 7, 10, 17]; //9th optional :)
+var dom = [0, 5, 7, 10, 14]; //someday ill get to extensions lol
 
 function playChord(chord){
 	var bass = Number(chord.substring(1,3));
@@ -117,72 +117,29 @@ function playChord(chord){
 			break;
 	}
 	for (var i in tones){
-		playNote(2, tones[i] + bass + key, 'piano', 0.5);
+		playNote(1, tones[i] + bass + key, 'piano', 0.5);
 		if (chordsKeys){
-			playNote(1, tones[i] + bass + key, 'fmsynth', 0.15);
-		}
-	}
-}
-var ornamentRhythm = [1,0,0,0,
-				0,0,0,0,
-				0,0,0,0,
-				0,0,0,0,
-				1,0,0,0,
-				0,0,0,0,
-				0,0,0,0,
-				0,0,0,0];
-
-function createornamentRhythm(){
-	ornamentRhythm = [1,0,0,0,
-					0,0,0,0,
-					0,0,0,0,
-					0,0,0,0,
-					1,0,0,0,
-					0,0,0,0,
-					0,0,0,0,
-					0,0,0,0];
-
-	//add second beat kick
-	if (Math.seededRandom() > 0.1){
-		ornamentRhythm[8] = 1;
-	}
-
-	//add three more hits
-	for(var i = 0; i < 3; i++){
-		if (Math.seededRandom() > 0.5){
-			ornamentRhythm[randomBetween(1, 15)] = 1;
-		}
-	}
-
-	//duplicate first or create a new
-
-	ornamentRhythm.twoPhrase = false;
-	if (Math.seededRandom() > 0.8){
-		ornamentRhythm.twoPhrase = true;
-	}
-
-	if (ornamentRhythm.twoPhrase == true){
-		for(var i = 0; i < 16; i++){
-			kick[i + 16] = kick[i];
-		}
-	}
-	else{
-		//add second beat kick
-		if (Math.seededRandom() > 0.1){
-			ornamentRhythm[24] = 1;
-		}
-		//add three more hits
-		for(var i = 0; i < 3; i++){
-			if (Math.seededRandom() > 0.5){
-				ornamentRhythm[randomBetween(17, 31)] = 1;
-			}
+			playNote(0, tones[i] + bass + key, 'fmsynth', 0.15);
 		}
 	}
 }
 
-createornamentRhythm();
+var useArpeggio = false;
+if (Math.seededRandom() > 0.5){
+	useArpeggio = true;
+}
 
-function playOrnament(chord){
+var arpeggios = [[0,1,2,3],
+				[0,2,1,4],
+				[0,1,3,2],
+				[0,3,2,1],
+				[0,2,4,1],
+				[0,1,0,2],
+]
+
+var currentArp = arpeggios[randomBetween(0, arpeggios.length - 1)];
+
+function arpeggio(chord){
 	var bass = Number(chord.substring(1,3));
 	var tones
 	switch(chord.substring(0, 1)){
@@ -196,16 +153,9 @@ function playOrnament(chord){
 			tones = dom;
 			break;
 	}
-	for (var i in tones){
-		if (Math.seededRandom() > 0.6){
-			playNote(2, tones[i] + bass + key, 'piano', 0.1);
-			if (chordsKeys){
-				playNote(1, tones[i] + bass + key, 'fmsynth', 0.05);
-			}
-		}
-	}
+	var arp = (step % 8) / 2;
+	playNote(0, tones[currentArp[arp]] + bass + key, 'nylon', 0.3);
 }
-
 
 function chords(){
 	if (step % 16 == 0){
@@ -214,10 +164,10 @@ function chords(){
 		catChord();
 		document.getElementById('display').innerHTML = progressionLog[(step / 16) % 8];
 	}
-	else{
-		if (kick[step % 32] == 1 && Math.seededRandom() > 0.5){
-			playOrnament(progression[(Math.floor(step / 16)) % 8]);
-			catChord();
-		}
+	if (step % 8 == 0){
+		currentArp = arpeggios[randomBetween(0, arpeggios.length - 1)];
+	}
+	if (step % 2 == 0 && useArpeggio){
+		arpeggio(progression[(Math.floor(step / 16)) % 8]);
 	}
 }
