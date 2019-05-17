@@ -16,7 +16,7 @@ var loadSpeech = false;
 if (Math.seededRandom() > 0){
 	loadSpeech = true;
 	var speech = new Wad({
-		source: './sound/speech/speech_' + randomBetween(7,7) +'.ogg',
+		source: './sound/speech/speech_' + randomBetween(1,7) +'.ogg',
 		detune: randomBetween(-100, 100), volume: 1,
 		filter: [
 			{type : 'lowpass', frequency : 1500, q : 3},
