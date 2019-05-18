@@ -99,7 +99,7 @@ function playBass(chord){
 }
 
 var maj = [0, 4, 7, 11, 14]; //9th optional :)
-var min = [0, 3, 7, 10, 17]; //9th optional :)
+var min = [0, 3, 7, 10, 12]; //9th optional :)
 var dom = [0, 5, 7, 10, 14]; //someday ill get to extensions lol
 
 function playChord(chord){
@@ -116,9 +116,9 @@ function playChord(chord){
 			tones = dom;
 			break;
 	}
-	for (var i in tones){
+	for (var i = 0; i < 5; i++){
 		if (chordsPiano == true){
-			playNote(1, tones[i] + bass + key, 'piano', 0.4);
+			playNote(1, tones[i] + bass + key, 'piano', 0.7);
 		}
 		if (chordsKeys == true){
 			playNote(0, tones[i] + bass + key, 'fmsynth', 0.3);
