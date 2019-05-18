@@ -7,16 +7,27 @@ window.onclick = function(){
 	}
 };
 
+setTimeout(function(){
+	if (playing == false){
+		play();
+	}
+}, 1500)
+
 var noise = new Wad({
 	source: './sound/noise/noise_' + randomBetween(1,3) +'.ogg',
 	volume: 0.2
 })
 
+var intro = new Wad({
+	source: './sound/intro/intro_' + randomBetween(1,3) +'.ogg',
+	volume: 0.7
+})
+
 var loadSpeech = false;
-if (Math.seededRandom() > 0){
+if (Math.seededRandom() > 0.5){
 	loadSpeech = true;
 	var speech = new Wad({
-		source: './sound/speech/speech_' + randomBetween(1,7) +'.ogg',
+		source: './sound/speech/speech_' + randomBetween(1,8) +'.ogg',
 		detune: randomBetween(-100, 100), volume: 1,
 		filter: [
 			{type : 'lowpass', frequency : 1500, q : 3},
@@ -59,7 +70,7 @@ for (var i = 1; i < 7; i++){
 	}
 }
 
-for (var i = 2; i < 6; i++){
+for (var i = 2; i < 7; i++){
 	for (var j = 0; j < 12; j++){
 		keySamples['nylon'][(i - 2) * 12 + j] = new Wad({
 			source: './sound/nylon/A' + i +'.ogg',
@@ -84,20 +95,25 @@ function playNote(octave, note, instrument, volume = 1){
 
 //check if keys are to be loaded or not
 var melodyKeys = false;
+var chordsPiano = false;
+var chordsKeys = false;
+var useArpeggio = false;
+
 if (Math.seededRandom() > 0.5){
 	melodyKeys = true;
 }
-var chordsPiano = false;
+
 if (Math.seededRandom() > 0.5){
 	chordsPiano = true;
 }
 
-var chordsKeys = false;
-if (Math.seededRandom() > 0.5 || chordsPiano == false){
+if (Math.seededRandom() > 0.5 && chordsPiano == true){
 	chordsKeys = true;
 }
 
-
+if (Math.seededRandom() > 0.7 || chordsPiano == false){
+	useArpeggio = true;
+}
 
 
 totalSounds += 1;
@@ -109,8 +125,25 @@ var kickSound = new Wad({
 var snareSound = new Wad({
 	source: './sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav',
 	volume: 0.7,
+	filter: [
+		{type : 'lowpass', frequency : randomBetween(6000, 8000), q : 1},
+	]
 })
 
-var hihatSound = new Wad({source: './sound/drum/closedhat/closedhat_' + randomBetween(1,6) + '.wav', volume: 0.17})
+var hihatSound = new Wad({
+	source: './sound/drum/closedhat/closedhat_' + randomBetween(1,6) + '.wav',
+	volume: 0.17,
+	filter: [
+		{type : 'lowpass', frequency : randomBetween(4000, 5000), q : 1},
+	]
+})
 
-var openhihatSound = new Wad({source: './sound/drum/openhat/openhat_1.wav', volume: 0.17})
+var openhihatSound = new Wad({
+	source: './sound/drum/openhat/openhat_1.wav',
+	volume: 0.17
+})
+
+var snapSound = new Wad({
+	source: './sound/drum/snap/snap_' + randomBetween(1,4) + '.wav',
+	volume: 0.2
+})

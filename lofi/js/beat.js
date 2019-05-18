@@ -118,6 +118,12 @@ var kickIntro = 64 * randomBetween(0,2);
 var snareIntro = 64 * randomBetween(0,2);
 var hihatIntro = 64 * randomBetween(0,2);
 var hihatDelay = randomBetween(2,5);
+var snap = false;
+
+if (Math.seededRandom() > 0.5){
+	snap = true;
+}
+
 
 if (loadSpeech){
 	kickIntro = 128;
@@ -130,6 +136,9 @@ function beat(){
 	}
 	if (snare[step % 32] == 1 && step >= snareIntro){
 		snareSound.play();
+	}
+	if (snare[step % 32] == 1 && snap){
+		snapSound.play();
 	}
 	if (hihat[step % 32] == 1 && step >= hihatIntro){
 		setTimeout(function(){

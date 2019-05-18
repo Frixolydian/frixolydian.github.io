@@ -117,18 +117,13 @@ function playChord(chord){
 			break;
 	}
 	for (var i in tones){
-		if (chordsPiano){
-			playNote(1, tones[i] + bass + key, 'piano', 0.3);
+		if (chordsPiano == true){
+			playNote(1, tones[i] + bass + key, 'piano', 0.4);
 		}
-		if (chordsKeys){
-			playNote(0, tones[i] + bass + key, 'fmsynth', 0.2);
+		if (chordsKeys == true){
+			playNote(0, tones[i] + bass + key, 'fmsynth', 0.3);
 		}
 	}
-}
-
-var useArpeggio = false;
-if (Math.seededRandom() > 0.5){
-	useArpeggio = true;
 }
 
 if (halfRhythm == 32){

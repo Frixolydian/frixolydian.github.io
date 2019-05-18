@@ -1,23 +1,26 @@
 function play(){
 	playing = true;
 	setTimeout(function(){
-		setInterval(function(){
-			beat();
-			chords();
-			catFunction();
-			if (playMelody){
-				melody();
-			}
-			step = step + 1;
-		}, 15000/tempo)
+		intro.play();
 		noise.play({loop: true});
-		if (loadSpeech){
-			speech.play();
-		}
-		setInterval(function(){
-			fadeIn();
-			fadeOut();
-		}, 50 + randomBetween(0,30))
+		setTimeout(function(){
+			setInterval(function(){
+				beat();
+				chords();
+				catFunction();
+				if (playMelody){
+					melody();
+				}
+				step = step + 1;
+			}, 15000/tempo)
+			if (loadSpeech){
+				speech.play();
+			}
+			setInterval(function(){
+				fadeIn();
+				fadeOut();
+			}, 50 + randomBetween(0,30))
+		},3000)
 	},1000)
 
 	function fadeIn(){
@@ -45,7 +48,7 @@ function play(){
 
 
 document.addEventListener('keydown', function(event) {
-	if (event.keyCode == 13){
+	if (event.keyCode == 32){
 		playMelody = !playMelody;
 	}
 });

@@ -3,7 +3,7 @@ var step = 0;
 var volume = 0;
 var startFadeOut = false;
 var playMelody = true;
-var halfRhythm = randomBetween(0, 1) * 16 + 16;
+var halfRhythm = 16;
 var mixSpace = 1;
 
 

@@ -125,15 +125,26 @@ if (loadSpeech){
 	startMelody = 128;
 }
 
+var melodyInstrument = 'piano';
+
+if (Math.seededRandom() > 0.7){
+	melodyInstrument = 'nylon';
+}
+
 
 function melody(){
 	if (melodyRhythm[step % 32] == 1 && step >= startMelody){
 		moveMelody();
 		var i = (progression[(Math.floor(step / halfRhythm)) % 8])
 		var k = scales[i][mel]
-		playNote(2, k + key + 1, 'piano', 0.9);
+		if (melodyInstrument == 'piano'){
+			playNote(2, k + key + 1, 'piano', 0.8);
+		}
+		if (melodyInstrument == 'nylon'){
+			playNote(0, k + key + 1, 'nylon', 0.9);
+		}
 		if (melodyKeys){
-			playNote(1, k + key + 1, 'fmsynth', 0.2);
+			playNote(1, k + key + 1, 'fmsynth', 0.3);
 		}
 		catMelody(mel);
 	}
@@ -149,7 +160,12 @@ inputKeys = [90, 88, 67, 86, 66, 78, 77, 188, 65, 83, 68, 70, 71, 72, 74, 75, 81
 function keyInput(pressed, octave){
 	var i = (progression[(Math.floor(step / halfRhythm)) % 8])
 	var k = scales[i][pressed]
-	playNote(octave, k + key + 1, 'piano', 0.9);
+	if (melodyInstrument == 'piano'){
+		playNote(octave, k + key + 1, 'piano', 0.9);
+	}
+	if (melodyInstrument == 'nylon'){
+		playNote(octave - 1, k + key + 1, 'nylon', 0.9);		
+	}
 	if (melodyKeys){
 		playNote(octave - 1, k + key + 1, 'fmsynth', 0.2);
 	}
