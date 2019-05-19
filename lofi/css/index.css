@@ -130,7 +130,10 @@ html, body {
 }
 
 .gif img{
-	height: 300px;
+	height: auto;
+	max-height:300px;
+	width:auto;
+	max-width:100%;
 }
 
 .buttons{
