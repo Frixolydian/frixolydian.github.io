@@ -11,8 +11,7 @@ var gifList = [
 'https://media1.tenor.com/images/3858f9b791b3d00b871043d32892e0c1/tenor.gif?itemid=11805013',
 'https://media1.tenor.com/images/bf5c091558cad114ab73485814d9c1bc/tenor.gif?itemid=5484757',
 'https://media.tenor.com/images/77c8642435cf0585f80a9f488a5516e0/tenor.gif',
-'https://media1.tenor.com/images/622431b9aafb96fda136a503f9508e66/tenor.gif?itemid=10932378',
-''
+'https://media1.tenor.com/images/622431b9aafb96fda136a503f9508e66/tenor.gif?itemid=10932378'
 ]
 
 document.getElementById('gif').src= gifList[randomBetween(0, gifList.length - 1)];

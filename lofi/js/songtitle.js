@@ -80,7 +80,8 @@ w['noun'] = ['cola',
 'flower',
 'tree',
 'clothes',
-'style'
+'style',
+'mojito'
 ];
 
 w['adj'] = ['great',
@@ -265,8 +266,12 @@ switch (a){
 	}
 }
 
-document.getElementById('songTitle').innerHTML = coolText(w.phrase(randomBetween(0, 14)))
+document.getElementById('songTitle').innerHTML = coolText(w.phrase(randomBetween(0, 20)))
 
+
+/*
 for (i = 0; i < 48; i++){
 	console.log(coolText(w.phrase(randomBetween(0, 19))))
 }
+
+*/
