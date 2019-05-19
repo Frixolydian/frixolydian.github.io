@@ -154,11 +154,11 @@ var coolEnd = ['', '】', '〗', '〙', '〛', '﹞', '』'];
 var coolText = function(string){
 	var i = string
 	var j = randomBetween(0, coolStart.length - 1);
-	if (Math.seededRandom() < 0.7 && i.length < 16){
-		i = vap(i);
-	}
 	if (Math.seededRandom() < 0.3){
 		i = coolStart[j] + i + coolEnd[j];
+	}
+	if (Math.seededRandom() < 0.7 && i.length < 16){
+		i = vap(i);
 	}
 	return i
 }

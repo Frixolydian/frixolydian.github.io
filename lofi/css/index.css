@@ -65,9 +65,9 @@ html, body {
 
 .songTitle{
 	float:left;
-	margin-left: 30%;
-	margin-right: 30%;
-	width:40%;
+	margin-left: 10%;
+	margin-right: 10%;
+	width:80%;
 	color: #fff;
 }
 
@@ -122,9 +122,9 @@ html, body {
 
 .gif{
 	float:left;
-	margin-left: 30%;
-	margin-right: 30%;
-	width:40%;
+	margin-left: 10%;
+	margin-right: 10%;
+	width:80%;
 	color: #fff;
 	text-align:center;
 }
@@ -138,9 +138,9 @@ html, body {
 
 .buttons{
 	float:left;
-	margin-left: 30%;
-	margin-right: 30%;
-	width:40%;
+	margin-left: 10%;
+	margin-right: 10%;
+	width:80%;
 	color: #fff;
 }
 
@@ -191,10 +191,10 @@ html, body {
 
 .playBar{
 	float:left;
-	margin-left: 30%;
-	margin-right: 30%;
+	margin-left: 10%;
+	margin-right: 10%;
+	width:80%;
 	margin-top: 20px;
-	width:40%;
 	color: #fff;
 }
 
@@ -214,4 +214,29 @@ html, body {
 	height: 6px;
 	border-radius: 8px;
 	background-color: #dd80ee;
+}
+
+
+@media only screen and (min-width: 768px) {
+.songTitle{
+	margin-left: 30%;
+	margin-right: 30%;
+	width:40%;
+}
+.gif{
+	margin-left: 30%;
+	margin-right: 30%;
+	width:40%;
+}
+.buttons{
+	margin-left: 30%;
+	margin-right: 30%;
+	width:40%;
+}
+.playBar{
+	margin-left: 30%;
+	margin-right: 30%;
+	width:40%;
+}
+
 }
