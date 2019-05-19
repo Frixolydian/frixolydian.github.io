@@ -5,18 +5,18 @@ function playBar(){
 }
 
 function endSong(){
-	setInterval(function(){
-		if (loopSong == true){
-			'http://lofibot.com/?seed=' + (Number(seedNumber));
-		}
-		else{
-			'http://lofibot.com/?seed=' + (Number(seedNumber) + 1);
-		}
-	}, 1500)
+	console.log('Next song.')
+	if (loopSong == true){
+		window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber));
+	}
+	else{
+		window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) + 1);
+	}
 }
 
 
 function play(){
+	console.log('Started Playing.')
 	playing = true;
 	setTimeout(function(){
 		intro.play();
@@ -30,10 +30,10 @@ function play(){
 						melody();
 					}
 					step = step + 1;
-					if (step == 512){
-						endSong();
-					}
 					playBar();
+				}
+				if (step == 512){
+					endSong();
 				}
 			}, 15000/tempo)
 			if (loadSpeech){
@@ -80,22 +80,27 @@ window.onclick = function(){
 	}
 };
 
+console.log('AudioContext ' + Wad.audioContext.state + '.')
+
 setTimeout(function(){
-	if (playing == false){
+	if (playing == false && Wad.audioContext.state == 'running'){
 		play();
 	}
 }, 1500)
 
 
 document.getElementById('previousButton').onclick = function(){
+	document.getElementById('previousButton').className = 'buttonOff';
 	window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) - 1);
 }
 
 document.getElementById('nextButton').onclick = function(){
+	document.getElementById('nextButton').className = 'buttonOff';
 	window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) + 1);
 }
 
 document.getElementById('shuffleButton').onclick = function(){
+	document.getElementById('shuffleButton').className = 'buttonOff';
 	window.location.href = 'http://lofibot.com/?seed=' + Math.floor(Math.random() * 1000000);
 }
 

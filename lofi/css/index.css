@@ -125,15 +125,15 @@ html, body {
 	margin-left: 10%;
 	margin-right: 10%;
 	width:80%;
+	height: 300px;
 	color: #fff;
 	text-align:center;
+	background-color: #000;
 }
 
 .gif img{
-	height: auto;
-	max-height:300px;
+	height: 100%;
 	width:auto;
-	max-width:100%;
 }
 
 .buttons{
@@ -216,6 +216,10 @@ html, body {
 	background-color: #dd80ee;
 }
 
+.fb{
+	float:right;
+	margin-right:20px;
+}
 
 @media only screen and (min-width: 768px) {
 .songTitle{
