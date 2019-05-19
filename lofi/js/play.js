@@ -7,10 +7,10 @@ function playBar(){
 function endSong(){
 	setInterval(function(){
 		if (loopSong == true){
-			window.location.href = window.location.href.split('/')[0] + '/?seed=' + (Number(seedNumber));
+			'http://lofibot.com/?seed=' + (Number(seedNumber));
 		}
 		else{
-			window.location.href = window.location.href.split('/')[0] + '/?seed=' + (Number(seedNumber) + 1);
+			'http://lofibot.com/?seed=' + (Number(seedNumber) + 1);
 		}
 	}, 1500)
 }
@@ -88,15 +88,15 @@ setTimeout(function(){
 
 
 document.getElementById('previousButton').onclick = function(){
-	window.location.href = window.location.href.split('/')[0] + '/?seed=' + (Number(seedNumber) - 1);
+	window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) - 1);
 }
 
 document.getElementById('nextButton').onclick = function(){
-	window.location.href = window.location.href.split('/')[0] + '/?seed=' + (Number(seedNumber) + 1);
+	window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) + 1);
 }
 
 document.getElementById('shuffleButton').onclick = function(){
-	window.location.href = window.location.href.split('/')[0] + '/?seed=' + Math.floor(Math.random() * 1000000);
+	window.location.href = 'http://lofibot.com/?seed=' + Math.floor(Math.random() * 1000000);
 }
 
 document.getElementById('melodyButton').onclick = function(){
@@ -115,7 +115,7 @@ document.getElementById('copyButton').onclick = function(){
    // Create new element
 	var el = document.createElement('textarea');
 	// Set value (string to be copied)
-	el.value = window.location.href.split('/')[0] + '/?seed=' + (Number(seedNumber));
+	el.value = 'http://lofibot.com/?seed=' + (Number(seedNumber));
 	// Set non-editable to avoid focus and move outside of view
 	el.setAttribute('readonly', '');
 	el.style = {position: 'absolute', left: '-9999px'};
