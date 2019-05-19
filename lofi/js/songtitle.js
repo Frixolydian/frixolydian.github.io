@@ -12,7 +12,7 @@ w['noun'] = ['cola',
 'eye',
 'expectations',
 'feeling',
-'televisor',
+'television',
 'mind',
 'dreams',
 'car',
@@ -32,14 +32,13 @@ w['noun'] = ['cola',
 'snow',
 'requiem',
 'bling',
-'death',
-'samurai',
 'beer',
 'cat',
 'piano',
 'drink',
 'coffee',
 'tea',
+'bubble tea',
 'drugs',
 'trip',
 'tape',
@@ -51,7 +50,38 @@ w['noun'] = ['cola',
 'life',
 'God',
 'heart',
-'look'];
+'look',
+'home',
+'capitalism',
+'communism',
+'bepis',
+'shit',
+'weed',
+'job',
+'latte',
+'space',
+'death',
+'wine',
+'water',
+'cereal',
+'ghost',
+'meme',
+'leaves',
+'message',
+'computer',
+'creep',
+'flamingo',
+'wolf',
+'fox',
+'bird',
+'snail',
+'snake',
+'turtle',
+'flower',
+'tree',
+'clothes',
+'style'
+];
 
 w['adj'] = ['great',
 'nice',
@@ -72,13 +102,26 @@ w['adj'] = ['great',
 'chill',
 'cool',
 'worried',
-'masked',
 'cute',
 'good',
-'suave'];
+'suave',
+'small',
+'big',
+'angry',
+'scared',
+'jealous',
+'shy',
+'hurt',
+'boring',
+'tasty',
+'black',
+'special',
+'first',
+'last'];
 
 w['place'] = ['Hawaii',
 'Tokyo',
+'Paris',
 'Japan',
 'car',
 'apartment',
@@ -89,7 +132,11 @@ w['place'] = ['Hawaii',
 'clouds',
 'elsewhere',
 'stop',
-'Hell'];
+'Hell',
+'China',
+'New York',
+'city',
+'forest'];
 
 w['verb'] = ['love',
 'hate',
@@ -100,11 +147,17 @@ w['verb'] = ['love',
 'think',
 'be',
 'stay',
+'smoke',
 'keep',
 'drink',
 'eat',
 'embrace',
-'chill']
+'chill',
+'fuck',
+'try',
+'hug',
+'do',
+'make']
 
 w['time'] = ['morning',
 'evening',
@@ -179,7 +232,7 @@ switch (a){
 	case 5:
 		return cap(w.w('verb')) + ' your ' + w.w('noun');
 	case 6:
-		return cap(w.w('noun')) + ' head';
+		return cap(w.w('verb')) + ' my ' + w.w('noun');
 	case 7:
 		return cap(w.w('adj')) + ' ' + w.w('time');
 	case 8:
@@ -192,7 +245,28 @@ switch (a){
 		return "we've never met but can we have " + w.w('noun') + " or something";
 	case 12:
 		return cap(w.w('noun')) + ' ' + w.w('noun');
+	case 13:
+		return "I'm " + w.w('adj');
+	case 14:
+		return cap(w.w('time')) + ' ' + w.w('noun');
+	case 15:
+		return cap(w.w('adj')) + ' ' + w.w('time') + ' ' + w.w('noun');
+	case 16:
+		return "But I'm a " + w.w('noun');
+	case 17:
+		return cap(w.w('noun')) + ' head';
+	case 18:
+		return "Just " + w.w('verb');
+	case 19:
+		return cap(w.w('adj')) + " in " + w.w('place');
+	case 20:
+		return "It's " + w.w('adj');
+
 	}
 }
 
-document.getElementById('songTitle').innerHTML = coolText(w.phrase(randomBetween(0, 12)))
+document.getElementById('songTitle').innerHTML = coolText(w.phrase(randomBetween(0, 14)))
+
+for (i = 0; i < 48; i++){
+	console.log(coolText(w.phrase(randomBetween(0, 19))))
+}
