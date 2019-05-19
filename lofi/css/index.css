@@ -129,7 +129,27 @@ html, body {
 	color: #fff;
 	text-align:center;
 	background-color: #000;
+	position:relative;
 }
+
+.tapToPlay{
+    background: black;
+    height: 100%;
+    width: 100%;
+    opacity:0.6;
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 0;
+    line-height:300px;
+   	font-family: Consolas, monaco, monospace;
+	font-size: 32px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+
+}
+
 
 .gif img{
 	height: 100%;
@@ -226,25 +246,25 @@ html, body {
 }
 
 @media only screen and (min-width: 768px) {
-.songTitle{
-	margin-left: 30%;
-	margin-right: 30%;
-	width:40%;
-}
-.gif{
-	margin-left: 30%;
-	margin-right: 30%;
-	width:40%;
-}
-.buttons{
-	margin-left: 30%;
-	margin-right: 30%;
-	width:40%;
-}
-.playBar{
-	margin-left: 30%;
-	margin-right: 30%;
-	width:40%;
+	.songTitle{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.gif{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.buttons{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.playBar{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
 }
 
-}

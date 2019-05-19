@@ -1,3 +1,5 @@
+
+
 function playBar(){
 	if (step <= 512){
 		document.getElementById('playBarDisplay').style.width = ((step / 512) * 100) + '%'
@@ -16,6 +18,7 @@ function endSong(){
 
 
 function play(){
+	document.getElementById('tapToPlay').style.opacity = 0;
 	console.log('Started Playing.')
 	playing = true;
 	setTimeout(function(){
@@ -80,13 +83,11 @@ window.onclick = function(){
 	}
 };
 
-console.log('AudioContext ' + Wad.audioContext.state + '.')
-
 setTimeout(function(){
 	if (playing == false && Wad.audioContext.state == 'running'){
 		play();
 	}
-}, 1500)
+}, 300)
 
 
 document.getElementById('previousButton').onclick = function(){
