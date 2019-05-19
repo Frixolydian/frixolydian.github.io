@@ -102,12 +102,12 @@ if (Math.seededRandom() > 0.7 || chordsPiano == false){
 
 totalSounds += 1;
 var kickSound = new Wad({
-	source: './sound/drum/kick/kick_' + randomBetween(1, 12) + '.wav',
+	source: './sound/drum/kick/kick_' + randomBetween(1, 12) + '.ogg',
 	volume: 0.6,
 })
 
 var snareSound = new Wad({
-	source: './sound/drum/snare/snare_' + randomBetween(1, 19) + '.wav',
+	source: './sound/drum/snare/snare_' + randomBetween(1, 19) + '.ogg',
 	volume: 0.7,
 	filter: [
 		{type : 'lowpass', frequency : randomBetween(6000, 8000), q : 1},
@@ -115,7 +115,7 @@ var snareSound = new Wad({
 })
 
 var hihatSound = new Wad({
-	source: './sound/drum/closedhat/closedhat_' + randomBetween(1,6) + '.wav',
+	source: './sound/drum/closedhat/closedhat_' + randomBetween(1,6) + '.ogg',
 	volume: 0.17,
 	filter: [
 		{type : 'lowpass', frequency : randomBetween(4000, 5000), q : 1},
@@ -123,11 +123,11 @@ var hihatSound = new Wad({
 })
 
 var openhihatSound = new Wad({
-	source: './sound/drum/openhat/openhat_1.wav',
+	source: './sound/drum/openhat/openhat_1.ogg',
 	volume: 0.17
 })
 
 var snapSound = new Wad({
-	source: './sound/drum/snap/snap_' + randomBetween(1,4) + '.wav',
+	source: './sound/drum/snap/snap_' + randomBetween(1,4) + '.ogg',
 	volume: 0.2
 })
