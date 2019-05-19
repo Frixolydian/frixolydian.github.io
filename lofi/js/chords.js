@@ -56,8 +56,6 @@ function addWeak(i){
 }
 
 
-
-
 //add strong beats
 for (var i = 0; i < 4; i++){
 	addStrong(i);
@@ -163,8 +161,6 @@ function chords(){
 	if (step % halfRhythm == 0){
 		playChord(progression[(step / halfRhythm) % 8]);
 		playBass(progression[(step / halfRhythm) % 8]);
-		catChord();
-		document.getElementById('display').innerHTML = progressionLog[(step / halfRhythm) % 8];
 	}
 	if (step % 8 == 0){
 		currentArp = arpeggios[randomBetween(0, arpeggios.length - 1)];

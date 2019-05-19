@@ -1,18 +1,3 @@
-var playing = false;
-
-
-window.onclick = function(){
-	if (playing == false){
-		play();
-	}
-};
-
-setTimeout(function(){
-	if (playing == false){
-		play();
-	}
-}, 1500)
-
 var noise = new Wad({
 	source: './sound/noise/noise_' + randomBetween(1,3) +'.ogg',
 	volume: 0.2
@@ -24,7 +9,7 @@ var intro = new Wad({
 })
 
 var loadSpeech = false;
-if (Math.seededRandom() > 0.5){
+if (Math.seededRandom() > 0){
 	loadSpeech = true;
 	var speech = new Wad({
 		source: './sound/speech/speech_' + randomBetween(1,8) +'.ogg',
@@ -102,7 +87,7 @@ if (Math.seededRandom() > 0.5){
 	melodyKeys = true;
 }
 
-if (Math.seededRandom() > 0.5){
+if (Math.seededRandom() > 0.2){
 	chordsPiano = true;
 }
 

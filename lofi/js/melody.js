@@ -146,7 +146,6 @@ function melody(){
 		if (melodyKeys){
 			playNote(1, k + key + 1, 'fmsynth', 0.3);
 		}
-		catMelody(mel);
 	}
 	if(step % 64 == 0){
 		createMelodyRhythm();
@@ -169,7 +168,6 @@ function keyInput(pressed, octave){
 	if (melodyKeys){
 		playNote(octave - 1, k + key + 1, 'fmsynth', 0.2);
 	}
-	catMelody(pressed);
 }
 
 document.addEventListener('keydown', function(event) {

@@ -4,7 +4,7 @@
 	<meta charset=utf-8>
 	<head>
 		<title>【ｌｏｆｉｂｏｔ】</title>
-	    <style> body { margin: 0; background: #fff;} </style>
+	    <style> body { margin: 0; background: #28282f;} </style>
 		<script src="lib/howler.min.js"></script>
 		<script src="lib/wad.min.js"></script>
 		<script src="lib/pixi.min.js"></script>
@@ -13,34 +13,78 @@
 
 	<body>
 
-	<article class = "pixi" id = "pixi">
 
-	</article>
+	<section class = "section1">
+		<article class = "seedDiv">
+			<div class = "seedBorder">
+				<form action="">
+					<input class="seedButton" type="submit" value=""/>
+					<input class="seedInput" id="seedInput" type="number" placeholder="Enter seed" name=seed minlength = 1 maxlength = "6"/>
+				</form>
+			</div>
+		</article>
+	</section>
+
+	<br>
+
+	<section class = "section2">
+		<article class=  "songTitle" style= "height:75px">
+			<div class="square">
+				<img src=./assets/img-note.png>
+			</div>
+			<h1 id="songTitle"></h1>			
+		</article>
+		<article class= "songTitle">
+			<p id="seed" class="seed"> Seed:</p>
+			<img src=./assets/ic-copy.png alt="Copy to clipboard" id="copyButton">
+		</article>
+
+		<article class= "gif">
+			<img id="gif">
+		</article>
+
+		<article class = "buttons">
+			<div class = "buttonContainer">
+				<div id="shuffleButton" class = "button">
+					<img src=./assets/ic-shuffle.png alt="Shuffle">
+				</div>
+
+				<div id="previousButton" class = "button">
+					<img src=./assets/ic-previous.png alt="Previous">
+				</div>
+
+				<div id="melodyButton" class = "button" style = "width: 80px">
+					<img src=./assets/ic-piano.png alt="Toggle Melody" id="melodyDisplay">
+				</div>
+
+				<div id="nextButton" class = "button">
+					<img src=./assets/ic-next.png alt="Next">
+				</div>
+
+				<div id="loopButton" class = "button">
+					<img src=./assets/ic-loop.png alt="Repeat">
+				</div>
+			</div>
+		</article>
+
+		<article class = "playBar">
+			<div class = "playBarBack">
+				<div class = "playBarDisplay" id = "playBarDisplay">
+				</div>
+			</div>
+		</article>
+
+
+	</section>
 
 	<script src="js/init.js"></script>
+	<script src="js/gif.js"></script>	
+	<script src="js/songtitle.js"></script>	
 	<script src="js/preload.js"></script>
-	<script src="js/cat.js"></script>
 	<script src="js/beat.js"></script>
 	<script src="js/chords.js"></script>
 	<script src="js/melody.js"></script>
 	<script src="js/play.js"></script>
-
-	<section class = "section1">
-		<article id= "display" class = "display">
-		</article>
-		<article class = "seedDiv">
-			<form action="">
-				<input class="seedButton" type="submit" value="Enter Seed"/>
-				<input class="seedInput" id="seedInput" type="number" name=seed minlength = 1 maxlength = "6"/>
-			</form>
-			<p id="seed" class="seed">
-			</p>
-		</article>
-	</section>
-
-	<script>
-		document.getElementById('seed').innerHTML = 'Seed: ' + seedNumber
-	</script>
 
 	</body>
 

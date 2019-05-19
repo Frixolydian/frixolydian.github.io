@@ -1,3 +1,5 @@
+var playing = false;
+var loopSong = false;
 var tempo = randomBetween(60, 85);
 var step = 0;
 var volume = 0;
@@ -56,3 +58,5 @@ var notes = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab'];
 function getNote(octave, note){
 	return octave * 12 + note;
 }
+
+document.getElementById('seed').innerHTML = 'Seed: ' + seedNumber
