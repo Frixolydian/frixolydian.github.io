@@ -1,3 +1,44 @@
+document.getElementById('previousButton').onclick = function(){
+    document.getElementById('previousButton').className = 'buttonOff';
+    window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) - 1);
+}
+
+document.getElementById('nextButton').onclick = function(){
+    document.getElementById('nextButton').className = 'buttonOff';
+    window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) + 1);
+}
+
+document.getElementById('shuffleButton').onclick = function(){
+    document.getElementById('shuffleButton').className = 'buttonOff';
+    window.location.href = 'http://lofibot.com/?seed=' + Math.floor(Math.random() * 1000000);
+}
+
+document.getElementById('loopButton').onclick = function(){
+    toggleLoop();
+}
+
+document.getElementById('loopButton').onclick = function(){
+    toggleLoop();
+}
+
+document.getElementById('copyButton').onclick = function(){
+   // Create new element
+    var el = document.createElement('textarea');
+    // Set value (string to be copied)
+    el.value = 'http://lofibot.com/?seed=' + (Number(seedNumber));
+    // Set non-editable to avoid focus and move outside of view
+    el.setAttribute('readonly', '');
+    el.style = {position: 'absolute', left: '-9999px'};
+    document.body.appendChild(el);
+    // Select text inside element
+    el.select();
+    // Copy text to clipboard
+    document.execCommand('copy');
+    // Remove temporary element
+    document.body.removeChild(el);
+}
+
+
 document.getElementById('info').style.visibility = 'hidden';
 
 //info button
