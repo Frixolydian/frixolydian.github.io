@@ -262,6 +262,8 @@ switch (a){
 		return cap(w.w('adj')) + " in " + w.w('place');
 	case 20:
 		return "It's " + w.w('adj');
+	case 21:
+		return "My " + w.w('noun') + " is " + w.w('adj');
 
 	}
 }
