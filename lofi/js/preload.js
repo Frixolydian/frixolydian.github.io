@@ -9,7 +9,7 @@ var intro = new Wad({
 })
 
 var loadSpeech = false;
-if (Math.seededRandom() > 0.05){
+if (Math.seededRandom() > 0){
 	loadSpeech = true;
 	var speech = new Wad({
 		source: './sound/speech/speech_' + randomBetween(1,8) +'.ogg',
