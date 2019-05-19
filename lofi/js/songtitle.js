@@ -81,7 +81,8 @@ w['noun'] = ['cola',
 'tree',
 'clothes',
 'style',
-'mojito'
+'mojito',
+'society'
 ];
 
 w['adj'] = ['great',
