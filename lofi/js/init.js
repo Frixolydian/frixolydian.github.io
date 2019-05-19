@@ -1,3 +1,20 @@
+document.getElementById('info').style.visibility = 'hidden';
+
+//info button
+document.getElementById('infoButton').onclick = function(){
+    if (document.getElementById('info').style.visibility == 'hidden'){
+        document.getElementById('info').style.visibility = 'visible';
+    }
+    else{
+        document.getElementById('info').style.visibility = 'hidden';
+    }
+}
+
+//info button
+document.getElementById('info').onclick = function(){
+    document.getElementById('info').style.visibility = 'hidden';
+}
+
 var playing = false;
 var loopSong = false;
 var tempo = randomBetween(60, 85);

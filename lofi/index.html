@@ -3,7 +3,7 @@
 
 	<meta charset=utf-8>
 	<head>
-		<title>【ｌｏｆｉｂｏｔ】</title>
+		<title>LofiBot</title>
 	    <style> body { margin: 0; background: #28282f;} </style>
 		<script src="lib/wad.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/index.css">
@@ -11,16 +11,23 @@
 
 	<body>
 
-
 	<section class = "section1">
-		<article class = "seedDiv">
+		</div class = "facebook">
+			<a href="https://www.facebook.com/LofiBotOfficial" target="_blank" title="Follow us on Facebook!">
+			<img src=./assets/ic-fb.png class="fb">
+			</a>
+		<div>
+		<div class = "seedDiv">
+			<div class="infoButton" id="infoButton">
+				<img src=./assets/ic-info.png title="Info">
+			</div>
 			<div class = "seedBorder">
 				<form action="">
 					<input class="seedButton" type="submit" value="Go" style="font-family: Consolas, monaco,monospace;font-size: 16px; color:#fff"/>
 					<input class="seedInput" id="seedInput" type="number" placeholder="Enter seed" name=seed minlength = 1 maxlength = "6"/>
 				</form>
 			</div>
-		</article>
+		</div>
 	</section>
 
 	<br>
@@ -34,7 +41,9 @@
 		</article>
 		<article class= "songTitle">
 			<p id="seed" class="seed"> Seed:</p>
-			<img src=./assets/ic-copy.png alt="Copy to clipboard" id="copyButton">
+			<div class ="copyButton" >
+				<img src=./assets/ic-copy.png title="Copy link to clipboard!" id="copyButton" style="height:1em; cursor: pointer;">
+			</div>
 		</article>
 
 		<article class= "gif">
@@ -50,23 +59,23 @@
 
 		<article class = "buttons">
 			<div class = "buttonContainer">
-				<div id="shuffleButton" class = "button">
+				<div id="shuffleButton" class = "button" title="Random song">
 					<img src=./assets/ic-shuffle.png alt="Shuffle">
 				</div>
 
-				<div id="previousButton" class = "button">
+				<div id="previousButton" class = "button" title="Previous">
 					<img src=./assets/ic-previous.png alt="Previous">
 				</div>
 
-				<div id="melodyButton" class = "button" style = "width: 80px">
+				<div id="melodyButton" class = "button" style = "width: 80px" title="Toggle melody">
 					<img src=./assets/ic-piano.png alt="Toggle Melody" id="melodyDisplay">
 				</div>
 
-				<div id="nextButton" class = "button">
+				<div id="nextButton" class = "button" title="Next">
 					<img src=./assets/ic-next.png alt="Next">
 				</div>
 
-				<div id="loopButton" class = "button">
+				<div id="loopButton" class = "button" title="Loop">
 					<img src=./assets/ic-loop.png alt="Repeat">
 				</div>
 			</div>
@@ -79,11 +88,27 @@
 			</div>
 		</article>
 
+	</section>
 
-	</section class = "foot">
-		<a href="https://www.facebook.com/LofiBotOfficial" target="_blank">
-		<img src=./assets/ic-fb.png class="fb">
-	<section>
+	<section class = "info"id="info">
+		<p>
+			LofiBot is a bot which generates random chord progressions and melodies, along with a beat. It also randomly creates a song title and posts a gif.
+			<br><br>
+			You can share seeds with others by clicking on the copy link button.
+			<br><br>
+			Play along the bot by pressing these keys:
+			<br>
+		</p>
+		<div style="text-align:center">
+			QWERTYUI<br>
+			ASDFGHJK<br>
+			ZXCVBNM,<br>
+		<br>
+		</div>
+		<p1>
+			(pro tip: mute the melody by pressing spacebar or clicking the piano button)
+		</p1>
+
 
 	</section>
 

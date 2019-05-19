@@ -89,7 +89,7 @@ html, body {
 .songTitle h1{
 	margin-top: 0px;
 	font-family: Consolas, monaco, monospace;
-	font-size: 24px;
+	font-size: 1.4em;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 100;
@@ -112,7 +112,7 @@ html, body {
 	padding:0px;
 	display:block;
 	font-family: Consolas, monaco, monospace;
-	font-size: 13px;
+	font-size: 1em;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 100;
@@ -120,11 +120,16 @@ html, body {
 	height:40px;
 }
 
+.copybutton img{
+	float:right;
+
+}
+
 .gif{
 	float:left;
-	margin-left: 10%;
-	margin-right: 10%;
-	width:80%;
+	margin-left: 2%;
+	margin-right: 2%;
+	width:96%;
 	height: 300px;
 	color: #fff;
 	text-align:center;
@@ -143,7 +148,7 @@ html, body {
     padding: 0;
     line-height:300px;
    	font-family: Consolas, monaco, monospace;
-	font-size: 32px;
+	font-size: 2em;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 100;
@@ -158,9 +163,9 @@ html, body {
 
 .buttons{
 	float:left;
-	margin-left: 10%;
-	margin-right: 10%;
-	width:80%;
+	margin-left: 2%;
+	margin-right: 2%;
+	width:96%;
 	color: #fff;
 }
 
@@ -181,6 +186,7 @@ html, body {
 }
 
 .button{
+	cursor: pointer;
 	float:left;
 	width: 42px;
 	height: 43px;
@@ -189,6 +195,7 @@ html, body {
 	position: relative;
 }
 .buttonOff{
+	cursor: pointer;
 	float:left;
 	width: 42px;
 	height: 43px;
@@ -236,16 +243,45 @@ html, body {
 	background-color: #dd80ee;
 }
 
-.foot{
-	bottom:10px;
+.facebook{
+
 }
 
 .fb{
-	float:right;
-	margin-right:20px;
+	float:left;
+	margin-left:20px;
+	margin-top: 20px;
 }
 
-@media only screen and (min-width: 768px) {
+.info{
+	position:absolute;
+	padding:2em;
+	text-align:justify;
+	margin-left:5%;
+	width:90%;
+	cursor:pointer;
+	background-color:#444;
+	color:#fff;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1.2em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	line-height: 1.2em;
+	z-index:5;
+	opacity:0.9;
+	visibility:hidden;
+}
+.infoButton{
+	cursor:pointer;
+	float:right;
+	margin-right:20px;
+	margin-top:20px;
+}
+
+
+
+@media (min-width: 768px) {
 	.songTitle{
 		margin-left: 30%;
 		margin-right: 30%;
@@ -266,5 +302,8 @@ html, body {
 		margin-right: 30%;
 		width:40%;
 	}
+	.info{
+		margin-left:25%;
+		width:50%;
+	}
 }
-
