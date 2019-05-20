@@ -52,6 +52,10 @@ function randomBetween(min,max){
     return Math.floor(Math.seededRandom()*(max-min+1)+min);
 }
 
+function randomElement(array) {
+    return array[Math.floor(Math.seededRandom() * array.length)]
+}
+
 var key = randomBetween(0, 11) + 3;
 var notes = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab'];
 
