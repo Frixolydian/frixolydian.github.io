@@ -135,6 +135,17 @@ html, body {
 	text-align:center;
 	background-color: #000;
 	position:relative;
+	overflow:hidden;
+}
+
+.gif img{
+	position:absolute;
+	height: 100%;
+	width:auto;
+  top: 50%;
+  left: 50%;
+  
+  transform: translate(-50%, -50%);
 }
 
 .tapToPlay{
@@ -153,12 +164,6 @@ html, body {
 	font-variant: normal;
 	font-weight: 100;
 
-}
-
-
-.gif img{
-	height: 100%;
-	width:auto;
 }
 
 .buttons{
@@ -306,4 +311,20 @@ html, body {
 		margin-left:25%;
 		width:50%;
 	}
+}
+
+.version{
+	position:absolute;
+	width:100%;
+	bottom:10px;
+	text-align:right;
+	right:20px;
+	cursor:pointer;
+	color:#fff;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	opacity:0.5;
 }

@@ -1,4 +1,5 @@
-var gifList = [
+var gif = [
+
 'https://thumbs.gfycat.com/AgedMiniatureBoto-max-1mb.gif',
 'https://media1.tenor.com/images/a2113e5c802bb516a97cb2d3b9865018/tenor.gif?itemid=10442876',
 'https://media1.tenor.com/images/3f0943f8c2416383efdebd9ef2b39489/tenor.gif?itemid=13362503',
@@ -11,7 +12,42 @@ var gifList = [
 'https://media1.tenor.com/images/3858f9b791b3d00b871043d32892e0c1/tenor.gif?itemid=11805013',
 'https://media1.tenor.com/images/bf5c091558cad114ab73485814d9c1bc/tenor.gif?itemid=5484757',
 'https://media.tenor.com/images/77c8642435cf0585f80a9f488a5516e0/tenor.gif',
-'https://media1.tenor.com/images/622431b9aafb96fda136a503f9508e66/tenor.gif?itemid=10932378'
+'https://media1.tenor.com/images/622431b9aafb96fda136a503f9508e66/tenor.gif?itemid=10932378',
+'https://thumbs.gfycat.com/HarshImpracticalGaur-max-1mb.gif',
+'https://thumbs.gfycat.com/NearBlueAsianelephant-size_restricted.gif',
+'https://thumbs.gfycat.com/FabulousThriftyAsianlion-small.gif',
+'https://thumbs.gfycat.com/HarmoniousReadyItalianbrownbear-max-1mb.gif',
+'http://33.media.tumblr.com/93a7042af98e2af50f6acdb6402794a2/tumblr_nfnowt8mvp1r8uadco3_r1_400.gif',
+'https://media.giphy.com/media/KY3s7aDDAVeLe/giphy.gif',
+'https://thumbs.gfycat.com/FlamboyantAmusingDarwinsfox-max-1mb.gif',
+'https://thumbs.gfycat.com/GrimWaryAsiaticmouflon.webp',
+'https://thumbs.gfycat.com/HugePlushBrahmanbull.webp',
+'https://thumbs.gfycat.com/ExemplaryFlawlessGemsbuck.webp',
+'https://thumbs.gfycat.com/SilentWanAmericancrow.webp',
+'https://thumbs.gfycat.com/ScornfulPersonalEgret.webp',
+'https://thumbs.gfycat.com/AnotherCreepyCaecilian.webp',
+'https://thumbs.gfycat.com/BelovedAliveKoi.webp',
+'https://thumbs.gfycat.com/CreepyChillyDuck.webp',
+'https://thumbs.gfycat.com/ThirstyOddBanteng.webp',
+'https://thumbs.gfycat.com/BronzeLastAmericanquarterhorse.webp',
+'https://thumbs.gfycat.com/TatteredDefenselessFoxhound.webp',
+'https://thumbs.gfycat.com/BadWebbedAyeaye.webp',
+'https://thumbs.gfycat.com/HastyAshamedCaudata.webp',
+'https://thumbs.gfycat.com/BarrenEminentBedlingtonterrier.webp',
+'https://thumbs.gfycat.com/DemandingDesertedAustralianfurseal.webp',
+'https://thumbs.gfycat.com/BraveHairyAmericanbobtail.webp',
+'https://thumbs.gfycat.com/WindyJubilantAmericanratsnake-max-1mb.gif',
+'https://thumbs.gfycat.com/HoarseOfficialBassethound.webp',
+'https://thumbs.gfycat.com/SingleGiftedGaur.webp',
+'https://thumbs.gfycat.com/DeliciousMealyBinturong.webp',
+'https://thumbs.gfycat.com/DiligentRightKillerwhale.webp',
+'https://66.media.tumblr.com/57fa60c910a13aa129e67d029cde4daa/tumblr_o0ylhx2QqN1uluutyo1_400.gif',
+'https://data.whicdn.com/images/307098115/original.gif',
+'https://www.gifimage.net/wp-content/uploads/2018/10/anime-lofi-gif-3.gif',
+'https://66.media.tumblr.com/861d6dfb79332a158192ac8b49e246d2/tumblr_pdp6hoJWxW1xci0ono1_500.gif',
+'https://media1.tenor.com/images/5c7057ef9d415f1467b03e216657f663/tenor.gif?itemid=9849764',
+
+
 ]
 
-document.getElementById('gif').src= gifList[randomBetween(0, gifList.length - 1)];
+document.getElementById('gif').src=gif[randomBetween(0,gif.length - 1)]
