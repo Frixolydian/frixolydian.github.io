@@ -44,15 +44,15 @@ switch (a){
 	case 1:
 		return "Raining in " + w.w('place');
 	case 2:
-		return "It's going to be " + w.w('adj') + '...';
+		return randomElement(["I'm", "You're", "It's"])+ " going to be " + w.w('adj') + '...';
 	case 3:
 		return w.w('adj') + '.';
 	case 4:
 		return 'The ' + cap(w.w('noun'));
 	case 5:
-		return cap(w.w('verb')) + ' your ' + w.w('noun');
+		return cap(w.w('verb')) + randomElement([' your ', ' my ']) + w.w('noun');
 	case 6:
-		return cap(w.w('verb')) + ' my ' + w.w('noun');
+		return "please " + w.w('verb');
 	case 7:
 		return cap(w.w('adj')) + ' ' + w.w('time');
 	case 8:
@@ -72,7 +72,7 @@ switch (a){
 	case 15:
 		return cap(w.w('adj')) + ' ' + w.w('time') + ' ' + w.w('noun');
 	case 16:
-		return "But I'm a " + w.w('noun');
+		return "But " + randomElement(["you're", "I'm"]) + " a " + w.w('noun');
 	case 17:
 		return cap(w.w('noun')) + ' head';
 	case 18:
@@ -82,16 +82,14 @@ switch (a){
 	case 20:
 		return "It's " + w.w('adj');
 	case 21:
-		return "My " + w.w('noun') + " is " + w.w('adj');
+		return randomElement(["My ", "Your "]) + w.w('noun') + " is " + w.w('adj');
 	case 22:
 		return "Go to " + w.w('place');
-	case 23:
-		return "please " + w.w('verb');
 	}
 }
 
 function createTitle(){
-	songTitle = coolText(w.phrase(randomBetween(0, 23)));
+	songTitle = coolText(w.phrase(randomBetween(0, 22)));
 	document.getElementById('songTitle').innerHTML = songTitle;
 }
 
