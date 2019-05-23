@@ -87,6 +87,9 @@ setTimeout(function(){
 	if (playing == false && Wad.audioContext.state == 'running'){
 		play();
 	}
+	else{
+		document.getElementById('tapToPlay').style.opacity = 0.6;
+	}
 }, 300)
 
 
