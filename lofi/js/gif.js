@@ -46,7 +46,12 @@ var gif = [
 'https://www.gifimage.net/wp-content/uploads/2018/10/anime-lofi-gif-3.gif',
 'https://66.media.tumblr.com/861d6dfb79332a158192ac8b49e246d2/tumblr_pdp6hoJWxW1xci0ono1_500.gif',
 'https://media1.tenor.com/images/5c7057ef9d415f1467b03e216657f663/tenor.gif?itemid=9849764',
-
+'https://media.giphy.com/media/lXiRt8mPxOopSoUeY/giphy.gif',
+'https://66.media.tumblr.com/9f2c7574e7221c20e4817161af8224a1/tumblr_pew5fhlBYI1tcvan1o1_500.gif',
+'https://media.giphy.com/media/DaKt4BITQ7q8/giphy.gif',
+'https://thinkinganime.files.wordpress.com/2018/05/original.gif',
+'https://media.giphy.com/media/fC1HPbYpydrqM/giphy.gif',
+'https://media.giphy.com/media/5Vuko3DKmWjMKOvUxG/giphy.gif'
 
 ]
 

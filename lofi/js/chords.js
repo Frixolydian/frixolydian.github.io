@@ -2,19 +2,6 @@
 //n = minor
 //d = dominant
 
-//1 = C
-//2 = Db
-//3 = D
-//4 = Eb
-//5 = E
-//6 = F
-//7 = Gb
-//8 = G
-//9 = Ab
-//10 = A
-//11 = Bb
-//12 = B
-
 var tonic = ['m1', 'n5', 'n10'];
 var subdominant = ['n3', 'm6'];
 var modal = ['n1', 'm2', 'm4', 'm9', 'n6', 'n8', 'n12'];
@@ -39,7 +26,7 @@ function addWeak(i){
 		progression[i * 2 + 1] = subdominant[randomBetween(0,1)];	//add subdominant
 	}
 	else if (Math.seededRandom() > 0.8){
-		progression[i * 2 + 1] = modal[randomBetween(0, 7)]	//add modal
+		progression[i * 2 + 1] = modal[randomBetween(0, 6)]	//add modal
 	}
 	else{	//add dominant
 		if (Math.seededRandom() > 0.3){
@@ -116,10 +103,10 @@ function playChord(chord){
 	}
 	for (var i = 0; i < 5; i++){
 		if (chordsPiano == true){
-			playNote(1, tones[i] + bass + key, 'piano', 0.7);
+			playNote(randomBetween(1,2), tones[i] + bass + key, 'piano', 0.7);
 		}
 		if (chordsKeys == true){
-			playNote(0, tones[i] + bass + key, 'fmsynth', 0.3);
+			playNote(randomBetween(0,1), tones[i] + bass + key, 'fmsynth', 0.3);
 		}
 	}
 }

@@ -1,3 +1,13 @@
+var filter_1 = [
+	{type : 'lowpass', frequency : randomBetween(1500, 2500), q : 2},
+	{type : 'highpass', frequency : randomBetween(500, 800), q : 2},
+]
+
+var filter_2 = [
+	{type : 'lowpass', frequency : 1500, q : 4},
+	{type : 'highpass', frequency : 500, q : 4}
+]
+
 var noise = new Wad({
 	source: './sound/noise/noise_' + randomBetween(1,3) +'.ogg',
 	volume: 0.2
@@ -34,7 +44,7 @@ for (var i = 1; i < 8; i++){
 			source: './sound/piano/A' + i +'.ogg',
 			detune: 100 * j,
 			filter: [
-				{type : 'lowpass', frequency : 1500, q : 1},
+				{type : 'lowpass', frequency : 1500, q : 2},
 				{type : 'highpass', frequency : 500, q : 1}
 			]
 		})
@@ -59,6 +69,10 @@ for (var i = 2; i < 7; i++){
 		keySamples['nylon'][(i - 2) * 12 + j] = new Wad({
 			source: './sound/nylon/A' + i +'.ogg',
 			detune: 100 * j,
+			filter: [
+				{type : 'lowpass', frequency : 1500, q : 3},
+				{type : 'highpass', frequency : 1000, q : 3}
+			]
 		})
 	}
 }
@@ -104,14 +118,25 @@ totalSounds += 1;
 var kickSound = new Wad({
 	source: './sound/drum/kick/kick_' + randomBetween(1, 12) + '.ogg',
 	volume: 0.6,
+	filter: [
+		{type : 'lowpass', frequency : randomBetween(1500, 2500), q : 2},
+
+	],
 })
 
 var snareSound = new Wad({
 	source: './sound/drum/snare/snare_' + randomBetween(1, 19) + '.ogg',
 	volume: 0.7,
-	filter: [
-		{type : 'lowpass', frequency : randomBetween(6000, 8000), q : 1},
-	]
+	filter: filter_2,
+	tuna: {
+		Overdrive: {
+			outputGain: 0.2,         //0 to 1+
+			drive: 0.5,              //0 to 1
+			curveAmount: 0.7,          //0 to 1
+			algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
+			bypass: 0
+		}
+	}
 })
 
 var hihatSound = new Wad({
@@ -119,7 +144,16 @@ var hihatSound = new Wad({
 	volume: 0.17,
 	filter: [
 		{type : 'lowpass', frequency : randomBetween(4000, 5000), q : 1},
-	]
+	],
+	tuna   : {
+	        Overdrive : {
+	            outputGain: 0.4,         //0 to 1+
+	            drive: 0.5,              //0 to 1
+	            curveAmount: 0.7,          //0 to 1
+	            algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
+	            bypass: 0
+	        }
+	    }
 })
 
 var openhihatSound = new Wad({

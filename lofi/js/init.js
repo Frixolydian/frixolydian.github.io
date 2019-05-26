@@ -1,6 +1,6 @@
 var playing = false;
 var loopSong = false;
-var tempo = randomBetween(60, 85);
+var tempo = randomBetween(55, 85);
 var step = 0;
 var volume = 0;
 var startFadeOut = false;

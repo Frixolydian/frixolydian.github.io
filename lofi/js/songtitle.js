@@ -85,11 +85,33 @@ switch (a){
 		return randomElement(["My ", "Your "]) + w.w('noun') + " is " + w.w('adj');
 	case 22:
 		return "Go to " + w.w('place');
+	case 23:
+		return cap(w.w('time')) + ' ' + w.w('time');
+	case 24:
+		return cap(w.w('verb')) + ' ' + w.w('noun') + ' in the ' + w.w('adj') + ' ' + w.w('place');
+	case 25:
+		return cap(w.w('noun')) + ' should be ' + w.w('adj');
+	case 26:
+		return "It's " + w.w('time') + ' in ' + w.w('place') + ' and you just ' + w.w('verb');
+	case 27:
+		return "From me to my " + w.w('adj') + ' ' + w.w('noun');
+	case 28:
+		return "A " + w.w('noun') + ' in ' + w.w('place');
+	case 29:
+		return "A " + w.w('noun') + ' for a ' + w.w('adj') + ' ' + w.w('noun');
+	case 30:
+		return "I'll " + w.w('verb') + ' you ' + w.w('adj');
+	case 31:
+		return cap(w.w('verb')) + ' at ' + w.w('place') + ' during ' + w.w('time');
+
+
+
+
 	}
 }
 
 function createTitle(){
-	songTitle = coolText(w.phrase(randomBetween(0, 22)));
+	songTitle = coolText(w.phrase(randomBetween(0, 31)));
 	document.getElementById('songTitle').innerHTML = songTitle;
 }
 
