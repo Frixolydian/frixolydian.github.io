@@ -19,13 +19,15 @@ var notes = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
 var pianoSounds = [];
 
-for (var i = 1; i < 7; i++){
+for (var i = 1; i < 8; i++){
 	for (var j = 0; j < 12; j++){
-		pianoSounds.push(new Howl({
-			src:['sound/' + notes[j] + String(i) + '.ogg', 'sound/' + notes[j] + String(i) + '.mp3']
-		}));
+		pianoSounds[(i - 1) * 12 + j] = new Wad({
+			source: './sound/piano/A' + i +'.ogg',
+			detune: 100 * j,
+		})
 	}
 }
+
 
 var colors = [0xfffd3a, 0xfffd3a, 0xfffd3a];
 var selectedColor = colors[randomBetween(0,2)]
@@ -45,18 +47,18 @@ function playBass(array){
 		pianoSounds[i].stop();
 	}
 	i = randomBetween(0,1);
-	noteAppear(getNote(1, array[i] + key - 6));
-	pianoSounds[getNote(1, array[i] + key - 6)].volume(0.3 + Math.seededRandom() * 0.2);
+	noteAppear(getNote(0, array[i] + key));
+	pianoSounds[getNote(0, array[i] + key)].volume = 0.3 + Math.seededRandom() * 0.2;
 	setTimeout(function(){
-		pianoSounds[getNote(1, array[i] + key - 6)].play();
+		pianoSounds[getNote(0, array[i] + key)].play();
 	}, Math.seededRandom() * 20)
 }
 
 function playChord(array){
 	for (var i = 0; i < array.length - randomBetween(0,1); i++){
-		noteAppear(getNote(3, array[i] + key - 6));
-		pianoSounds[getNote(3, array[i] + key - 6)].volume(0.3 + Math.seededRandom() * 0.1);
-		pianoSounds[getNote(3, array[i] + key - 6)].play();
+		noteAppear(getNote(2, array[i] + key));
+		pianoSounds[getNote(2, array[i] + key)].volume = 0.3 + Math.seededRandom() * 0.1;
+		pianoSounds[getNote(2, array[i] + key)].play();
 	}
 }
 
@@ -72,14 +74,14 @@ function playMelody(){
 
 	if (Math.seededRandom() > 0.1 && chord > 3 && chord < 28){
 		if (tonality === 1){
-			noteAppear(getNote(4, major_scale[melody] + key - i));
-			pianoSounds[getNote(4, major_scale[melody] + key - i)].volume(1);
-			pianoSounds[getNote(4, major_scale[melody] + key - i)].play();
+			noteAppear(getNote(3, major_scale[melody] + key - i + 6));
+			pianoSounds[getNote(3, major_scale[melody] + key - i + 6)].volume = 1;
+			pianoSounds[getNote(3, major_scale[melody] + key - i + 6)].play();
 		}
 		else{
-			noteAppear(getNote(4, minor_scale[melody] + key - i));
-			pianoSounds[getNote(4, minor_scale[melody] + key - i)].volume(1);		
-			pianoSounds[getNote(4, minor_scale[melody] + key - i)].play();		
+			noteAppear(getNote(3, minor_scale[melody] + key - i + 6));
+			pianoSounds[getNote(3, minor_scale[melody] + key - i + 6)].volume = 1;		
+			pianoSounds[getNote(3, minor_scale[melody] + key - i + 6)].play();		
 		}
 		//next note
 		if (Math.seededRandom() > 0.15){
@@ -130,7 +132,7 @@ setTimeout(function(){
 		if (chord < chords_sequence.length - 1){
 			setTimeout(function(){
 				chord += 1;
-				console.log(chords_sequence[chord])
+//				console.log(chords_sequence[chord])
 				playBass(chords_sequence[chord])
 				playMelody();
 				setTimeout(function(){
@@ -150,11 +152,11 @@ setTimeout(function(){
 			if (Math.seededRandom() > 0 ){
 				if (Math.seededRandom() > 0.5){
 					key = (key + 5) % 12;
-					console.log('mod down')
+//					console.log('mod down')
 				}
 				else{
 					key = (key + 7) % 12;
-					console.log('mod up')
+//					console.log('mod up')
 				}
 			}
 		}

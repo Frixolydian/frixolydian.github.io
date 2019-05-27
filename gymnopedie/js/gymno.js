@@ -7,14 +7,14 @@ function getQueryVariable(variable) {
             return decodeURIComponent(pair[1]);
         }
     }
-    console.log('Query variable %s not found', variable);
+//    console.log('Query variable %s not found', variable);
 }
 
 //initial seed
 Math.seed = getQueryVariable('seed');
 if (Math.seed == undefined){
 	Math.seed = Math.floor(Math.random() * 1000000);
-	console.log('Seed set to ' + Math.seed)
+//	console.log('Seed set to ' + Math.seed)
 }
 
 var seedNumber = Math.seed;
@@ -107,7 +107,7 @@ var major_scale = [-3, -1, 0, 2, 4, 5, 7, 9, 11, 12, 14, 16];
 var minor_scale = [-4, -2, 0, 2, 3, 5, 7, 8, 10, 12, 14, 15];
 
 var tonality = Math.round(Math.seededRandom()); //minor 0, major 1
-console.log(key, tonality)
+//console.log(key, tonality)
 
 //ZERO EQUALS TO ROOT IN KEY
 
@@ -311,7 +311,7 @@ else{ //if major
 	chords_sequence.push(maj_ton[1]);
 }
 
-console.log(chords_sequence.length)
+//console.log(chords_sequence.length)
 
 //////////////////////////////////
 
