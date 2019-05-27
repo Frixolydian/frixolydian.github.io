@@ -22,7 +22,7 @@ var pianoSounds = [];
 for (var i = 1; i < 8; i++){
 	for (var j = 0; j < 12; j++){
 		pianoSounds[(i - 1) * 12 + j] = new Wad({
-			source: './sound/piano/A' + i +'.ogg',
+			source: './sound/piano/A' + i +'.wav',
 			detune: 100 * j,
 		})
 	}
