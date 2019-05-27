@@ -67,7 +67,3 @@ document.getElementById('seed').innerHTML = 'Seed: ' + seedNumber
 
 
 console.log('AudioContext ' + Wad.audioContext.state + '.')
-
-if (Wad.audioContext.state == 'running'){
-    document.getElementById('tapToPlay').style.opacity = 0;
-}
