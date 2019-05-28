@@ -127,16 +127,7 @@ var kickSound = new Wad({
 var snareSound = new Wad({
 	source: './sound/drum/snare/snare_' + randomBetween(1, 19) + '.ogg',
 	volume: 0.7,
-	filter: filter_2,
-	tuna: {
-		Overdrive: {
-			outputGain: 0.2,         //0 to 1+
-			drive: 0.5,              //0 to 1
-			curveAmount: 0.7,          //0 to 1
-			algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
-			bypass: 0
-		}
-	}
+	filter: filter_2
 })
 
 var hihatSound = new Wad({
@@ -145,15 +136,6 @@ var hihatSound = new Wad({
 	filter: [
 		{type : 'lowpass', frequency : randomBetween(4000, 5000), q : 1},
 	],
-	tuna   : {
-	        Overdrive : {
-	            outputGain: 0.4,         //0 to 1+
-	            drive: 0.5,              //0 to 1
-	            curveAmount: 0.7,          //0 to 1
-	            algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
-	            bypass: 0
-	        }
-	    }
 })
 
 var openhihatSound = new Wad({
