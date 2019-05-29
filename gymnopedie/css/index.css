@@ -75,7 +75,7 @@ html, body {
 	margin-right: 10px;
 	width: 47px;
 	height: 47px;
-	background-image: linear-gradient(to bottom, #5ee0e8, #e27dee);
+	background-image: linear-gradient(to bottom, #e9c024, #e95a24);
 	position:relative;
 }
 .square img{
@@ -138,6 +138,7 @@ html, body {
 	height:40px;
 }
 
+
 .gif{
 	float:left;
 	margin-left: 2%;
@@ -190,7 +191,7 @@ html, body {
 
 .buttonContainer{
 	margin-top: 23px;
-	width: 260px;
+	width: 180px;
 	height: 47px;
 	border-radius: 2px;
 	background-color: #101418;
@@ -258,7 +259,7 @@ html, body {
 	width: 0%;
 	height: 6px;
 	border-radius: 8px;
-	background-color: #dd80ee;
+	background-color: #e9c024;
 }
 
 .facebook{
@@ -273,6 +274,7 @@ html, body {
 
 .info{
 	position:absolute;
+	margin-top:92px;
 	padding:2em;
 	text-align:justify;
 	margin-left:5%;
@@ -290,12 +292,24 @@ html, body {
 	opacity:0.9;
 	visibility:hidden;
 }
+.info a{
+  color: #e9c024;
+text-decoration: none;
+}
+
+.p2 {
+	text-align:right;
+
+}
+
 .infoButton{
 	cursor:pointer;
 	float:right;
 	margin-right:20px;
 	margin-top:20px;
 }
+
+
 
 @media (min-width: 768px) {
 	.songTitle{
@@ -319,8 +333,8 @@ html, body {
 		width:40%;
 	}
 	.info{
-		margin-left:25%;
-		width:50%;
+		margin-left:32.5%;
+		width:35%;
 	}
 }
 

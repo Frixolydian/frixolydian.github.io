@@ -16,9 +16,8 @@ function endSong(){
 	}
 }
 
-
 function play(){
-	document.getElementById('tapToPlay').style.opacity = 0;
+	document.getElementById('tapToPlay').style.visibility = 'hidden';
 	console.log('Started Playing.')
 	playing = true;
 	setTimeout(function(){

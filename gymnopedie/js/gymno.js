@@ -1,3 +1,28 @@
+var loopSong = false;
+
+function toggleLoop(){
+	loopSong = !loopSong;
+	if (loopSong == true){
+//		document.getElementById('melodyDisplay').src="./assets/ic-piano.png";
+		document.getElementById('loopButton').className = 'buttonOff';
+	}
+	else{
+//		document.getElementById('melodyDisplay').src="./assets/ic-nopiano.png";
+		document.getElementById('loopButton').className = 'button';
+	}
+}
+
+var pianoSounds = [];
+
+for (var i = 1; i < 8; i++){
+	for (var j = 0; j < 12; j++){
+		pianoSounds[(i - 1) * 12 + j] = new Wad({
+			source: './sound/piano/A' + i +'.ogg',
+			detune: 100 * j,
+		})
+	}
+}
+
 function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');
@@ -19,6 +44,8 @@ if (Math.seed == undefined){
 
 var seedNumber = Math.seed;
 
+document.getElementById('seed').innerHTML = 'Seed: ' + seedNumber
+/*
 //Create a Pixi Application
 var app = new PIXI.Application({ 
     width: window.innerWidth, 
@@ -49,7 +76,6 @@ PIXI.loader
 
   var gradients = {}
 
-var indications = ['Lent et douloureux', 'Lent et grave', 'Lent et triste'];
 
 function setup() {
 	var image = new PIXI.Sprite(PIXI.loader.resources["assets/piano.png"].texture);
@@ -78,7 +104,7 @@ function gameLoop() {
 }
 
 gameLoop();
-
+*/
 
 // in order to work 'Math.seed' must NOT be undefined,
 // so in any case, you HAVE to provide a Math.seed
@@ -100,6 +126,9 @@ function randomBetween(min,max){
     return Math.floor(Math.seededRandom()*(max-min+1)+min);
 }
 
+var indications = ['Lent et douloureux', 'Lent et grave', 'Lent et triste'];
+var songTitle = randomFromArray(indications);
+document.getElementById('songTitle').innerHTML = songTitle
 
 var key = Math.floor(Math.seededRandom() * 12);
 
@@ -317,3 +346,4 @@ else{ //if major
 
 //console.log(chords_sequence);
 
+console.log('AudioContext ' + Wad.audioContext.state + '.')

@@ -10,29 +10,16 @@ var idle = [0,0,0,0,
 			0,0,0,0]
 
 
-
 function getNote(octave, note){
 	return octave * 12 + note
 }
 
 var notes = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
-var pianoSounds = [];
-
-for (var i = 1; i < 8; i++){
-	for (var j = 0; j < 12; j++){
-		pianoSounds[(i - 1) * 12 + j] = new Wad({
-			source: './sound/piano/A' + i +'.WAV',
-			detune: 100 * j,
-		})
-	}
-}
-
-
 var colors = [0xfffd3a, 0xfffd3a, 0xfffd3a];
 var selectedColor = colors[randomBetween(0,2)]
 
-function noteAppear(note){
+/*function noteAppear(note){
 	gradients[Object.keys(gradients).length] = new PIXI.Sprite(PIXI.loader.resources["assets/gradient.png"].texture);
 	gradients[Object.keys(gradients).length - 1].y = window.innerHeight - 560;
 	gradients[Object.keys(gradients).length - 1].x = window.innerWidth / 85 * note;
@@ -41,13 +28,13 @@ function noteAppear(note){
 	gradients[Object.keys(gradients).length - 1].blendMode = PIXI.BLEND_MODES.SCREEN;
 	app.stage.addChild(gradients[Object.keys(gradients).length - 1]);
 }
-
+*/
 function playBass(array){
 	for (var i = 0; i < pianoSounds.length; i++){
 		pianoSounds[i].stop();
 	}
 	i = randomBetween(0,1);
-	noteAppear(getNote(0, array[i] + key));
+//	noteAppear(getNote(0, array[i] + key));
 	pianoSounds[getNote(0, array[i] + key)].volume = 0.3 + Math.seededRandom() * 0.2;
 	setTimeout(function(){
 		pianoSounds[getNote(0, array[i] + key)].play();
@@ -56,7 +43,7 @@ function playBass(array){
 
 function playChord(array){
 	for (var i = 0; i < array.length - randomBetween(0,1); i++){
-		noteAppear(getNote(2, array[i] + key));
+//		noteAppear(getNote(2, array[i] + key));
 		pianoSounds[getNote(2, array[i] + key)].volume = 0.3 + Math.seededRandom() * 0.1;
 		pianoSounds[getNote(2, array[i] + key)].play();
 	}
@@ -74,12 +61,12 @@ function playMelody(){
 
 	if (Math.seededRandom() > 0.1 && chord > 3 && chord < 28){
 		if (tonality === 1){
-			noteAppear(getNote(3, major_scale[melody] + key - i + 6));
+//			noteAppear(getNote(3, major_scale[melody] + key - i + 6));
 			pianoSounds[getNote(3, major_scale[melody] + key - i + 6)].volume = 1;
 			pianoSounds[getNote(3, major_scale[melody] + key - i + 6)].play();
 		}
 		else{
-			noteAppear(getNote(3, minor_scale[melody] + key - i + 6));
+//			noteAppear(getNote(3, minor_scale[melody] + key - i + 6));
 			pianoSounds[getNote(3, minor_scale[melody] + key - i + 6)].volume = 1;		
 			pianoSounds[getNote(3, minor_scale[melody] + key - i + 6)].play();		
 		}
@@ -122,12 +109,20 @@ function jumpMelody(){
 	}
 }
 
+var step = 0;
+
+function playBar(){
+	if (step <= chords_sequence.length * 3){
+		document.getElementById('playBarDisplay').style.width = ((step / (chords_sequence.length * 3)) * 100) + '%'
+	}
+}
+
 var chord = -1;
 
 var timeInterval = Math.seededRandom() * 1000 + 3000;
 
-
 setTimeout(function(){
+	document.getElementById('tapToPlay').style.visibility = 'hidden';
 	setInterval(function(){
 		if (chord < chords_sequence.length - 1){
 			setTimeout(function(){
@@ -140,13 +135,19 @@ setTimeout(function(){
 					if (idle[chord] > 0){
 						playMelody();
 					}
+					step += 1;
+					playBar();
 				}, timeInterval / 3 - 50 + Math.seededRandom() * 100)
 				setTimeout(function(){
 					if (idle[chord] > 0){
 						playMelody();
 					}
+					step += 1;
+					playBar();
 				}, timeInterval / 3 * 2 - 50 + Math.seededRandom() * 100)
 			}, Math.seededRandom() * 200)
+			step += 1;
+			playBar();
 		}
 		if (chord === 15){
 			if (Math.seededRandom() > 0 ){
@@ -163,8 +164,13 @@ setTimeout(function(){
 		if (chord == chords_sequence.length - 1){
 			console.log('RESET')
 			setInterval(function(){
-				window.location.reload(false);
+				if (loopSong == true){
+					window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber));
+				}
+				else{
+					window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber) + 1);
+				}
 			}, 3000)
 		}
 	}, timeInterval)
-}, 3000);
+}, 100);

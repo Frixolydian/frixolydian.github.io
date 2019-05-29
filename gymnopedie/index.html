@@ -4,7 +4,7 @@
 	<meta charset=utf-8>
 	<head>
 		<link rel='icon' href='favicon.ico' type='image/x-icon'/ >
-		<title>LofiBot</title>
+		<title>GymnopedieBot</title>
 	    <style> body { margin: 0; background: #28282f;} </style>
 		<script src="lib/wad.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/index.css">
@@ -38,7 +38,7 @@
 			<div class="square">
 				<img src=./assets/img-note.png>
 			</div>
-			<h1 id="songTitle"></h1>			
+			<h1 id="songTitle"></h1>		
 		</article>
 		<article class= "songTitle">
 			<p id="seed" class="seed"> Seed:</p>
@@ -54,7 +54,7 @@
 			<div class= "tapToPlay" id= "tapToPlay">
 				-Tap to play-
 			</div>
-			<img id="gif">
+			<img id="gif" src="./assets/piano.png">
 
 		</article>
 
@@ -67,10 +67,6 @@
 
 				<div id="previousButton" class = "button" title="Previous">
 					<img src=./assets/ic-previous.png alt="Previous">
-				</div>
-
-				<div id="melodyButton" class = "button" style = "width: 80px" title="Toggle melody">
-					<img src=./assets/ic-piano.png alt="Toggle Melody" id="melodyDisplay">
 				</div>
 
 				<div id="nextButton" class = "button" title="Next">
@@ -86,17 +82,17 @@
 		<script>
 			document.getElementById('previousButton').onclick = function(){
 			    document.getElementById('previousButton').className = 'buttonOff';
-			    window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) - 1);
+			    window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber) - 1);
 			}
 
 			document.getElementById('nextButton').onclick = function(){
 			    document.getElementById('nextButton').className = 'buttonOff';
-			    window.location.href = 'http://lofibot.com/?seed=' + (Number(seedNumber) + 1);
+			    window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber) + 1);
 			}
 
 			document.getElementById('shuffleButton').onclick = function(){
 			    document.getElementById('shuffleButton').className = 'buttonOff';
-			    window.location.href = 'http://lofibot.com/?seed=' + Math.floor(Math.random() * 1000000);
+			    window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + Math.floor(Math.random() * 1000000);
 			}
 
 			document.getElementById('loopButton').onclick = function(){
@@ -111,7 +107,7 @@
 			   // Create new element
 			    var el = document.createElement('textarea');
 			    // Set value (string to be copied)
-			    el.value = 'http://lofibot.com/?seed=' + (Number(seedNumber));
+			    el.value = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber));
 			    // Set non-editable to avoid focus and move outside of view
 			    el.setAttribute('readonly', '');
 			    el.style = {position: 'absolute', left: '-9999px'};
@@ -136,30 +132,22 @@
 
 	<section class = "info"id="info">
 		<p>
-			LofiBot is a bot which generates random chord progressions and melodies, along with a beat. It also randomly creates a song title and posts a gif.
-			<br><br>
-			You can share the music you are listening to with others by clicking on the copy link button.
-			<br><br>
-			Play along the bot by pressing these keys:
-			<br>
-		</p>
-		<div style="text-align:center">
-			QWERTYUI<br>
-			ASDFGHJK<br>
-			ZXCVBNM,<br>
-		<br>
-		</div>
-		<p1>
-			(pro tip: mute the melody by pressing spacebar or clicking the piano button)
-		</p1>
-		<br><br>
-		<div style='text-align:right'>
-			<p>
-				Bot developed by Mauricio Morales<br>
-				mauricio.morales.arias93@gmail.com
-			</p>
-		</div>
 
+		GymnopedieBot is a bot which generates pieces of music similar to the <a href="https://en.wikipedia.org/wiki/Gymnop%C3%A9dies" target="_blank">Gymnopédies</a>
+		<br><br>
+
+		You can share the music you are listening to with others by clicking on the copy link button.
+
+
+	</p>
+
+	<br>
+	<div style='text-align:right'>
+		<p>
+			Bot developed by Mauricio Morales<br>
+			mauricio.morales.arias93@gmail.com
+		</p>
+	</div>
 	</section>
 
 	<script>
@@ -184,18 +172,11 @@
 	</script>
 
 	<article class="version">
-		version 0.4
+		version 1.0
 	</article>
 
 
-	<script src="js/init.js"></script>
-	<script src="js/gif.js"></script>	
-	<script src="js/words.js"></script>	
-	<script src="js/songtitle.js"></script>	
-	<script src="js/preload.js"></script>
-	<script src="js/beat.js"></script>
-	<script src="js/chords.js"></script>
-	<script src="js/melody.js"></script>
+	<script src="js/gymno.js"></script>
 	<script src="js/play.js"></script>
 
 	</body>
