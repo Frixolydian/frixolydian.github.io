@@ -1,4 +1,5 @@
 var loopSong = false;
+var playing = false;
 
 function toggleLoop(){
 	loopSong = !loopSong;

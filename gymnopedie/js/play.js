@@ -121,56 +121,71 @@ var chord = -1;
 
 var timeInterval = Math.seededRandom() * 1000 + 3000;
 
-setTimeout(function(){
-	document.getElementById('tapToPlay').style.visibility = 'hidden';
-	setInterval(function(){
-		if (chord < chords_sequence.length - 1){
-			setTimeout(function(){
-				chord += 1;
-//				console.log(chords_sequence[chord])
-				playBass(chords_sequence[chord])
-				playMelody();
+function play(){
+	playing = true;
+	setTimeout(function(){
+		document.getElementById('tapToPlay').style.visibility = 'hidden';
+		setInterval(function(){
+			if (chord < chords_sequence.length - 1){
 				setTimeout(function(){
-					playChord(chords_sequence[chord]);
-					if (idle[chord] > 0){
-						playMelody();
+					chord += 1;
+	//				console.log(chords_sequence[chord])
+					playBass(chords_sequence[chord])
+					playMelody();
+					setTimeout(function(){
+						playChord(chords_sequence[chord]);
+						if (idle[chord] > 0){
+							playMelody();
+						}
+						step += 1;
+						playBar();
+					}, timeInterval / 3 - 50 + Math.seededRandom() * 100)
+					setTimeout(function(){
+						if (idle[chord] > 0){
+							playMelody();
+						}
+						step += 1;
+						playBar();
+					}, timeInterval / 3 * 2 - 50 + Math.seededRandom() * 100)
+				}, Math.seededRandom() * 200)
+				step += 1;
+				playBar();
+			}
+			if (chord === 15){
+				if (Math.seededRandom() > 0 ){
+					if (Math.seededRandom() > 0.5){
+						key = (key + 5) % 12;
+	//					console.log('mod down')
 					}
-					step += 1;
-					playBar();
-				}, timeInterval / 3 - 50 + Math.seededRandom() * 100)
-				setTimeout(function(){
-					if (idle[chord] > 0){
-						playMelody();
+					else{
+						key = (key + 7) % 12;
+	//					console.log('mod up')
 					}
-					step += 1;
-					playBar();
-				}, timeInterval / 3 * 2 - 50 + Math.seededRandom() * 100)
-			}, Math.seededRandom() * 200)
-			step += 1;
-			playBar();
-		}
-		if (chord === 15){
-			if (Math.seededRandom() > 0 ){
-				if (Math.seededRandom() > 0.5){
-					key = (key + 5) % 12;
-//					console.log('mod down')
-				}
-				else{
-					key = (key + 7) % 12;
-//					console.log('mod up')
 				}
 			}
-		}
-		if (chord == chords_sequence.length - 1){
-			console.log('RESET')
-			setInterval(function(){
-				if (loopSong == true){
-					window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber));
-				}
-				else{
-					window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber) + 1);
-				}
-			}, 3000)
-		}
-	}, timeInterval)
-}, 100);
+			if (chord == chords_sequence.length - 1){
+				console.log('RESET')
+				setInterval(function(){
+					if (loopSong == true){
+						window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber));
+					}
+					else{
+						window.location.href = 'http://gymnopedie.lofibot.com/?seed=' + (Number(seedNumber) + 1);
+					}
+				}, 3000)
+			}
+		}, timeInterval)
+	}, 100);
+}
+
+window.onclick = function(){
+	if (playing == false){
+		play();
+	}
+};
+
+setTimeout(function(){
+	if (playing == false && Wad.audioContext.state == 'running'){
+		play();
+	}
+}, 500)
