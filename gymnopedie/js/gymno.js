@@ -1,3 +1,28 @@
+function iOS() {
+
+  var iDevices = [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ];
+
+  if (!!navigator.platform) {
+    while (iDevices.length) {
+      if (navigator.platform === iDevices.pop()){ return true; }
+    }
+  }
+  return false;
+}
+
+var audioType = '.ogg';
+
+if (iOS()){
+    audioType = '.mp3';
+}
+
 var loopSong = false;
 var playing = false;
 
@@ -18,7 +43,7 @@ var pianoSounds = [];
 for (var i = 1; i < 8; i++){
 	for (var j = 0; j < 12; j++){
 		pianoSounds[(i - 1) * 12 + j] = new Wad({
-			source: './sound/piano/A' + i +'.ogg',
+			source: './sound/piano/A' + i + audioType,
 			detune: 100 * j,
 		})
 	}

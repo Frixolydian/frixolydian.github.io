@@ -1,3 +1,30 @@
+function iOS() {
+
+  var iDevices = [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ];
+
+  if (!!navigator.platform) {
+    while (iDevices.length) {
+      if (navigator.platform === iDevices.pop()){ return true; }
+    }
+  }
+  return false;
+}
+
+var audioType = '.ogg';
+
+if (iOS()){
+    audioType = '.mp3';
+}
+
+
+
 var playing = false;
 var loopSong = false;
 var tempo = randomBetween(55, 85);
