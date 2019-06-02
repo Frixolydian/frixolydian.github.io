@@ -123,3 +123,7 @@ for (i = 0; i < 48; i++){
 }
 
 */
+
+var socialIntro = ["Listen to ♫ ", "Check out ♫ ", "#NowPlaying ♫ ", "Have a break listening to ♫ ", "Let's relax listening to ♫ ", "Have a great day listening to ♫ "];
+
+console.log(socialIntro[Math.floor(Math.random() * 6)] + songTitle + ' ♫\n\n' + 'http://lofibot.com/?seed=' + (Number(seedNumber)));
