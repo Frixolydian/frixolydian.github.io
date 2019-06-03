@@ -126,4 +126,21 @@ for (i = 0; i < 48; i++){
 
 var socialIntro = ["Listen to ♫ ", "Check out ♫ ", "#NowPlaying ♫ ", "Have a break listening to ♫ ", "Let's relax listening to ♫ ", "Have a great day listening to ♫ "];
 
-console.log(socialIntro[Math.floor(Math.random() * 6)] + songTitle + ' ♫\n\n' + 'http://lofibot.com/?seed=' + (Number(seedNumber)));
+var copySocial = socialIntro[Math.floor(Math.random() * 6)] + songTitle + ' ♫\n\n' + 'http://lofibot.com/?seed=' + (Number(seedNumber));
+
+document.getElementById('square').onclick = function(){
+   // Create new element
+    var el = document.createElement('textarea');
+    // Set value (string to be copied)
+    el.value = copySocial;
+    // Set non-editable to avoid focus and move outside of view
+    el.setAttribute('readonly', '');
+    el.style = {position: 'absolute', left: '-9999px'};
+    document.body.appendChild(el);
+    // Select text inside element
+    el.select();
+    // Copy text to clipboard
+    document.execCommand('copy');
+    // Remove temporary element
+    document.body.removeChild(el);
+}
