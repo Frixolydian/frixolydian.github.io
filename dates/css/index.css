@@ -1,0 +1,352 @@
+* {
+    box-sizing: border-box;
+}
+html, body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin: 0px;
+	height: 100%;
+	padding: 0px;
+}
+
+
+
+.seedInput {
+	float:right;
+	text-align:center;
+	margin-right:2px;
+	margin-top:2px;
+	width: 10%;
+	height: 60px;
+	border-radius: 2px;
+	border-width: 0px;
+	background-color: #ffffff;
+}
+
+.seedButton {
+	float:right;
+	margin-right:35%;
+	width: 60px;
+	height: 60px;
+	border-radius: 2px;
+	border-width:0px;
+	background-image: linear-gradient(to bottom, #333641, #202026);
+}
+
+
+.result {
+	float:left;
+	margin-top:10%;
+	width:100%;
+}
+
+.result1{
+	float:left;
+	width:100%;
+	height:15%;
+	text-align:center;
+	font-size:3em;
+	font-family:calibri;
+	color:#ccc;
+}
+
+
+.section1{
+	margin: 0;
+	padding:0px;
+	display: block;
+	position:relative;
+}
+
+.section1 p{
+	color: #000;
+	position:fixed;
+}
+
+.seedDiv{
+	float:right;
+	width:50%;
+}
+
+.section2{
+	margin-top:50px;
+}
+
+
+.songTitle{
+	float:left;
+	margin-left: 10%;
+	margin-right: 10%;
+	width:80%;
+	color: #fff;
+}
+
+.square {
+	float:left;
+	margin-right: 10px;
+	width: 47px;
+	height: 47px;
+	background-image: linear-gradient(to bottom, #5ee0e8, #e27dee);
+	position:relative;
+}
+.square img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-70%, -70%);	
+}
+
+.songTitle h1{
+	margin-top: 0px;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1.4em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	line-height: 26.4px;
+}
+
+.songTitle p{
+	float:left;
+}
+
+.songTitle img{
+	float:left;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+.seed{
+	color: #ffffff;
+	margin: 0;
+	padding:0px;
+	display:block;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	line-height: 26.4px;
+	height:40px;
+}
+
+.copybutton img{
+	float:right;
+}
+
+.copySeed{
+	color: #ffffff;
+	position:relative;
+	top: -1em;
+	margin-left:140px;
+	padding:0px;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	line-height: 26.4px;
+	height:40px;
+}
+
+.gif{
+	float:left;
+	margin-left: 2%;
+	margin-right: 2%;
+	width:96%;
+	height: 300px;
+	color: #fff;
+	text-align:center;
+	background-color: #000;
+	position:relative;
+	overflow:hidden;
+}
+
+.gif img{
+	position:absolute;
+	height: 100%;
+	width:auto;
+  top: 50%;
+  left: 50%;
+  
+  transform: translate(-50%, -50%);
+}
+
+.tapToPlay{
+    background: black;
+    height: 100%;
+    width: 100%;
+    opacity:0.6;
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 0;
+    line-height:300px;
+   	font-family: Consolas, monaco, monospace;
+	font-size: 2em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	z-index:100;
+}
+
+.buttons{
+	float:left;
+	margin-left: 2%;
+	margin-right: 2%;
+	width:96%;
+	color: #fff;
+}
+
+
+.buttonContainer{
+	margin-top: 23px;
+	width: 260px;
+	height: 47px;
+	border-radius: 2px;
+	background-color: #101418;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	display: flex;
+	justify-content: space-between;
+	padding-left:2px;
+	padding-right:2px;
+}
+
+.button{
+	cursor: pointer;
+	float:left;
+	width: 42px;
+	height: 43px;
+	border-radius: 2px;
+	background-image: linear-gradient(to bottom, #333641, #202026);
+	position: relative;
+}
+.buttonOff{
+	cursor: pointer;
+	float:left;
+	width: 42px;
+	height: 43px;
+	border-radius: 2px;
+	background-image: linear-gradient(to top, #333641, #202026);
+	position: relative;
+}
+.button img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.buttonOff img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.playBar{
+	float:left;
+	margin-left: 10%;
+	margin-right: 10%;
+	width:80%;
+	margin-top: 20px;
+	color: #fff;
+}
+
+
+.playBarBack{
+	width: 100%;
+	height: 16px;
+	border-radius: 8px;
+	background-image: linear-gradient(to top, #3c404e, #32353f, #212228);
+	padding-left:1%;
+	padding-right:1%;
+	padding-top:5px;
+}
+
+.playBarDisplay{
+	width: 0%;
+	height: 6px;
+	border-radius: 8px;
+	background-color: #dd80ee;
+}
+
+.facebook{
+	width:20%;
+}
+
+.fb{
+	float:left;
+	margin-left:20px;
+	margin-top: 20px;
+}
+
+.info{
+	position:absolute;
+	padding:2em;
+	text-align:justify;
+	margin-left:5%;
+	width:90%;
+	cursor:pointer;
+	background-color:#444;
+	color:#fff;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1.2em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	line-height: 1.2em;
+	z-index:5;
+	opacity:0.9;
+	visibility:hidden;
+}
+.infoButton{
+	cursor:pointer;
+	float:right;
+	margin-right:20px;
+	margin-top:20px;
+}
+
+@media (min-width: 768px) {
+	.songTitle{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.gif{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.buttons{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.playBar{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.info{
+		margin-left:25%;
+		width:50%;
+	}
+}
+
+.version{
+	position:absolute;
+	width:100%;
+	bottom:10px;
+	text-align:right;
+	right:20px;
+	cursor:pointer;
+	color:#fff;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	opacity:0.5;
+}
