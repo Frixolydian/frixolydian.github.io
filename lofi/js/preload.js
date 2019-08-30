@@ -138,7 +138,7 @@ var hihatSound = new Wad({
 	],
 })
 
-var openhihatSound = new Wad({
+var openhatSound = new Wad({
 	source: './sound/drum/openhat/openhat_1' + audioType,
 	volume: 0.17
 })
@@ -146,4 +146,34 @@ var openhihatSound = new Wad({
 var snapSound = new Wad({
 	source: './sound/drum/snap/snap_' + randomBetween(1,4) + audioType,
 	volume: 0.2
+})
+
+var snareFoley = new Wad({
+	source: './sound/drum/foley/foley_snare_' + randomBetween(3,3) + audioType,
+	sprite: {
+		[0]: [0,0.9],
+		[1]: [1,1.9],
+		[2]: [2,2.9],
+		[3]: [3,3.9],
+	}
+})
+
+var kickFoley = new Wad({
+	source: './sound/drum/foley/foley_kick_' + randomBetween(1,1) + audioType,
+	sprite: {
+		[0]: [0,0.9],
+		[1]: [1,1.9],
+		[2]: [2,2.9],
+		[3]: [3,3.9],
+	}
+})
+
+var openhatFoley = new Wad({
+	source: './sound/drum/foley/foley_openhat_' + randomBetween(1,1) + audioType,
+	sprite: {
+		[0]: [0,0.9],
+		[1]: [1,1.9],
+		[2]: [2,2.9],
+		[3]: [3,3.9],
+	}
 })

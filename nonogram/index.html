@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<meta charset=utf-8>
+	<head>
+		<link rel='icon' href='favicon.ico' type='image/x-icon'/ >
+		<title>Nonogram</title>
+	    <style> body { margin: 0; background: #28282f;} </style>
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+	</head>
+
+	<body>
+
+	<section class = "section1">
+		</div class = "facebook">
+			<a href="https://www.facebook.com/LofiBotOfficial" target="_blank" title="Follow us on Facebook!">
+			<img src=./assets/ic-fb.png class="fb">
+			</a>
+		<div>
+		<div class = "seedDiv">
+			<div class="infoButton" id="infoButton">
+				<img src=./assets/ic-info.png title="Info">
+			</div>
+			<div class = "seedBorder">
+				<form action="">
+					<input class="seedButton" type="submit" value="Go" style="font-family: Consolas, monaco,monospace;font-size: 16px; color:#fff"/>
+					<input class="seedInput" id="seedInput" type="number" placeholder="Enter seed" name=seed minlength = 1 maxlength = "6"/>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<br>
+
+
+	<script>
+/////DRAGGEAR PROPIEDADES A LOS CUADRADOS :( TMR XK NO HICE ESTO ANTES)
+
+	function allowDrop(ev) {
+	  ev.preventDefault();
+	}
+
+	function drag(ev) {
+	  ev.dataTransfer.setData("text", ev.target.id);
+	}
+
+	function drop(ev) {
+	  ev.preventDefault();
+	  var data = ev.dataTransfer.getData("text");
+
+
+	  ev.target.appendChild(document.getElementById(data));
+	}
+	</script>
+
+	<section class = "nonogram">
+		<div class = "nonodiv" id = "nonogram">
+
+		</div>
+
+		<div class = "pieces" id = pieces>
+			<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+			<img id="drag1" src="assets/b_k.png" draggable="true" ondragstart="drag(event)">
+		</div>
+
+	</section>
+
+
+
+	<article class="version">
+		version 0.4
+	</article>
+
+	<script src="js/nonogram.js"></script>
+
+	</body>
+
+</html>

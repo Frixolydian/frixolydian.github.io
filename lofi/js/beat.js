@@ -103,7 +103,7 @@ function createBeat(){
 	if (Math.seededRandom() > 0.5){
 		playOpenHat = true;
 	}
-	openhihat = [0,0,0,0,
+	openhat = [0,0,0,0,
 				0,0,0,0,
 				0,0,1,0,
 				0,0,0,0,
@@ -133,9 +133,13 @@ if (loadSpeech){
 function beat(){
 	if (kick[step % 32] == 1 && step >= kickIntro){
 		kickSound.play();
+		if (step % 32 == 0){
+//			kickFoley[randomBetween(0,3)].play({volume: 0.3});
+		}
 	}
 	if (snare[step % 32] == 1 && step >= snareIntro){
 		snareSound.play();
+		snareFoley[randomBetween(0,3)].play({volume: 0.3});
 	}
 	if (snare[step % 32] == 1 && snap){
 		snapSound.play();
@@ -149,10 +153,10 @@ function beat(){
 			hihatSound.play();
 		}, randomBetween(5,10))
 	}
-	if (openhihat[step % 32] == 1 && step >= hihatIntro){
+	if (openhat[step % 32] == 1 && step >= hihatIntro){
 		setTimeout(function(){
-			openhihatSound.volume = 0.4;
-			openhihatSound.play();
+			openhatSound.play({volume:0.4});
+//			openhatFoley[randomBetween(0,3)].play({volume: 0.3});
 		}, randomBetween(5,10))
 	}
 }

@@ -1,0 +1,270 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin: 0px;
+	height: 100%;
+	padding: 0px;
+}
+
+.seedBorder{
+	float:right;
+	margin-top: 20px;
+	margin-right:20px;
+	height: 33px;
+	border-radius: 2px;
+	background-color: #101418;
+}
+
+.seedInput {
+	float:right;
+	text-align:center;
+	margin-right:2px;
+	margin-top:2px;
+	width: 102px;
+	height: 28px;
+	border-radius: 2px;
+	border-width: 0px;
+	background-color: #ffffff;
+}
+
+.seedButton {
+	float:right;
+	margin-right:2px;
+	width: 42px;
+	height: 32px;
+	border-radius: 2px;
+	border-width:0px;
+	background-image: linear-gradient(to bottom, #333641, #202026);
+}
+
+.section1{
+	margin: 0;
+	padding:0px;
+	display: block;
+	position:relative;
+}
+
+.section1 p{
+	color: #000;
+	position:fixed;
+	height:20%;
+}
+
+.seedDiv{
+	float:right;
+	width:50%;
+}
+
+.nonogram{
+	margin-top:50px;
+	height:80%;
+	padding:0;
+}
+
+.nonodiv{
+	float:left;
+	height:100%;
+	width:80%;
+}
+
+.colDiv{
+	float:left;
+	width:100%;
+	height:100%;
+	display:grid;
+}
+.square {
+	width:100%;
+	height:100%;
+	float:left;
+	max-height: 100%;
+}
+
+.pieces{
+	float:left;
+	width:20%;
+}
+
+
+.tapToPlay{
+    background: black;
+    height: 100%;
+    width: 100%;
+    opacity:0.6;
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 0;
+    line-height:300px;
+   	font-family: Consolas, monaco, monospace;
+	font-size: 2em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	z-index:100;
+}
+
+.buttons{
+	float:left;
+	margin-left: 2%;
+	margin-right: 2%;
+	width:96%;
+	color: #fff;
+}
+
+
+.buttonContainer{
+	margin-top: 23px;
+	width: 260px;
+	height: 47px;
+	border-radius: 2px;
+	background-color: #101418;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+	display: flex;
+	justify-content: space-between;
+	padding-left:2px;
+	padding-right:2px;
+}
+
+.button{
+	cursor: pointer;
+	float:left;
+	width: 42px;
+	height: 43px;
+	border-radius: 2px;
+	background-image: linear-gradient(to bottom, #333641, #202026);
+	position: relative;
+}
+.buttonOff{
+	cursor: pointer;
+	float:left;
+	width: 42px;
+	height: 43px;
+	border-radius: 2px;
+	background-image: linear-gradient(to top, #333641, #202026);
+	position: relative;
+}
+.button img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.buttonOff img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.playBar{
+	float:left;
+	margin-left: 10%;
+	margin-right: 10%;
+	width:80%;
+	margin-top: 20px;
+	color: #fff;
+}
+
+
+.playBarBack{
+	width: 100%;
+	height: 16px;
+	border-radius: 8px;
+	background-image: linear-gradient(to top, #3c404e, #32353f, #212228);
+	padding-left:1%;
+	padding-right:1%;
+	padding-top:5px;
+}
+
+.playBarDisplay{
+	width: 0%;
+	height: 6px;
+	border-radius: 8px;
+	background-color: #dd80ee;
+}
+
+.facebook{
+	width:20%;
+}
+
+.fb{
+	float:left;
+	margin-left:20px;
+	margin-top: 20px;
+}
+
+.info{
+	position:absolute;
+	padding:2em;
+	text-align:justify;
+	margin-left:5%;
+	width:90%;
+	cursor:pointer;
+	background-color:#444;
+	color:#fff;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1.2em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	line-height: 1.2em;
+	z-index:5;
+	opacity:0.9;
+	visibility:hidden;
+}
+.infoButton{
+	cursor:pointer;
+	float:right;
+	margin-right:20px;
+	margin-top:20px;
+}
+
+@media (min-width: 768px) {
+	.songTitle{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.gif{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.buttons{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.playBar{
+		margin-left: 30%;
+		margin-right: 30%;
+		width:40%;
+	}
+	.info{
+		margin-left:25%;
+		width:50%;
+	}
+}
+
+.version{
+	position:absolute;
+	width:100%;
+	bottom:10px;
+	text-align:right;
+	right:20px;
+	cursor:pointer;
+	color:#fff;
+	font-family: Consolas, monaco, monospace;
+	font-size: 1em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 100;
+	opacity:0.5;
+}
