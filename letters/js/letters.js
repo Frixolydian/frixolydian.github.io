@@ -5,10 +5,10 @@ function letters(){
 
   var letters = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
                   'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 
-                  'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+                  'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ']
   var numbers = [  1 ,  2 ,  3 ,  4 ,  5 ,  6 ,  7 ,  8 ,  9,
                    1 ,  2 ,  3 ,  4 ,  5 ,  5 ,  6 ,  7 ,  8 ,  9,
-                   1 ,  2 ,  3 ,  4 ,  5 ,  6 ,  7 ,  8
+                   1 ,  2 ,  3 ,  4 ,  5 ,  6 ,  7 ,  8, 0
   ]
   var result1 = Name.toUpperCase();
   var result2 = ''
