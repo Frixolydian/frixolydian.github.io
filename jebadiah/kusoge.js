@@ -42,7 +42,7 @@ kusoge.prototype = {
     ceiling = new Terrain(this, this.state, -1500, 300, 3000, 20, false, 'tarmac', [0x92705E, 0xC99689, 0x444B25]);
 
 
-/*    LEFT_ENEMY_TRAIN = false;
+    LEFT_ENEMY_TRAIN = false;
     this.time.events.loop(10000, function() {
       if (!LEFT_ENEMY_TRAIN && WAVE > 20000) {
         if (Math.random() < 0.5){
@@ -117,7 +117,7 @@ kusoge.prototype = {
     new WaveIndicator(this.game, this.state, WAVE);
 
     Shoppe(this.game, this.state);
-*/
+
 //gamepad
     if (MOBILE) {
       // Add the VirtualGamepad plugin to the game
