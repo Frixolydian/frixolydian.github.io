@@ -47,14 +47,14 @@ function botFunction(){
 		sumatoria += Number(a.slice(i,i+1))
 	}
 	sumatoriaTemp = String(sumatoria)
-	if (sumatoria > 9 && sumatoria != 11 && sumatoria != 22 && sumatoria != 33){
+	if (sumatoria > 9 && sumatoria != 11 && sumatoria != 22 && sumatoria != 33 && sumatoria != 44){
 		sumatoria = 0
 		for (let i = 0; i < sumatoriaDisplay.length; i++) {
 			sumatoria += Number(sumatoriaTemp.slice(i,i+1))
 		}
 		sumatoriaTemp = String(sumatoria)
 	}
-	if (sumatoria > 9 && sumatoria != 11 && sumatoria != 22 && sumatoria != 33){
+	if (sumatoria > 9 && sumatoria != 11 && sumatoria != 22 && sumatoria != 33 && sumatoria != 44){
 		sumatoria = 0
 		for (let i = 0; i < sumatoriaDisplay.length; i++) {
 			sumatoria += Number(sumatoriaTemp.slice(i,i+1))
