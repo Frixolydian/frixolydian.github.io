@@ -4,7 +4,7 @@
   padding: 0;
   font-family: Montserrat, Helvetica, sans-serif;
   font-weight: 200;
-  color: rgb(175, 119, 111);
+  color: rgb(0, 0, 0);
   align-items: center;
   justify-content: center;
   animation: fade 2s;
@@ -129,7 +129,7 @@ html, body {
   }
 
   .tri {
-    background-color: rgb(184, 129, 122);
+    background-color: rgb(0, 0, 0);
     width: 2px;
     height: 3em;
     opacity: 1;
@@ -147,7 +147,7 @@ html, body {
   margin: 0;
   padding: 0 0 0 0;
   text-align: center;
-  color: rgb(141, 141, 141);
+  color: rgb(152, 4, 12);
   }
 
   #loader-container {
@@ -296,7 +296,7 @@ html, body {
 .icon {
   width: auto;
   height: 6em;
-  filter: invert(80%) sepia(80%) saturate(0%) hue-rotate(120deg) brightness(80%) contrast(99%);
+  filter: invert(80%) sepia(80%) saturate(0%) hue-rotate(120deg) brightness(60%) contrast(99%);
 } 
 .large {
   scale: 1.1;
@@ -785,10 +785,10 @@ h4 {
    
    button.boton1 {
     font-weight: 400;
-    color: #7a7a7a;
+    color: #C41560;
     padding: .5em 2em;
     background:  rgba(232, 241, 240, 0.1);
-    border: .09em solid #858585;
+    border: .09em solid #C41560;
     border-radius: 0.5em;
     transition: 0.7s; 
    }
@@ -827,7 +827,7 @@ h4 {
     font-family: 'Corinthia', 'Times New Roman', Times, serif;
     font-size: 40px;
     transform: rotate(-.006turn);
-    color: rgb(146, 146, 146);
+    color: rgb(152, 4, 12);
     margin-top: .4em;
   }
    .footert { 
