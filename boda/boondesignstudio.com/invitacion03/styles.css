@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   font-family: Montserrat, Helvetica, sans-serif;
-  font-weight: 200;
+  font-weight: 500;
   color: rgb(0, 0, 0);
   align-items: center;
   justify-content: center;
@@ -142,7 +142,7 @@ html, body {
 
 .frase {
   font-family: 'Corinthia', 'Times New Roman', Times, serif;
-  font-size: 30px;
+  font-size: 35px;
   opacity: 100%;
   margin: 0;
   padding: 0 0 0 0;
@@ -230,7 +230,7 @@ html, body {
   }
   
   .points {
-  font-size: 4em; /* Ajusta el tamaño según tu necesidad */
+  font-size: 2em; /* Ajusta el tamaño según tu necesidad */
   font-family: 'montserrat';
   font-weight: 800;
   letter-spacing: 0;
@@ -330,6 +330,8 @@ html, body {
     padding: 0;
     width: 100%;
   }
+
+
   .fotoprincipala {
     object-position: right;
     display: none;
@@ -690,6 +692,8 @@ h4 {
   font-size: 1em;
   margin: .2em;
 }
+
+
 
 
 .titulos {
