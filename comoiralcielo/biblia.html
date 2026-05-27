@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblia RVSP Reina Valera 1960</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f8;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --primary: #4a90e2;
+            --primary-hover: #357abd;
+            --accent: #e74c3c;
+            --border-color: #e1e4e8;
+            --ui-font: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --reader-font: 'Roboto Mono', 'Courier New', monospace; 
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s, color 0.2s; }
+        
+        body {
+            font-family: var(--ui-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 { font-size: 1.4rem; font-weight: 700; }
+        .badge { background-color: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px; }
+
+        main { width: 100%; max-width: 800px; display: grid; gap: 20px; }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Navigation Grid */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 10px;
+            align-items: end;
+        }
+
+        label { display: block; font-size: 0.8rem; margin-bottom: 5px; opacity: 0.8; font-weight: 600; }
+        
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .btn-nav {
+            height: 42px;
+            padding: 0 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-nav:hover { background-color: var(--primary-hover); }
+        .btn-nav:disabled { background-color: var(--border-color); cursor: not-allowed; opacity: 0.6; }
+
+        /* RSVP Window - Spacing Fixed */
+        .rsvp-window {
+            position: relative;
+            font-family: var(--reader-font);
+            font-size: 3.5rem;
+            height: 150px;
+            width: 100%;
+            overflow: hidden;
+            line-height: 1;
+        }
+
+        .guide-lines { 
+            position: absolute; 
+            left: 50%; 
+            top: 0; bottom: 0; 
+            width: 0; 
+            border-left: 1px dashed var(--border-color); 
+            opacity: 0.3; 
+            z-index: 0; 
+            pointer-events: none;
+        }
+
+        .pivot-char {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent);
+            z-index: 10;
+        }
+
+        .left-part {
+            position: absolute;
+            right: 50%; 
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: right;
+            color: var(--text-color);
+            z-index: 5;
+            padding-right: 0.3em; /* INCREASED SPACING: Wider gap */
+        }
+
+        .right-part {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: left;
+            color: var(--text-color);
+            z-index: 5;
+            padding-left: 0.3em; /* INCREASED SPACING: Wider gap */
+        }
+
+        /* Controls */
+        .controls { display: flex; flex-direction: column; gap: 15px; }
+        
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .progress-bar-fill { background-color: var(--primary); height: 100%; width: 0%; transition: width 0.1s linear; }
+        
+        .btn-row { display: flex; justify-content: center; align-items: center; gap: 15px; }
+        
+        button.control-btn {
+            background: none; border: none; cursor: pointer; color: var(--text-color);
+            width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        button.control-btn:hover { background-color: var(--bg-color); }
+        
+        .play-btn {
+            width: 64px; height: 64px; background-color: var(--primary); color: white;
+            border-radius: 50%; box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+        .play-btn:hover { background-color: var(--primary-hover); transform: scale(1.05); }
+
+        .slider-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        input[type=range] { accent-color: var(--primary); cursor: pointer; }
+
+        .loading { text-align: center; padding: 20px; opacity: 0.7; font-style: italic; }
+        .error-msg { color: #e74c3c; text-align: center; font-size: 0.9rem; margin-top: 5px; }
+        
+        svg { width: 24px; height: 24px; fill: currentColor; }
+
+        @media (max-width: 600px) {
+            .nav-grid { grid-template-columns: 1fr; }
+            .rsvp-window { font-size: 2.5rem; height: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Biblia RVSP <span class="badge">RV60</span></h1>
+        <button id="themeToggle" class="btn-nav" style="background:transparent; color:var(--text-color); border:1px solid var(--border-color)">🌙</button>
+    </header>
+
+    <main>
+        <!-- Navigation -->
+        <section class="card">
+            <div class="nav-grid">
+                <div>
+                    <label for="bookSelect">Libro</label>
+                    <select id="bookSelect" disabled>
+                        <option>Cargando datos...</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="chapterSelect">Capítulo / Sección</label>
+                    <select id="chapterSelect" disabled>
+                        <option>-</option>
+                    </select>
+                </div>
+                <button id="loadBtn" class="btn-nav" disabled>Leer</button>
+            </div>
+            <div id="apiStatus" class="error-msg"></div>
+        </section>
+
+        <!-- Reader -->
+        <section class="card" style="text-align: center;">
+            <div class="rsvp-window">
+                <div class="guide-lines"></div>
+                <div id="wordContainer">
+                    <span class="pivot-char">?</span>
+                </div>
+            </div>
+            
+            <div class="controls" style="margin-top: 20px;">
+                <div class="progress-bar-bg" id="progressBar">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.8rem; opacity:0.7;">
+                    <span id="currentIndex">0</span>
+                    <span id="totalIndex">0</span>
+                </div>
+
+                <div class="btn-row">
+                    <button class="control-btn" id="restartBtn">
+                        <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+                    </button>
+                    <button class="control-btn" id="rewindBtn">
+                        <svg viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
+                    </button>
+                    <button class="control-btn play-btn" id="playPauseBtn">
+                        <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="iconPause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <button class="control-btn" id="forwardBtn">
+                        <svg viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
+                    </button>
+                </div>
+
+                <div class="slider-row">
+                    <label>Speed:</label>
+                    <input type="range" id="wpmSlider" min="100" max="1000" step="50" value="300">
+                    <span id="wpmValue" style="width: 50px; text-align:right">300</span>
+                </div>
+            </div>
+            
+            <div id="loadingMsg" class="loading hidden"></div>
+        </section>
+    </main>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION: CHANGE THIS URL
+        // ==========================================
+        const JSON_URL = 'https://raw.githubusercontent.com/dscottpi/bibles/refs/heads/master/RVR1960-Spanish.json'; 
+        const WORD_SPACING_DELAY = 30; // ms gap between words
+
+        // --- State Management ---
+        const state = {
+            bibleData: null, 
+            words: [],
+            currentIndex: 0,
+            isPlaying: false,
+            wpm: 300,
+            timer: null,
+            currentBookKey: null,
+            currentChapterKey: null
+        };
+
+        const ui = {
+            bookSelect: document.getElementById('bookSelect'),
+            chapterSelect: document.getElementById('chapterSelect'),
+            loadBtn: document.getElementById('loadBtn'),
+            wordContainer: document.getElementById('wordContainer'),
+            playPauseBtn: document.getElementById('playPauseBtn'),
+            iconPlay: document.getElementById('iconPlay'),
+            iconPause: document.getElementById('iconPause'),
+            wpmSlider: document.getElementById('wpmSlider'),
+            wpmValue: document.getElementById('wpmValue'),
+            progressBar: document.getElementById('progressBar'),
+            progressFill: document.getElementById('progressFill'),
+            currentIndex: document.getElementById('currentIndex'),
+            totalIndex: document.getElementById('totalIndex'),
+            loadingMsg: document.getElementById('loadingMsg'),
+            themeToggle: document.getElementById('themeToggle'),
+            apiStatus: document.getElementById('apiStatus'),
+            restartBtn: document.getElementById('restartBtn'),
+            rewindBtn: document.getElementById('rewindBtn'),
+            forwardBtn: document.getElementById('forwardBtn')
+        };
+
+        // --- 1. Initialize & Fetch JSON ---
+        
+        async function init() {
+            if (JSON_URL.includes('your-server')) {
+                ui.apiStatus.textContent = "⚠️ Error: Configure JSON_URL in code.";
+                ui.bookSelect.innerHTML = '<option>Config Error</option>';
+                return;
+            }
+
+            try {
+                const response = await fetch(JSON_URL);
+                if (!response.ok) throw new Error("Network response was not ok");
+                
+                state.bibleData = await response.json();
+                populateBookSelect(state.bibleData);
+            } catch (err) {
+                console.error(err);
+                ui.apiStatus.textContent = "Error loading Bible JSON.";
+                ui.bookSelect.innerHTML = '<option>Error Loading</option>';
+            }
+        }
+
+        function populateBookSelect(data) {
+            ui.bookSelect.innerHTML = "";
+            ui.chapterSelect.innerHTML = "<option>-</option>";
+            ui.chapterSelect.disabled = true;
+            ui.loadBtn.disabled = true;
+
+            const books = Object.keys(data);
+            
+            if (books.length === 0) {
+                ui.bookSelect.innerHTML = "<option>No books found</option>";
+                return;
+            }
+
+            books.forEach(bookName => {
+                const option = document.createElement('option');
+                option.value = bookName;
+                option.textContent = bookName; 
+                ui.bookSelect.appendChild(option);
+            });
+
+            ui.bookSelect.disabled = false;
+        }
+
+        // --- 2. Navigation Logic ---
+
+        ui.bookSelect.addEventListener('change', () => {
+            const bookKey = ui.bookSelect.value;
+            state.currentBookKey = bookKey;
+            const bookContent = state.bibleData[bookKey];
+
+            ui.chapterSelect.innerHTML = "";
+            
+            // Format Detection
+            if (typeof bookContent === 'object' && !Array.isArray(bookContent)) {
+                const chapters = Object.keys(bookContent);
+                chapters.forEach(chap => {
+                    const opt = document.createElement('option');
+                    opt.value = chap;
+                    opt.textContent = chap;
+                    ui.chapterSelect.appendChild(opt);
+                });
+                ui.chapterSelect.disabled = false;
+            } else if (typeof bookContent === 'string' || Array.isArray(bookContent)) {
+                const opt = document.createElement('option');
+                opt.value = "full";
+                opt.textContent = "Texto Completo";
+                ui.chapterSelect.appendChild(opt);
+                ui.chapterSelect.disabled = true; 
+            }
+            
+            ui.loadBtn.disabled = false;
+        });
+
+        ui.loadBtn.addEventListener('click', loadSelection);
+
+        // --- 3. LOADING LOGIC (FIXED SPLITTING) ---
+
+        function loadSelection() {
+            pause();
+            state.currentBookKey = ui.bookSelect.value;
+            state.currentChapterKey = ui.chapterSelect.value;
+            const bookData = state.bibleData[state.currentBookKey];
+            
+            ui.loadingMsg.classList.remove('hidden');
+            ui.apiStatus.textContent = "";
+            ui.wordContainer.innerHTML = '<span class="pivot-char">...</span>';
+
+            setTimeout(() => {
+                let textToProcess = "";
+
+                // 1. Handle Book Level
+                if (typeof bookData === 'string') {
+                    textToProcess = bookData;
+                } else if (Array.isArray(bookData)) {
+                    textToProcess = bookData.join(" ");
+                } else if (typeof bookData === 'object') {
+                    // 2. Handle Chapter Level
+                    const chapterContent = bookData[state.currentChapterKey];
+
+                    if (chapterContent === undefined) {
+                        console.error("CRASH AVOIDED: Chapter key not found.");
+                        console.error("Looked for:", state.currentChapterKey);
+                        console.error("Available keys:", Object.keys(bookData));
+                        ui.apiStatus.textContent = "Error: Chapter key mismatch. Check Console.";
+                        ui.loadingMsg.classList.add('hidden');
+                        return;
+                    }
+
+                    if (typeof chapterContent === 'string') {
+                        textToProcess = chapterContent;
+                    } else if (Array.isArray(chapterContent)) {
+                        textToProcess = chapterContent.join(" ");
+                    } else if (typeof chapterContent === 'object') {
+                        textToProcess = Object.values(chapterContent).join(" ");
+                    }
+                }
+
+                if (typeof textToProcess !== 'string') {
+                    console.error("Error: Final text is not a string", textToProcess);
+                    ui.apiStatus.textContent = "Error processing text format.";
+                    ui.loadingMsg.classList.add('hidden');
+                    return;
+                }
+
+                // --- ADVANCED CLEANING & SPLITTING ---
+                let cleanText = textToProcess
+                    .replace(/\r\n/g, " ") 
+                    .replace(/\n/g, " ")
+                    
+                    // FIX 1: Split punctuation from words (e.g., "aguas,Que" -> "aguas, Que")
+                    // Matches punctuation (.,;:) followed by a letter (not space)
+                    .replace(/([.,;:])([^\s\d])/g, '$1 $2')
+                    
+                    // Remove verse numbers (e.g., "1. Text")
+                    .replace(/(^|\s)\d+\.\s*/g, " ") 
+                    .replace(/(^|\s)\d+\s+/g, " ")   
+                    .replace(/\s+/g, " ") 
+                    .trim();
+
+                processText(cleanText);
+                ui.loadingMsg.classList.add('hidden');
+            }, 50);
+        }
+
+        function processText(text) {
+            state.words = text.split(/\s+/).filter(w => w.length > 0);
+            state.currentIndex = 0;
+            ui.totalIndex.textContent = state.words.length;
+            renderCurrentWord();
+            updateProgress();
+        }
+
+        // --- 4. RSVP Engine ---
+        function getPivotIndex(word) {
+            return Math.floor(word.length / 2);
+        }
+
+        function renderCurrentWord() {
+            if (state.currentIndex >= state.words.length) return;
+            const word = state.words[state.currentIndex];
+            const pivotIdx = getPivotIndex(word);
+            
+            const left = word.substring(0, pivotIdx);
+            const pivot = word.substring(pivotIdx, pivotIdx + 1);
+            const right = word.substring(pivotIdx + 1);
+
+            ui.wordContainer.innerHTML = `
+                <span class="left-part">${left}</span>
+                <span class="pivot-char">${pivot}</span>
+                <span class="right-part">${right}</span>
+            `;
+        }
+
+        function step() {
+            if (state.currentIndex >= state.words.length) {
+                pause();
+                return;
+            }
+
+            renderCurrentWord();
+            updateProgress();
+            state.currentIndex++;
+
+            let delay = (60000 / state.wpm) + WORD_SPACING_DELAY;
+            
+            const currentWord = state.words[state.currentIndex - 1];
+            if (currentWord.endsWith('.')) delay += 300;
+            else if (currentWord.endsWith(',')) delay += 200;
+
+            state.timer = setTimeout(step, delay);
+        }
+
+        function togglePlay() {
+            if (state.isPlaying) pause();
+            else play();
+        }
+
+        function play() {
+            if (state.words.length === 0) return;
+            if (state.currentIndex >= state.words.length) state.currentIndex = 0;
+            
+            state.isPlaying = true;
+            ui.iconPlay.style.display = 'none';
+            ui.iconPause.style.display = 'block';
+            step();
+        }
+
+        function pause() {
+            state.isPlaying = false;
+            ui.iconPlay.style.display = 'block';
+            ui.iconPause.style.display = 'none';
+            clearTimeout(state.timer);
+        }
+
+        // --- 5. UI Controls ---
+        function updateProgress() {
+            const pct = (state.currentIndex / state.words.length) * 100;
+            ui.progressFill.style.width = `${pct}%`;
+            ui.currentIndex.textContent = state.currentIndex;
+        }
+
+        ui.playPauseBtn.addEventListener('click', togglePlay);
+        ui.wpmSlider.addEventListener('input', (e) => {
+            state.wpm = parseInt(e.target.value);
+            ui.wpmValue.textContent = state.wpm;
+        });
+        
+        ui.progressBar.addEventListener('click', (e) => {
+            const rect = ui.progressBar.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percent = x / rect.width;
+            state.currentIndex = Math.floor(state.words.length * percent);
+            updateProgress();
+            if (!state.isPlaying) renderCurrentWord();
+        });
+
+        ui.restartBtn.addEventListener('click', () => { state.currentIndex = 0; updateProgress(); if(!state.isPlaying) renderCurrentWord(); });
+        ui.rewindBtn.addEventListener('click', () => { 
+            state.currentIndex = Math.max(0, state.currentIndex - 10); 
+            if(!state.isPlaying) { renderCurrentWord(); updateProgress(); }
+        });
+        ui.forwardBtn.addEventListener('click', () => { 
+            state.currentIndex = Math.min(state.words.length - 1, state.currentIndex + 10); 
+            if(!state.isPlaying) { renderCurrentWord(); updateProgress(); }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+        });
+
+        ui.themeToggle.addEventListener('click', toggleTheme);
+
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            ui.themeToggle.textContent = isDark ? '🌙' : '☀️';
+        }
+
+        // --- Run Init ---
+        init();
+
+    </script>
+</body>
+</html>
