@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblia RVSP Reina Valera 1960</title>
+    <title>Biblia RSVP RV1960</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -92,7 +92,7 @@
         .btn-nav:hover { background-color: var(--primary-hover); }
         .btn-nav:disabled { background-color: var(--border-color); cursor: not-allowed; opacity: 0.6; }
 
-        /* RSVP Window - Spacing Fixed */
+        /* RSVP Window */
         .rsvp-window {
             position: relative;
             font-family: var(--reader-font);
@@ -120,6 +120,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             color: var(--accent);
+            font-weight: bold;
             z-index: 10;
         }
 
@@ -131,7 +132,8 @@
             text-align: right;
             color: var(--text-color);
             z-index: 5;
-            padding-right: 0.3em; /* INCREASED SPACING: Wider gap */
+            padding-right: 0.3em; 
+            font-weight: bold;
         }
 
         .right-part {
@@ -142,7 +144,8 @@
             text-align: left;
             color: var(--text-color);
             z-index: 5;
-            padding-left: 0.3em; /* INCREASED SPACING: Wider gap */
+            padding-left: 0.35em; 
+            font-weight: bold;
         }
 
         /* Controls */
@@ -188,7 +191,7 @@
 <body>
 
     <header>
-        <h1>Biblia RVSP <span class="badge">RV60</span></h1>
+        <h1>Biblia RSVP <span class="badge">RV60</span></h1>
         <button id="themeToggle" class="btn-nav" style="background:transparent; color:var(--text-color); border:1px solid var(--border-color)">🌙</button>
     </header>
 
@@ -260,10 +263,59 @@
 
     <script>
         // ==========================================
-        // CONFIGURATION: CHANGE THIS URL
+        // CONFIGURATION
         // ==========================================
         const JSON_URL = 'https://raw.githubusercontent.com/dscottpi/bibles/refs/heads/master/RVR1960-Spanish.json'; 
-        const WORD_SPACING_DELAY = 30; // ms gap between words
+        const WORD_SPACING_DELAY = 0; 
+
+        // ==========================================
+        // DATA ORDERING & FILTERING
+        // ==========================================
+        
+        const METADATA_KEYS = ['lang', 'version', 'translation', 'meta', 'info', 'details'];
+
+        // Canonical order including common aliases (e.g., "San Mateo")
+        const CANONICAL_ORDER = [
+            "Génesis", "Éxodo", "Levítico", "Números", "Deuteronomio", 
+            "Josué", "Jueces", "Rut", 
+            "1 Samuel", "2 Samuel", 
+            "1 Reyes", "2 Reyes", 
+            "1 Crónicas", "2 Crónicas", 
+            "Esdras", "Nehemías", "Ester", 
+            "Job", 
+            "Salmos", 
+            "Proverbios", "Eclesiastés", "Cantares", 
+            "Isaías", "Jeremías", "Lamentaciones", "Ezequiel", "Daniel", 
+            "Oseas", "Joel", "Amós", "Abdías", "Jonás", "Miqueas", "Nahúm", "Habacuc", "Sofonías", "Hageo", "Zacarías", "Malaquías", 
+            // New Testament
+            "Mateo", "S. Mateo", "Evangelio de San Mateo",
+            "Marcos", "S. Marcos", "Evangelio de San Marcos",
+            "Lucas", "S. Lucas", "Evangelio de San Lucas",
+            "Juan", "S.Juan", "Evangelio de San Juan",
+            "Hechos", "Hechos de los Apóstoles", 
+            "Romanos", "Romanos a los Romanos", 
+            "1 Corintios", "Primera a los Corintios", "1 Corintios a los Corintios",
+            "2 Corintios", "Segunda a los Corintios", "2 Corintios a los Corintios",
+            "Gálatas", "Galatas", 
+            "Efesios", "Efesios a los Efesios", 
+            "Filipenses", "Filipenses a los Filipenses", 
+            "Colosenses", "Colosenses a los Colosenses", 
+            "1 Tesalonicenses", "Primera a los Tesalonicenses",
+            "2 Tesalonicenses", "Segunda a los Tesalonicenses",
+            "1 Timoteo", "Primera a Timoteo",
+            "2 Timoteo", "Segunda a Timoteo",
+            "Tito", "Tito a Tito",
+            "Filemón", "Filemón a Filemón",
+            "Hebreos", "Hebreos a los Hebreos",
+            "Santiago", "Santiago el Santiago", "Santiago a los Santiago", // Common weird names
+            "1 Pedro", "Primera de Pedro",
+            "2 Pedro", "Segunda de Pedro",
+            "1 Juan", "Primera de Juan",
+            "2 Juan", "Segunda de Juan",
+            "3 Juan", "Tercera de Juan",
+            "Judas", "Judas el Judas",
+            "Apocalipsis", "Apocalipsis de San Juan", "Revelación"
+        ];
 
         // --- State Management ---
         const state = {
@@ -274,7 +326,8 @@
             wpm: 300,
             timer: null,
             currentBookKey: null,
-            currentChapterKey: null
+            currentChapterKey: null,
+            wakeLock: null
         };
 
         const ui = {
@@ -327,12 +380,24 @@
             ui.chapterSelect.disabled = true;
             ui.loadBtn.disabled = true;
 
-            const books = Object.keys(data);
-            
+            let books = Object.keys(data);
+            books = books.filter(key => !METADATA_KEYS.includes(key));
+
             if (books.length === 0) {
                 ui.bookSelect.innerHTML = "<option>No books found</option>";
                 return;
             }
+
+            // Sort based on Canonical Order
+            books.sort((a, b) => {
+                const indexA = CANONICAL_ORDER.indexOf(a);
+                const indexB = CANONICAL_ORDER.indexOf(b);
+                
+                if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                if (indexA !== -1) return -1;
+                if (indexB !== -1) return 1;
+                return a.localeCompare(b);
+            });
 
             books.forEach(bookName => {
                 const option = document.createElement('option');
@@ -342,6 +407,33 @@
             });
 
             ui.bookSelect.disabled = false;
+            
+            // Auto-load Genesis after populating
+            autoLoadGenesis();
+        }
+
+        // --- AUTO LOAD GENESIS ---
+        function autoLoadGenesis() {
+            // Find Genesis key (case insensitive)
+            const genesisKey = Object.keys(state.bibleData).find(k => 
+                k.toLowerCase().includes("génesis") || k.toLowerCase().includes("genesis")
+            );
+            
+            if (genesisKey) {
+                ui.bookSelect.value = genesisKey;
+                // Trigger change to load chapters
+                ui.bookSelect.dispatchEvent(new Event('change'));
+                
+                setTimeout(() => {
+                    // Select first available chapter (skipping "-")
+                    const firstChapter = ui.chapterSelect.options[0];
+                    if (firstChapter) {
+                        ui.chapterSelect.value = firstChapter.value;
+                        // Trigger load
+                        ui.loadBtn.click();
+                    }
+                }, 100);
+            }
         }
 
         // --- 2. Navigation Logic ---
@@ -353,7 +445,6 @@
 
             ui.chapterSelect.innerHTML = "";
             
-            // Format Detection
             if (typeof bookContent === 'object' && !Array.isArray(bookContent)) {
                 const chapters = Object.keys(bookContent);
                 chapters.forEach(chap => {
@@ -376,7 +467,7 @@
 
         ui.loadBtn.addEventListener('click', loadSelection);
 
-        // --- 3. LOADING LOGIC (FIXED SPLITTING) ---
+        // --- 3. LOADING LOGIC ---
 
         function loadSelection() {
             pause();
@@ -391,13 +482,11 @@
             setTimeout(() => {
                 let textToProcess = "";
 
-                // 1. Handle Book Level
                 if (typeof bookData === 'string') {
                     textToProcess = bookData;
                 } else if (Array.isArray(bookData)) {
                     textToProcess = bookData.join(" ");
                 } else if (typeof bookData === 'object') {
-                    // 2. Handle Chapter Level
                     const chapterContent = bookData[state.currentChapterKey];
 
                     if (chapterContent === undefined) {
@@ -425,16 +514,10 @@
                     return;
                 }
 
-                // --- ADVANCED CLEANING & SPLITTING ---
                 let cleanText = textToProcess
                     .replace(/\r\n/g, " ") 
                     .replace(/\n/g, " ")
-                    
-                    // FIX 1: Split punctuation from words (e.g., "aguas,Que" -> "aguas, Que")
-                    // Matches punctuation (.,;:) followed by a letter (not space)
                     .replace(/([.,;:])([^\s\d])/g, '$1 $2')
-                    
-                    // Remove verse numbers (e.g., "1. Text")
                     .replace(/(^|\s)\d+\.\s*/g, " ") 
                     .replace(/(^|\s)\d+\s+/g, " ")   
                     .replace(/\s+/g, " ") 
@@ -493,6 +576,28 @@
             state.timer = setTimeout(step, delay);
         }
 
+        // --- 5. Wake Lock ---
+        async function enableWakeLock() {
+            if ('wakeLock' in navigator) {
+                try {
+                    state.wakeLock = await navigator.wakeLock.request('screen');
+                    console.log('Wake Lock is active');
+                } catch (err) {
+                    console.error(`${err.name}, ${err.message}`);
+                }
+            }
+        }
+
+        function disableWakeLock() {
+            if (state.wakeLock !== null) {
+                state.wakeLock.release()
+                    .then(() => {
+                        state.wakeLock = null;
+                        console.log('Wake Lock has been released');
+                    });
+            }
+        }
+
         function togglePlay() {
             if (state.isPlaying) pause();
             else play();
@@ -505,6 +610,7 @@
             state.isPlaying = true;
             ui.iconPlay.style.display = 'none';
             ui.iconPause.style.display = 'block';
+            enableWakeLock();
             step();
         }
 
@@ -513,9 +619,10 @@
             ui.iconPlay.style.display = 'block';
             ui.iconPause.style.display = 'none';
             clearTimeout(state.timer);
+            disableWakeLock();
         }
 
-        // --- 5. UI Controls ---
+        // --- 6. UI Controls ---
         function updateProgress() {
             const pct = (state.currentIndex / state.words.length) * 100;
             ui.progressFill.style.width = `${pct}%`;
@@ -549,6 +656,12 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+        });
+
+        document.addEventListener('visibilitychange', async () => {
+            if (state.wakeLock !== null && document.visibilityState === 'visible') {
+                await enableWakeLock();
+            }
         });
 
         ui.themeToggle.addEventListener('click', toggleTheme);
