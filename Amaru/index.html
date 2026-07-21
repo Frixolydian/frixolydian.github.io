@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Object Trivia</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    // --- Game Data ---
+    // Updated to use texture keys instead of primitive shapes
+    const LEVELS = [
+        {
+            bgKey: 'bg_lvl1',
+            objects: [
+                { texture: 'img_pajaro', x: 112, y: 87, name: '' },
+                { texture: 'img_pajaro', x: 570, y: 515, name: '' },
+                { texture: 'img_pajaro', x: 890, y: 370, name: '' },
+                { texture: 'img_pajaro', x: 623, y: 350, name: '' },
+                { texture: 'img_pajaro', x: 320, y: 395, name: '' },
+                { texture: 'img_pajaro', x: 730, y: 150, name: '' }
+            ],
+            trivia: {
+                q: "¿Cómo se llama el río más famoso y largo que cruza esta selva?",
+                options: ["El río Misissipi", "El río Amazonas", "El río Nilo", "El río Danubio"],
+                correct: 1
+            }
+        },
+        {
+            bgKey: 'bg_lvl1',
+            objects: [
+                { texture: 'img_moon', x: 300, y: 120, name: 'Moon Pearl' },
+                { texture: 'img_jade', x: 100, y: 450, name: 'Jade Block' },
+                { texture: 'img_amber', x: 650, y: 300, name: 'Amber Shard' }
+            ],
+            trivia: {
+                q: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                correct: 1
+            }
+        },
+        {
+            bgKey: 'bg_lvl3',
+            objects: [
+                { texture: 'img_iron', x: 200, y: 500, name: 'Iron Ball' },
+                { texture: 'img_star', x: 550, y: 100, name: 'Lucky Star' },
+                { texture: 'img_gem', x: 750, y: 450, name: 'Ruby' }
+            ],
+            trivia: {
+                q: "What is the largest ocean on Earth?",
+                options: ["Atlantic", "Indian", "Arctic", "Pacific"],
+                correct: 3
+            }
+        }
+    ];
+
+    // --- Phaser Scene ---
+    class HiddenObjectScene extends Phaser.Scene {
+        constructor() {
+            super({ key: 'HiddenObjectScene' });
+        }
+
+        preload() {
+            // --- Loading Bar ---
+            let progressBox = this.add.graphics();
+            let progressBar = this.add.graphics();
+            progressBox.fillStyle(0x222222, 0.8);
+            progressBox.fillRect(240, 270, 320, 50);
+            
+            let loadingText = this.add.text(400, 260, 'Loading Dummy Images...', { fontSize: '20px', fill: '#ffffff' }).setOrigin(0.5);
+
+            this.load.on('progress', function (value) {
+                progressBar.clear();
+                progressBar.fillStyle(0xffffff, 1);
+                progressBar.fillRect(250, 280, 300 * value, 30);
+            });
+
+            this.load.on('complete', function () {
+                progressBox.destroy();
+                progressBar.destroy();
+                loadingText.destroy();
+            });
+
+            // --- Loading Dummy Backgrounds ---
+            // Generates a dummy 800x600 image with a solid color and text
+            this.load.image('bg_lvl1', './fondo_1_1.png');
+            this.load.image('bg_lvl2', 'https://dummyimage.com/800x600/4a235a/ffffff.png&text=Level+2+Background');
+            this.load.image('bg_lvl3', 'https://dummyimage.com/800x600/0e6251/ffffff.png&text=Level+3+Background');
+
+            // --- Loading Dummy Objects ---
+            // Generates small dummy images to act as hidden objects
+            this.load.image('img_pajaro', 'pajaro_1.png');
+            this.load.image('img_key', 'https://dummyimage.com/40x20/f1c40f/000000.png&text=KEY');
+            this.load.image('img_gem', 'https://dummyimage.com/25x25/e74c3c/ffffff.png&text=GEM');
+            this.load.image('img_star', 'https://dummyimage.com/35x35/2ecc71/000000.png&text=STAR');
+            this.load.image('img_moon', 'https://dummyimage.com/30x30/ecf0f1/000000.png&text=MOON');
+            this.load.image('img_jade', 'https://dummyimage.com/30x40/16a085/ffffff.png&text=JADE');
+            this.load.image('img_amber', 'https://dummyimage.com/30x30/e67e22/000000.png&text=AMBER');
+            this.load.image('img_iron', 'https://dummyimage.com/25x25/7f8c8d/ffffff.png&text=IRON');
+        }
+
+        create() {
+            this.currentLevelIndex = 0;
+            this.foundCount = 0;
+            this.gamePhase = 'searching';
+
+            // UI Elements
+            this.levelText = this.add.text(16, 16, 'Level: 1', { fontSize: '20px', fill: '#fff' });
+            this.statusText = this.add.text(16, 40, 'Find: 0 / 3', { fontSize: '20px', fill: '#fff' });
+            this.triviaText = this.add.text(400, 50, '', { fontSize: '28px', fill: '#fff', align: 'center', wordWrap: { width: 600 } }).setOrigin(0.5).setVisible(false);
+            
+            // Groups to manage cleanup easily
+            this.bgGroup = this.add.group();
+            this.objectsGroup = this.add.group();
+            this.triviaButtonsGroup = this.add.group();
+
+            this.startLevel(0);
+        }
+
+        startLevel(index) {
+            // Reset level state
+            this.foundCount = 0;
+            this.gamePhase = 'searching';
+            
+            // Clear previous level assets
+            this.bgGroup.clear(true, true);
+            this.objectsGroup.clear(true, true);
+            this.triviaButtonsGroup.clear(true, true);
+            this.triviaText.setVisible(false);
+
+            const levelData = LEVELS[index];
+            
+            // Draw Background Image
+            let bg = this.add.image(500, 300, levelData.bgKey);
+            this.bgGroup.add(bg);
+            
+
+            // Update UI
+            this.levelText.setText('Level: ' + (index + 1));
+            this.statusText.setText('Find: 0 / ' + levelData.objects.length);
+
+            // Spawn Hidden Objects
+            levelData.objects.forEach((objData) => {
+                // Use this.add.image instead of shapes
+                let obj = this.add.image(objData.x, objData.y, objData.texture);
+                
+                // Make it interactive and slightly transparent to "hide" it
+                obj.setAlpha(0.85);
+                obj.setInteractive({ useHandCursor: true });
+                
+                // Click event
+                obj.on('pointerdown', () => {
+                    this.tweens.add({
+                        targets: obj,
+                        alpha: 0,
+                        scale: 2,
+                        duration: 300,
+                        onComplete: () => obj.destroy()
+                    });
+                    this.foundCount++;
+                    this.statusText.setText('Find: ' + this.foundCount + ' / ' + levelData.objects.length);
+                    
+                    if (this.foundCount === levelData.objects.length) {
+                        this.time.delayedCall(500, this.startTrivia, [], this);
+                    }
+                });
+
+                this.objectsGroup.add(obj);
+            });
+        }
+
+        startTrivia() {
+            this.gamePhase = 'trivia';
+            this.statusText.setText('Answer the Trivia!');
+            
+            const levelData = LEVELS[this.currentLevelIndex];
+            this.triviaText.setText(levelData.trivia.q);
+            this.triviaText.setVisible(true);
+
+            // Create Answer Buttons
+            let yPos = 200;
+            levelData.trivia.options.forEach((option, index) => {
+                let btn = this.add.container(400, yPos);
+                
+                let bg = this.add.rectangle(0, 0, 300, 50, 0x34495e).setStrokeStyle(2, 0xffffff);
+                let text = this.add.text(0, 0, option, { fontSize: '20px', fill: '#fff' }).setOrigin(0.5);
+                
+                btn.add([bg, text]);
+                btn.setSize(300, 50);
+                btn.setInteractive({ useHandCursor: true });
+
+                btn.on('pointerover', () => bg.setFillStyle(0x465a7a));
+                btn.on('pointerout', () => bg.setFillStyle(0x34495e));
+                
+                btn.on('pointerdown', () => this.answerTrivia(index));
+
+                this.triviaButtonsGroup.add(btn);
+                yPos += 70;
+            });
+        }
+
+        answerTrivia(selectedIndex) {
+            const levelData = LEVELS[this.currentLevelIndex];
+            let isCorrect = (selectedIndex === levelData.trivia.correct);
+
+            // Disable buttons so user can't click multiple
+            this.triviaButtonsGroup.getChildren().forEach(btn => {
+                btn.disableInteractive();
+            });
+
+            if (isCorrect) {
+                this.statusText.setText('Correct! Advancing...');
+                this.cameras.main.flash(500, 0, 255, 0);
+            } else {
+                this.statusText.setText('Wrong! Advancing anyway...');
+                this.cameras.main.flash(500, 255, 0, 0);
+            }
+
+            // Advance to next level after a delay
+            this.time.delayedCall(2000, () => {
+                this.currentLevelIndex++;
+                if (this.currentLevelIndex < LEVELS.length) {
+                    this.startLevel(this.currentLevelIndex);
+                } else {
+                    this.gameOver();
+                }
+            });
+        }
+
+        gameOver() {
+            this.triviaButtonsGroup.clear(true, true);
+            this.objectsGroup.clear(true, true);
+            this.bgGroup.clear(true, true);
+            this.triviaText.setVisible(false);
+            this.statusText.setVisible(false);
+            
+            this.add.text(400, 300, 'Game Complete!', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5);
+            
+            let restartBtn = this.add.text(400, 400, 'Click to Play Again', { fontSize: '24px', fill: '#0f0' })
+                .setOrigin(0.5)
+                .setInteractive({ useHandCursor: true });
+                
+            restartBtn.on('pointerdown', () => {
+                this.scene.restart();
+            });
+        }
+    }
+
+    // --- Game Configuration ---
+    const config = {
+        type: Phaser.AUTO,
+        width: 1000,
+        height: 600,
+        backgroundColor: '#000',
+        scene: HiddenObjectScene
+    };
+
+    // Create the game instance
+    const game = new Phaser.Game(config);
+</script>
+
+</body>
+</html>
