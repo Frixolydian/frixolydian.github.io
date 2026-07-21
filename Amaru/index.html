@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden Object Trivia</title>
+    <title>Amaru</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
     <style>
         body {
@@ -26,6 +26,21 @@
         {
             bgKey: 'bg_lvl1',
             objects: [
+                { texture: 'img_mariposa', x: 225, y: 170, name: '' },
+                { texture: 'img_mariposa', x: 920, y: 530, name: '' },
+                { texture: 'img_mariposa', x: 410, y: 505, name: '' },
+                { texture: 'img_mariposa', x: 935, y: 50, name: '' },
+                { texture: 'img_mariposa', x: 605, y: 270, name: '' }
+            ],
+            trivia: {
+                q: "¿Cómo se llama el río más famoso y largo que cruza esta selva?",
+                options: ["El río Amazonas", "El río Misisipi", "El río Nilo", "El río Danubio"],
+                correct: 0
+            }
+        },
+        {
+            bgKey: 'bg_lvl1',
+            objects: [
                 { texture: 'img_pajaro', x: 112, y: 87, name: '' },
                 { texture: 'img_pajaro', x: 570, y: 515, name: '' },
                 { texture: 'img_pajaro', x: 890, y: 370, name: '' },
@@ -34,35 +49,24 @@
                 { texture: 'img_pajaro', x: 730, y: 150, name: '' }
             ],
             trivia: {
-                q: "¿Cómo se llama el río más famoso y largo que cruza esta selva?",
-                options: ["El río Misissipi", "El río Amazonas", "El río Nilo", "El río Danubio"],
-                correct: 1
+                q: "¿Por qué se dice que la Amazonía es el 'pulmón del planeta'?",
+                options: ["Tiene mucha agua", "Hace mucho calor", "Hace mucho viento", "Produce oxígeno"],
+                correct: 3
             }
         },
         {
             bgKey: 'bg_lvl1',
             objects: [
-                { texture: 'img_moon', x: 300, y: 120, name: 'Moon Pearl' },
-                { texture: 'img_jade', x: 100, y: 450, name: 'Jade Block' },
-                { texture: 'img_amber', x: 650, y: 300, name: 'Amber Shard' }
+                { texture: 'img_mariposa', x: 225, y: 170, name: '' },
+                { texture: 'img_mariposa', x: 920, y: 530, name: '' },
+                { texture: 'img_mariposa', x: 410, y: 505, name: '' },
+                { texture: 'img_mariposa', x: 935, y: 50, name: '' },
+                { texture: 'img_mariposa', x: 605, y: 270, name: '' }
             ],
             trivia: {
-                q: "Which planet is known as the Red Planet?",
-                options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                q: "¿Qué animal se mueve muy, pero muy lento entre las ramas de los árboles?",
+                options: ["El colibrí", "El oso perezoso", "La ardilla", "El mono araña"],
                 correct: 1
-            }
-        },
-        {
-            bgKey: 'bg_lvl3',
-            objects: [
-                { texture: 'img_iron', x: 200, y: 500, name: 'Iron Ball' },
-                { texture: 'img_star', x: 550, y: 100, name: 'Lucky Star' },
-                { texture: 'img_gem', x: 750, y: 450, name: 'Ruby' }
-            ],
-            trivia: {
-                q: "What is the largest ocean on Earth?",
-                options: ["Atlantic", "Indian", "Arctic", "Pacific"],
-                correct: 3
             }
         }
     ];
@@ -103,6 +107,7 @@
             // --- Loading Dummy Objects ---
             // Generates small dummy images to act as hidden objects
             this.load.image('img_pajaro', 'pajaro_1.png');
+            this.load.image('img_mariposa', 'mariposa_1.png');
             this.load.image('img_key', 'https://dummyimage.com/40x20/f1c40f/000000.png&text=KEY');
             this.load.image('img_gem', 'https://dummyimage.com/25x25/e74c3c/ffffff.png&text=GEM');
             this.load.image('img_star', 'https://dummyimage.com/35x35/2ecc71/000000.png&text=STAR');
@@ -114,26 +119,83 @@
 
         create() {
             this.currentLevelIndex = 0;
-            this.foundCount = 0;
+            this.maxTime = 60; // 30 seconds per level
+            this.timeLeft = this.maxTime;
             this.gamePhase = 'searching';
 
-            // UI Elements
-            this.levelText = this.add.text(16, 16, 'Level: 1', { fontSize: '20px', fill: '#fff' });
-            this.statusText = this.add.text(16, 40, 'Find: 0 / 3', { fontSize: '20px', fill: '#fff' });
-            this.triviaText = this.add.text(400, 50, '', { fontSize: '28px', fill: '#fff', align: 'center', wordWrap: { width: 600 } }).setOrigin(0.5).setVisible(false);
+            // UI Elements (Set depth to 100 so they render ABOVE backgrounds)
+            this.levelText = this.add.text(16, 16, 'Nivel: 1', { fontSize: '20px', fill: '#fff' }).setDepth(100);
+            this.statusText = this.add.text(16, 40, 'Encontrar: 0 / 3', { fontSize: '20px', fill: '#fff' }).setDepth(100);
+            this.timeText = this.add.text(16, 64, 'Tiempo: 30s', { fontSize: '20px', fill: '#fff' }).setDepth(100);
+            this.triviaText = this.add.text(500, 100, '', { fontSize: '28px', fill: '#fff', align: 'center', wordWrap: { width: 600 } }).setOrigin(0.5).setVisible(false).setDepth(100);
             
-            // Groups to manage cleanup easily
+            // Time Bar UI
+            this.timeBarBg = this.add.rectangle(400, 590, 800, 20, 0x000000).setDepth(100).setAlpha(0.7);
+            this.timeBar = this.add.rectangle(0, 590, 800, 20, 0x00ff00).setOrigin(0, 0.5).setDepth(101);
+            
+            // Groups
             this.bgGroup = this.add.group();
             this.objectsGroup = this.add.group();
             this.triviaButtonsGroup = this.add.group();
 
+            // Global click listener for penalties
+            this.clickedObject = false; // Flag to track if a valid object was clicked
+            this.input.on('pointerdown', (pointer) => {
+                if (this.gamePhase === 'searching') {
+                    if (!this.clickedObject) {
+                        // Wrong click penalty
+                        this.timeLeft -= 3; 
+                        if (this.timeLeft < 0) this.timeLeft = 0;
+                        
+                        // Visual feedback for penalty
+                        this.cameras.main.shake(200, 0.005);
+                        this.cameras.main.flash(100, 255, 0, 0);
+                        this.updateTimeUI();
+                    }
+                    // Reset flag for next click
+                    this.clickedObject = false; 
+                }
+            });
+
             this.startLevel(0);
+        }
+
+        update(time, delta) {
+            // Only countdown if in the searching phase
+            if (this.gamePhase === 'searching') {
+                this.timeLeft -= delta / 1000; // delta is in milliseconds
+                
+                if (this.timeLeft <= 0) {
+                    this.timeLeft = 0;
+                    this.timeUp();
+                }
+                
+                this.updateTimeUI();
+            }
+        }
+
+        updateTimeUI() {
+            let seconds = Math.ceil(this.timeLeft);
+            this.timeText.setText('Tiempo: ' + seconds + 's');
+            
+            // Scale bar
+            this.timeBar.width = 1000 * (this.timeLeft / this.maxTime);
+            
+            // Change color based on time left
+            if (this.timeLeft > this.maxTime / 2) {
+                this.timeBar.setFillStyle(0x00ff00); // Green
+            } else if (this.timeLeft > this.maxTime / 4) {
+                this.timeBar.setFillStyle(0xffff00); // Yellow
+            } else {
+                this.timeBar.setFillStyle(0xff0000); // Red
+            }
         }
 
         startLevel(index) {
             // Reset level state
             this.foundCount = 0;
             this.gamePhase = 'searching';
+            this.timeLeft = this.maxTime; // Reset timer for new level
             
             // Clear previous level assets
             this.bgGroup.clear(true, true);
@@ -146,23 +208,21 @@
             // Draw Background Image
             let bg = this.add.image(500, 300, levelData.bgKey);
             this.bgGroup.add(bg);
-            
 
             // Update UI
-            this.levelText.setText('Level: ' + (index + 1));
-            this.statusText.setText('Find: 0 / ' + levelData.objects.length);
+            this.levelText.setText('Nivel: ' + (index + 1));
+            this.statusText.setText('Encontrar: 0 / ' + levelData.objects.length);
 
             // Spawn Hidden Objects
             levelData.objects.forEach((objData) => {
-                // Use this.add.image instead of shapes
                 let obj = this.add.image(objData.x, objData.y, objData.texture);
-                
-                // Make it interactive and slightly transparent to "hide" it
                 obj.setAlpha(0.85);
                 obj.setInteractive({ useHandCursor: true });
                 
-                // Click event
                 obj.on('pointerdown', () => {
+                    // Set flag so global listener doesn't apply penalty
+                    this.clickedObject = true; 
+                    
                     this.tweens.add({
                         targets: obj,
                         alpha: 0,
@@ -171,9 +231,10 @@
                         onComplete: () => obj.destroy()
                     });
                     this.foundCount++;
-                    this.statusText.setText('Find: ' + this.foundCount + ' / ' + levelData.objects.length);
+                    this.statusText.setText('Encontrar: ' + this.foundCount + ' / ' + levelData.objects.length);
                     
                     if (this.foundCount === levelData.objects.length) {
+                        this.gamePhase = 'transition'; // Pause timer
                         this.time.delayedCall(500, this.startTrivia, [], this);
                     }
                 });
@@ -190,10 +251,9 @@
             this.triviaText.setText(levelData.trivia.q);
             this.triviaText.setVisible(true);
 
-            // Create Answer Buttons
             let yPos = 200;
             levelData.trivia.options.forEach((option, index) => {
-                let btn = this.add.container(400, yPos);
+                let btn = this.add.container(500, yPos);
                 
                 let bg = this.add.rectangle(0, 0, 300, 50, 0x34495e).setStrokeStyle(2, 0xffffff);
                 let text = this.add.text(0, 0, option, { fontSize: '20px', fill: '#fff' }).setOrigin(0.5);
@@ -201,6 +261,7 @@
                 btn.add([bg, text]);
                 btn.setSize(300, 50);
                 btn.setInteractive({ useHandCursor: true });
+                btn.setDepth(100); // Ensure trivia is above background
 
                 btn.on('pointerover', () => bg.setFillStyle(0x465a7a));
                 btn.on('pointerout', () => bg.setFillStyle(0x34495e));
@@ -240,18 +301,33 @@
             });
         }
 
-        gameOver() {
+        timeUp() {
+            this.gamePhase = 'gameover';
+            this.gameOver(true);
+        }
+
+        gameOver(isTimeUp = false) {
+            // Clear everything
             this.triviaButtonsGroup.clear(true, true);
             this.objectsGroup.clear(true, true);
             this.bgGroup.clear(true, true);
             this.triviaText.setVisible(false);
             this.statusText.setVisible(false);
             
-            this.add.text(400, 300, 'Game Complete!', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5);
+            // Hide time bar
+            this.timeBar.setVisible(false);
+            this.timeBarBg.setVisible(false);
+            this.timeText.setVisible(false);
+
+            let title = isTimeUp ? "Time's Up!" : "Game Complete!";
+            let color = isTimeUp ? '#ff0000' : '#fff';
+            
+            this.add.text(400, 300, title, { fontSize: '48px', fill: color }).setOrigin(0.5).setDepth(100);
             
             let restartBtn = this.add.text(400, 400, 'Click to Play Again', { fontSize: '24px', fill: '#0f0' })
                 .setOrigin(0.5)
-                .setInteractive({ useHandCursor: true });
+                .setInteractive({ useHandCursor: true })
+                .setDepth(100);
                 
             restartBtn.on('pointerdown', () => {
                 this.scene.restart();
