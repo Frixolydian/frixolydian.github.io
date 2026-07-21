@@ -6,14 +6,17 @@
     <title>Amaru</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
     <style>
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Prevents scrollbars */
             background: #111;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             font-family: sans-serif;
+        }
+        canvas {
+            display: block;
         }
     </style>
 </head>
@@ -149,7 +152,6 @@
                         
                         // Visual feedback for penalty
                         this.cameras.main.shake(200, 0.005);
-                        this.cameras.main.flash(100, 255, 0, 0);
                         this.updateTimeUI();
                     }
                     // Reset flag for next click
@@ -338,8 +340,13 @@
     // --- Game Configuration ---
     const config = {
         type: Phaser.AUTO,
-        width: 1000,
-        height: 600,
+        parent: 'body', // Tells Phaser to attach the canvas directly to the body
+        width: 1000,     // Your base game width
+        height: 600,    // Your base game height
+        scale: {
+            mode: Phaser.Scale.FIT,        // Scales the canvas to fit the screen
+            autoCenter: Phaser.Scale.CENTER_BOTH // Centers it vertically and horizontally
+        },
         backgroundColor: '#000',
         scene: HiddenObjectScene
     };
